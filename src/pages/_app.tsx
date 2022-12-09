@@ -1,6 +1,29 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { ThemeProvider } from '@/components'
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import createEmotionCache from '@/lib/createEmotionCache'
+import { ReactElement } from 'react'
+import { AppProps } from 'next/app'
+import { NextPage } from 'next'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
+  Component: NextPage & {
+    getLayout?: (page: ReactElement) => ReactElement
+  }
+}
+
+const clientSideEmotionCache = createEmotionCache()
+
+export default function MyApp({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps
+}: MyAppProps) {
+  const getLayout = Component.getLayout ?? ((page) => page)
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+    </CacheProvider>
+  )
 }
