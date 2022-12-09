@@ -1,14 +1,15 @@
 import { ThemeProvider } from '@/components'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '@/lib/createEmotionCache'
-import { ReactElement } from 'react'
+import { ReactNode } from 'react'
 import { AppProps } from 'next/app'
 import { NextPage } from 'next'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
+
   Component: NextPage & {
-    getLayout?: (page: ReactElement) => ReactElement
+    getLayout?: (page: ReactNode) => ReactNode
   }
 }
 
