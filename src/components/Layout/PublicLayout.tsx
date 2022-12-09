@@ -83,7 +83,9 @@ const PublicLayout = ({ children, ...props }: Props) => (
         </div>
 
         <div className="middle-content">
-          <Typography>Join the platform to get more exciting features.</Typography>
+          <Typography sx={{ mb: 3 }}>
+            Join the platform to get more exciting features
+          </Typography>
           <Box sx={{ textAlign: 'center' }}>
             <ConnectionRelation />
           </Box>
