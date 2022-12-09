@@ -4,6 +4,8 @@ import { CSSProperties } from 'react'
 export type Colors = {
   white: CSSProperties['color']
   blue1: CSSProperties['color']
+  blue2: CSSProperties['color']
+  grey1: CSSProperties['color']
 }
 
 declare module '@mui/material/Typography' {
