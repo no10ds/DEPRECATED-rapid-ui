@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
 function ApiPage() {
@@ -6,8 +6,6 @@ function ApiPage() {
     queryKey: ['todos'],
     queryFn: fetchTestData
   })
-
-  console.log({ data })
 
   if (isLoading) return <p>Loading...</p>
   if (isSuccess)
