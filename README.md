@@ -19,3 +19,7 @@ npm run dev
 ```bash
 npm run build:static
 ```
+
+## Development tips
+
+- Theme file is `style/theme.ts`. Please see official [documentation](https://mui.com/material-ui/customization/theming/)
