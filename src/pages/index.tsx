@@ -1,4 +1,4 @@
-import { PublicLayout } from '@/components'
+// import { PublicLayout } from '@/components'
 import { Chip } from '@mui/material'
 import Head from 'next/head'
 import Image from 'next/image'
