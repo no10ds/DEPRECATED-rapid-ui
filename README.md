@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Alt text](https://raw.githubusercontent.com/no10ds/rapid-ui/feature/setup/public/img/logo.png?token=GHSAT0AAAAAABYGBY3CU6P2BTQTB2T3BP5YY4XB3DQ)
 
 ## Installation
 
