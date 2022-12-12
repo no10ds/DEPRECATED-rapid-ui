@@ -29,3 +29,4 @@ npm run test:all
 ## Development tips
 
 - Theme file is `style/theme.ts`. Please see official [documentation](https://mui.com/material-ui/customization/theming/)
+- [React Query](https://tanstack.com/query/v4/docs/overview): Data fetching
