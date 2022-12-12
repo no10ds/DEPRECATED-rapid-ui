@@ -1,5 +1,5 @@
 import { Container, ContainerProps } from '@mui/material'
-import { Poppins, Chakra_Petch } from '@next/font/google'
+import { Poppins } from '@next/font/google'
 
 const myFont = Poppins({
   weight: ['400', '600', '700'],
