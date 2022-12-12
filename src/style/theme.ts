@@ -9,7 +9,7 @@ const colors: Colors = {
 }
 
 const fonts = {
-  default: ['var(--font-poppins)', 'sans-serif']
+  default: ['Poppins', 'sans-serif']
 }
 
 const theme = createTheme({
@@ -71,7 +71,21 @@ const theme = createTheme({
     subtitle2: undefined,
     overline: undefined
   },
-  spacing: [0, 5, 10, 16, 30, 60, 110]
+  spacing: [0, 5, 10, 16, 30, 60, 110],
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Poppins';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Poppins-Regular'), url(/fonts/Poppins-Regular.ttf) format('ttf');
+          unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
+        }
+      `
+    }
+  }
 })
 
 export default theme

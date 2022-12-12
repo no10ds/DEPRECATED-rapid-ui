@@ -1,5 +1,4 @@
-import ThemeProvider from '../src/components/ThemeProvider/ThemeProvider'
-import LocalizationProvider from '../src/components/LocalizationProvider/LocalizationProvider'
+import ThemeProvider from '../src/components/ThemeProvider'
 import { setConfig } from 'next/config'
 import { publicRuntimeConfig } from '../next.config'
 setConfig({ publicRuntimeConfig })
@@ -15,8 +14,8 @@ export const parameters = {
   backgrounds: {
     default: 'White',
     values: [
-      { name: 'Ellandi dark grey', value: '#AEAEAE' },
-      { name: 'Ellandi light', value: '#E9EAEC' },
+      { name: 'Dark grey', value: '#AEAEAE' },
+      { name: 'Light', value: '#E9EAEC' },
       { name: 'White', value: '#fff' }
     ]
   }
@@ -25,9 +24,7 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <ThemeProvider>
-      <LocalizationProvider>
-        <Story />
-      </LocalizationProvider>
+      <Story />
     </ThemeProvider>
   )
 ]

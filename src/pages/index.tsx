@@ -67,4 +67,4 @@ const IndexPage = () => {
 }
 
 export default IndexPage
-IndexPage.getLayout = (page) => <PublicLayout>{page}</PublicLayout>
+// IndexPage.getLayout = (page) => <PublicLayout>{page}</PublicLayout>
