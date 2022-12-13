@@ -20,8 +20,8 @@ export default class MyDocument extends Document<DocumentProps> {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="icon" href="/images/favicon.ico?v=0" sizes="any" />
-          <link rel="icon" href="/images/favicon.svg?v=0" type="image/svg+xml" />
+          <link rel="icon" href="/img/favicon.ico?v=0" sizes="any" />
+          <link rel="icon" href="/img/favicon.svg?v=0" type="image/svg+xml" />
           <meta charSet="UTF-8" />
 
           {this.props.emotionStyleTags}

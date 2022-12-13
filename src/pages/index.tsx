@@ -1,6 +1,5 @@
 import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
-import { ConnectionRelation } from '@/components/Icon'
 import getConfig from 'next/config'
 
 const { publicRuntimeConfig } = getConfig()
@@ -8,8 +7,6 @@ const { publicRuntimeConfig } = getConfig()
 const IndexPage = () => {
   return (
     <>
-      {/* <ConnectionRelation style={{ marginBottom: 10, fontSize: 190 }} /> */}
-
       <Typography gutterBottom>Welcome back</Typography>
 
       <Button
