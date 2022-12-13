@@ -1,46 +1,48 @@
 import { Box, styled, Typography } from '@mui/material'
 import { Template } from '@/components'
-import { TimeFast, ConnectionRelation, Logo } from '@/components/Icon'
-import { ComponentProps } from 'react'
+import { Logo, GovLogo, Saly } from '@/components/Icon'
+import { ComponentProps, ReactNode } from 'react'
 
-type Props = ComponentProps<typeof Box>
+type Props = { promo?: ReactNode; title: string } & ComponentProps<typeof Box>
 
-const borderRadios = 40
 const overlap = 50
 
 const Columns = styled(Box)`
   display: flex;
-  /* min-height: 100vh; */
-
-  min-height: auto;
   box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
   backdrop-filter: blur(68px);
-  border-radius: ${borderRadios}px;
+  border-radius: 40px;
   background: linear-gradient(204.28deg, #e6cece 14.76%, #d1ccf4 97.11%);
-  /* max-width: 1050px; */
+  max-width: 1050px;
+  width: 100%;
 
   .promo,
   .main-content {
     padding: ${(p) => p.theme.spacing(4)};
-    width: 100%;
+  }
+
+  .header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    margin-bottom: ${(p) => p.theme.spacing(3)};
+    svg {
+      font-size: 50px;
+    }
   }
 
   .promo {
-    max-width: 600px;
     color: ${(p) => p.theme.colors.white};
     padding-right: calc(${(p) => p.theme.spacing(4)} + ${overlap}px);
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    svg {
-      font-size: 210px;
-    }
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.55);
+    flex-basis: 70%;
+    position: relative;
   }
 
   .main-content {
     background-color: ${(p) => p.theme.colors.grey1};
     flex-grow: 1;
     border-radius: inherit;
-
-    max-width: 915px;
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
     margin: -3px 0px -3px -${overlap}px;
   }
@@ -51,9 +53,23 @@ const Columns = styled(Box)`
     right: 20px;
     font-size: 120px;
   }
+
+  .space-icon {
+    font-size: 582px;
+    position: absolute;
+    right: -103px;
+    bottom: -143px;
+    z-index: 1;
+    opacity: 0.8;
+  }
+  .content {
+    z-index: 2;
+    position: relative;
+    margin-bottom: 230px;
+  }
 `
 
-const PublicLayout = ({ children, ...props }: Props) => (
+const PublicLayout = ({ children, promo, title, ...props }: Props) => (
   <Template>
     <style jsx global>
       {`
@@ -67,38 +83,24 @@ const PublicLayout = ({ children, ...props }: Props) => (
       `}
     </style>
     <Columns {...props}>
-      <div className="promo">
-        <div className="title">
-          {/* <img src="img/logo.png" className="logo" /> */}
-          {/* <TimeFast className="logo" /> */}
-          {/* <Typography variant="h1" component="h1">
-            Rapid API
-          </Typography> */}
+      {promo && (
+        <div className="promo">
+          <div className="header">
+            <GovLogo />
+          </div>
+          <div className="content">{promo}</div>
+
+          <Saly className="space-icon" />
         </div>
-
-        <Typography gutterBottom variant="body2">
-          Project rAPId aims to create consistent, secure, interoperable data storage and
-          sharing interfaces (APIs) that enable departments to discover, manage and share
-          data and metadata amongst themselves.
-        </Typography>
-
-        <Typography gutterBottom variant="body2">
-          This will improve the government's use of data by making it more scalable,
-          secure, and resilient, helping to match the rising demand for good-quality
-          evidence in the design, delivery, and evaluation of public policy.
-        </Typography>
-
-        <Typography gutterBottom variant="body2">
-          The project aims to deliver a replicable template for simple data storage
-          infrastructure in AWS, a RESTful API and custom frontend UI to ingest and share
-          named, standardised datasets.
-        </Typography>
-
-        <Box sx={{ textAlign: 'center' }}>
-          <ConnectionRelation />
-        </Box>
-      </div>
-      <Box className="main-content">{children}</Box>
+      )}
+      <Box className="main-content">
+        {title && (
+          <div className="header">
+            <Typography variant="h1">{title}</Typography>
+          </div>
+        )}
+        {children}
+      </Box>
       <Logo className="logo" />
     </Columns>
   </Template>
