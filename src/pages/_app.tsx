@@ -4,6 +4,7 @@ import createEmotionCache from '@/lib/createEmotionCache'
 import { ReactNode } from 'react'
 import { AppProps } from 'next/app'
 import { NextPage } from 'next'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -15,6 +16,10 @@ interface MyAppProps extends AppProps {
 
 const clientSideEmotionCache = createEmotionCache()
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 5 * 1000 } }
+})
+
 export default function MyApp({
   Component,
   emotionCache = clientSideEmotionCache,
@@ -24,7 +29,11 @@ export default function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          {getLayout(<Component {...pageProps} />)}
+        </QueryClientProvider>
+      </ThemeProvider>
     </CacheProvider>
   )
 }

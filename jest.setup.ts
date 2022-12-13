@@ -14,5 +14,7 @@ global.TextEncoder = TextEncoder
 require('jest-fetch-mock').enableMocks()
 
 jest.mock('next/config', () => () => ({
-  publicRuntimeConfig: {}
+  publicRuntimeConfig: {
+    apiUrl: 'http://myapp'
+  }
 }))

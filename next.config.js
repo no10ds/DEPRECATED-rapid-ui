@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  publicRuntimeConfig: {
+    apiUrl: process.env.NEXT_PUBLIC_API_URL
+  },
   swcMinify: true,
   webpack(config) {
     config.module.rules.push({
