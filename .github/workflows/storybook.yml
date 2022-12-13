@@ -3,11 +3,7 @@ on:
   push:
     branches:
       - develop
-    paths: [
-        "web/components/**/*.tsx",
-        "web/style/theme.ts",
-        "web/.storybook/*.js",
-      ] # Trigger the action only when files change in the folders defined here
+    paths: ['src/components/**/*.tsx', 'src/style/theme.ts', '.storybook/*.js'] # Trigger the action only when files change in the folders defined here
 permissions:
   contents: write
 jobs:
@@ -27,7 +23,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: docs/storybook # The branch the action should deploy to.
-          folder: web/storybook-static # The folder that the build-storybook script generates files.
+          folder: ./storybook-static # The folder that the build-storybook script generates files.
           clean: true # Automatically remove deleted files from the deploy branch
           clean-exclude: |
             .gitignore
