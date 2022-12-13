@@ -1,3 +1,5 @@
 export { default as ThemeProvider } from './ThemeProvider'
 export { default as Template } from './Layout/Template'
 export { default as PublicLayout } from './Layout/PublicLayout'
+export { default as Button } from './Button/Button'
+export { default as ConditionalWrapper } from './ConditionalWrapper/ConditionalWrapper'

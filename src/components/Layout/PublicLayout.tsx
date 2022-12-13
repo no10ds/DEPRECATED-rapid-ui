@@ -16,7 +16,6 @@ const Columns = styled(Box)`
   box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
   backdrop-filter: blur(68px);
   border-radius: ${borderRadios}px;
-  overflow: hidden;
   background: linear-gradient(204.28deg, #e6cece 14.76%, #d1ccf4 97.11%);
   /* max-width: 1050px; */
 
@@ -27,7 +26,7 @@ const Columns = styled(Box)`
   }
 
   .promo {
-    max-width: 342px;
+    max-width: 600px;
     color: ${(p) => p.theme.colors.white};
     padding-right: calc(${(p) => p.theme.spacing(4)} + ${overlap}px);
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -39,10 +38,11 @@ const Columns = styled(Box)`
   .main-content {
     background-color: ${(p) => p.theme.colors.grey1};
     flex-grow: 1;
-    border-radius: ${borderRadios}px 0 0 ${borderRadios}px;
-    margin-left: -${overlap}px;
+    border-radius: inherit;
+
     max-width: 915px;
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+    margin: -3px 0px -3px -${overlap}px;
   }
 
   .logo {
@@ -55,7 +55,6 @@ const Columns = styled(Box)`
 
 const PublicLayout = ({ children, ...props }: Props) => (
   <Template>
-    <Logo className="logo" />
     <style jsx global>
       {`
         body {
@@ -77,14 +76,30 @@ const PublicLayout = ({ children, ...props }: Props) => (
           </Typography> */}
         </div>
 
-        <Typography sx={{ mb: 3 }}>
-          Join the platform to get more exciting features
+        <Typography gutterBottom variant="body2">
+          Project rAPId aims to create consistent, secure, interoperable data storage and
+          sharing interfaces (APIs) that enable departments to discover, manage and share
+          data and metadata amongst themselves.
         </Typography>
+
+        <Typography gutterBottom variant="body2">
+          This will improve the government's use of data by making it more scalable,
+          secure, and resilient, helping to match the rising demand for good-quality
+          evidence in the design, delivery, and evaluation of public policy.
+        </Typography>
+
+        <Typography gutterBottom variant="body2">
+          The project aims to deliver a replicable template for simple data storage
+          infrastructure in AWS, a RESTful API and custom frontend UI to ingest and share
+          named, standardised datasets.
+        </Typography>
+
         <Box sx={{ textAlign: 'center' }}>
           <ConnectionRelation />
         </Box>
       </div>
       <Box className="main-content">{children}</Box>
+      <Logo className="logo" />
     </Columns>
   </Template>
 )
