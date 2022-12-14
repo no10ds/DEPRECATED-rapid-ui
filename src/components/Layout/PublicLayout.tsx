@@ -61,6 +61,7 @@ const Columns = styled(Box)`
     bottom: -143px;
     z-index: 1;
     opacity: 0.8;
+    pointer-events: none;
   }
   .content {
     z-index: 2;
