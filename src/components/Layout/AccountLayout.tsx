@@ -40,17 +40,62 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
       <style jsx global>
         {`
           body {
-            background: linear-gradient(
-              144.23deg,
-              rgba(209, 204, 244, 0.69) -8.57%,
-              #e6cece 94.27%
-            );
+            // background: linear-gradient(
+            //   144.23deg,
+            //   rgba(209, 204, 244, 0.69) -8.57%,
+            //   #e6cece 94.27%
+            // );
+            background-color: #f5f6f8;
           }
         `}
       </style>
 
       <Columns {...props}>
-        <Drawer variant="permanent" open />
+        <Drawer
+          variant="permanent"
+          open
+          list={[
+            { text: 'User Management' },
+            {
+              text: 'Create User',
+              href: '/account/user/create/',
+              icon: 'UserAdd'
+            },
+            {
+              text: 'Modify User',
+              href: '/account/user/modify/',
+              icon: 'Pencil',
+              divider: true
+            },
+            { text: 'Data Management' },
+            {
+              text: 'Upload data',
+              href: '/account/data/upload/',
+              icon: 'ArrowUp'
+            },
+            {
+              text: 'Download data',
+              href: '/account/data/download/',
+              icon: 'CloudDownload',
+              divider: true
+            },
+            { text: 'Schema Management' },
+            {
+              text: 'Create Schema',
+              href: '/account/schema/create/',
+              icon: 'AppsAdd',
+              divider: true
+            },
+            {
+              text: 'Task Management'
+            },
+            {
+              text: 'Task Status',
+              href: '/account/tasks/status/',
+              icon: 'BarsProgress'
+            }
+          ]}
+        />
         <Box className="main-content">
           <Toolbar />
           {children}

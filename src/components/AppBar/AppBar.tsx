@@ -7,11 +7,8 @@ import {
   Menu,
   styled
 } from '@mui/material'
-
-import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MenuItem from '@mui/material/MenuItem'
-
 import { ComponentProps } from 'react'
 
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
@@ -35,7 +32,7 @@ export default function AppBar({ title, ...props }: Props) {
   return (
     <MenuBar position="fixed" {...props}>
       <Toolbar>
-        <Typography component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
           {title}
         </Typography>
 
@@ -51,6 +48,7 @@ export default function AppBar({ title, ...props }: Props) {
             <AccountCircle />
           </IconButton>
           <Menu
+            sx={{ mt: '45px' }}
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{
@@ -65,8 +63,14 @@ export default function AppBar({ title, ...props }: Props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Typography textAlign="center" variant="body2">
+                Profile
+              </Typography>
+            </MenuItem>
+            <Typography textAlign="center" variant="body2">
+              Account
+            </Typography>
           </Menu>
         </div>
       </Toolbar>
