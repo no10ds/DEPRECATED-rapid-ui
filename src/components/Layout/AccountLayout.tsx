@@ -1,6 +1,5 @@
-import { Box, styled, Toolbar, Typography } from '@mui/material'
+import { Box, styled, Toolbar } from '@mui/material'
 import { Template } from '@/components'
-import { Logo, GovLogo, Saly } from '@/components/Icon'
 import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
 
@@ -52,22 +51,10 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
 
       <Columns {...props}>
         <Drawer variant="permanent" open />
-
-        {/* <div className="sidebar">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, libero? Eligendi
-        dolorem unde illo! Sit quis eligendi quidem excepturi cum consectetur saepe
-        ducimus commodi praesentium quos beatae, amet eaque ipsum!
-      </div> */}
         <Box className="main-content">
           <Toolbar />
-          {/* {title && (
-          <div className="header">
-            <Typography variant="h1">{title}</Typography>
-          </div>
-        )} */}
           {children}
         </Box>
-        {/* <Logo className="logo" /> */}
       </Columns>
     </Template>
   </>

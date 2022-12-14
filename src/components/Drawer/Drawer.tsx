@@ -1,5 +1,17 @@
-import { Drawer as MuiDrawer } from '@mui/material'
+import {
+  Divider,
+  Drawer as MuiDrawer,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography
+} from '@mui/material'
 import { ComponentProps, ReactNode } from 'react'
+import MailIcon from '@mui/icons-material/Mail'
+import MenuIcon from '@mui/icons-material/Menu'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
 
 type Props = ComponentProps<typeof MuiDrawer>
 
@@ -12,9 +24,16 @@ export default function Drawer(props: Props) {
       }}
       {...props}
     >
-      11Lorem ipsum dolor sit amet consectetur adipisicing elit. Id est molestiae rem,
-      repudiandae natus, voluptatibus perspiciatis quo corporis assumenda facilis eos
-      repellat iste deleniti aspernatur soluta cum ea aut reiciendis?
+      <Toolbar />
+      <Divider />
+      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={<Typography variant="body2">{text}</Typography>} />
+          </ListItemButton>
+        </ListItem>
+      ))}
     </MuiDrawer>
   )
 }
