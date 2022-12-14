@@ -10,8 +10,6 @@ const overlap = 50
 const Columns = styled(Box)`
   display: flex;
   box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
-  backdrop-filter: blur(68px);
-  border-radius: 40px;
   background: linear-gradient(204.28deg, #e6cece 14.76%, #d1ccf4 97.11%);
   max-width: 1050px;
   width: 100%;

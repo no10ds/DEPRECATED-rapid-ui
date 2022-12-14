@@ -76,8 +76,12 @@ const theme = createTheme({
     subtitle2: undefined,
     overline: undefined
   },
-  spacing: [0, 5, 10, 16, 30, 60, 110],
+
   shadows: Array(25).fill('none') as Shadows,
+  shape: {
+    borderRadius: 5
+  },
+  spacing: [0, 5, 10, 16, 30, 60, 110],
   components: {
     MuiCssBaseline: {
       styleOverrides: `

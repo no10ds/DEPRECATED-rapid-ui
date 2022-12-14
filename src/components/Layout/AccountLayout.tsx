@@ -7,8 +7,15 @@ type Props = { title?: string } & ComponentProps<typeof Box>
 
 const drawerWidth = 224
 
-const Columns = styled(Box)`
-  display: flex;
+const Layout = styled(Box)`
+  .columns {
+    display: flex;
+    width: 100%;
+  }
+
+  main {
+    width: 100%;
+  }
 
   .sidebar {
     background-color: #ccc;
@@ -21,6 +28,7 @@ const Columns = styled(Box)`
   .main-content {
     margin-left: ${drawerWidth}px;
     padding: ${(p) => p.theme.spacing(3)};
+    width: 100%;
   }
   .MuiDrawer-paper {
     width: ${drawerWidth}px;
@@ -28,7 +36,7 @@ const Columns = styled(Box)`
 `
 
 const AccountLayout = ({ children, title, ...props }: Props) => (
-  <>
+  <Layout>
     <AppBar
       title={title}
       sx={{
@@ -36,21 +44,16 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
         width: `calc(100% - ${drawerWidth}px)`
       }}
     />
-    <Template disableGutters sx={{ ml: 0 }}>
+    <Template disableGutters align="left" sx={{ ml: 0 }}>
       <style jsx global>
         {`
           body {
-            // background: linear-gradient(
-            //   144.23deg,
-            //   rgba(209, 204, 244, 0.69) -8.57%,
-            //   #e6cece 94.27%
-            // );
             background-color: #f5f6f8;
           }
         `}
       </style>
 
-      <Columns {...props}>
+      <Box className="columns" {...props}>
         <Drawer
           variant="permanent"
           open
@@ -100,9 +103,9 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
           <Toolbar />
           {children}
         </Box>
-      </Columns>
+      </Box>
     </Template>
-  </>
+  </Layout>
 )
 
 export default AccountLayout

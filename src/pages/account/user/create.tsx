@@ -1,8 +1,9 @@
+import { Card } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { Typography } from '@mui/material'
 
 function CreateUserPage() {
-  return <div></div>
+  return <Card>blah</Card>
 }
 
 export default CreateUserPage

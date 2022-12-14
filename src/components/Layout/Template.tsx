@@ -1,17 +1,17 @@
 import { Container, ContainerProps, styled } from '@mui/material'
 
-type Props = ContainerProps
+type Props = { align?: 'left' | 'center' | 'right' } & ContainerProps
 
-const Main = styled('main')`
+const Main = styled('main')<Props>`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: ${(p) => p.align};
+  justify-content: ${(p) => p.align};
   min-height: 100vh;
 `
 
-const Template = ({ children, ...props }: Props) => (
+const Template = ({ children, align = 'center', ...props }: Props) => (
   <Container maxWidth="xl" {...props}>
-    <Main>{children}</Main>
+    <Main align={align}>{children}</Main>
   </Container>
 )
 
