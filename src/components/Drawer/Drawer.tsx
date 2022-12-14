@@ -1,6 +1,7 @@
 import {
   Divider,
   Drawer as MuiDrawer,
+  List,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -47,17 +48,18 @@ export default function Drawer({ list, ...props }: Props) {
         <Logo className="logo" />
       </Toolbar>
       <Divider />
-      {list.map(({ text, divider, icon }, index) => {
+      {list.map(({ text, divider, icon }) => {
         const Icon = Icons[icon]
         return (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              {icon && <ListItemIcon>{<Icon />}</ListItemIcon>}
-              {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-              <ListItemText primary={<Typography variant="body2">{text}</Typography>} />
-            </ListItemButton>
+          <List key={text}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                {icon && <ListItemIcon>{<Icon />}</ListItemIcon>}
+                <ListItemText primary={<Typography variant="body2">{text}</Typography>} />
+              </ListItemButton>
+            </ListItem>
             {divider && <Divider />}
-          </ListItem>
+          </List>
         )
       })}
     </MenuBar>
