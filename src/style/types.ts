@@ -1,6 +1,8 @@
 import { CSSProperties } from 'react'
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
+export type AllColors = keyof Colors
+
 export type Colors = {
   black: CSSProperties['color']
   white: CSSProperties['color']
