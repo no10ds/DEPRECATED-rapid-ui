@@ -10,12 +10,12 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
-import { ComponentProps, ReactNode } from 'react'
-import MailIcon from '@mui/icons-material/Mail'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { ComponentProps } from 'react'
 import { Logo } from '@/components/Icon'
 import { Icon } from '@/components/Icon/types'
 import * as Icons from '@/components/Icon'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 type List = {
   text: string
@@ -33,9 +33,15 @@ const MenuBar = styled(MuiDrawer)`
     font-size: 105px;
     position: absolute;
   }
+
+  a {
+    color: inherit;
+  }
 `
 
 export default function Drawer({ list, ...props }: Props) {
+  const router = useRouter()
+
   return (
     <MenuBar
       variant="permanent"
@@ -44,15 +50,25 @@ export default function Drawer({ list, ...props }: Props) {
       }}
       {...props}
     >
-      <Toolbar>
-        <Logo className="logo" />
-      </Toolbar>
+      <Link href="/account/">
+        <Toolbar>
+          <Logo className="logo" />
+        </Toolbar>
+      </Link>
       <Divider />
-      {list.map(({ text, divider, icon }) => {
+      {list.map(({ text, divider, icon, href }) => {
         const Icon = Icons[icon]
         return (
           <List key={text}>
-            <ListItem disablePadding>
+            <ListItem
+              disablePadding
+              component={!!href ? 'a' : 'div'}
+              href={href || undefined}
+              onClick={(e) => {
+                e.preventDefault()
+                href && router.push(href)
+              }}
+            >
               <ListItemButton>
                 {icon && <ListItemIcon>{<Icon />}</ListItemIcon>}
                 <ListItemText primary={<Typography variant="body2">{text}</Typography>} />
