@@ -1,6 +1,6 @@
 import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
-import { FormControl, InputLabel, Stack, Typography } from '@mui/material'
+import { FormControl, Stack, Typography } from '@mui/material'
 
 const userType = ['User', 'Client']
 const managementPermissions = ['Data', 'User']
@@ -45,7 +45,7 @@ function CreateUserPage() {
       </Typography>
 
       <Row>
-        <Typography component={InputLabel} gutterBottom>
+        <Typography variant="body2" component="label" gutterBottom>
           Management Permissions
         </Typography>
 
@@ -57,7 +57,7 @@ function CreateUserPage() {
       </Row>
 
       <Row>
-        <Typography component={InputLabel} gutterBottom>
+        <Typography variant="body2" component="label" gutterBottom>
           Global Read Permissions
         </Typography>
         <Stack direction="row" spacing={1}>
