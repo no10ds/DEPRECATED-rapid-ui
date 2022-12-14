@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  trailingSlash: true,
   publicRuntimeConfig: {
     apiUrl: process.env.NEXT_PUBLIC_API_URL,
     loginUrl: process.env.NEXT_PUBLIC_LOGIN_URL

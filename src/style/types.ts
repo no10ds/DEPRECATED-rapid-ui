@@ -2,10 +2,14 @@ import { CSSProperties } from 'react'
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 export type Colors = {
+  black: CSSProperties['color']
   white: CSSProperties['color']
   blue1: CSSProperties['color']
   blue2: CSSProperties['color']
   grey1: CSSProperties['color']
+  grey2: CSSProperties['color']
+  grey3: CSSProperties['color']
+  grey4: CSSProperties['color']
 }
 
 declare module '@mui/material/Typography' {
