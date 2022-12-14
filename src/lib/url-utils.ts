@@ -6,3 +6,16 @@ export const createUrl = (
   const queryString = new URLSearchParams(params).toString()
   return `${url}${queryString && `?${queryString}`}`
 }
+
+export const isUrlInternal = (
+  url: string,
+  currenSite = window.location.href
+): boolean => {
+  if (url.charAt(0) === '/') return true
+
+  const fullUrl = new URL(url).origin
+  const fullSite = new URL(currenSite).origin
+
+  if (fullUrl === fullSite) return true
+  return false
+}

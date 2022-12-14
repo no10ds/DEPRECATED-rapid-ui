@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   publicRuntimeConfig: {
-    apiUrl: process.env.NEXT_PUBLIC_API_URL
+    apiUrl: process.env.NEXT_PUBLIC_API_URL,
+    loginUrl: process.env.NEXT_PUBLIC_LOGIN_URL
   },
   swcMinify: true,
   webpack(config) {

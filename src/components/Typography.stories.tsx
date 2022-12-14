@@ -14,7 +14,7 @@ const variants = Object.entries(theme.typography)
   .map(([key]) => key)
 
 export default {
-  title: 'Ellandi/Typography',
+  title: 'Typography',
   component: Typography,
   parameters: {
     design: {
