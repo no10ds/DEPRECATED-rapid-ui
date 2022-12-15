@@ -1,4 +1,14 @@
-import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
+import {
+  Card,
+  Row,
+  BadgeNumber,
+  Chip,
+  Button,
+  TextField,
+  Select,
+  Alert,
+  Link
+} from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { FormControl, Stack, Typography } from '@mui/material'
 
@@ -95,6 +105,21 @@ function UserModifyPage() {
           </Select>
         </FormControl>
       </Row>
+
+      <Row>
+        <input name="file" id="file" type="file" />
+      </Row>
+
+      <Alert title="File accepted: skills.csv">
+        <Typography variant="body2">
+          Raw file name: 27168c9f-81ff-4c69-a532-b49f1f4f106c.csv
+        </Typography>
+        <Typography variant="body2">Status: Data processing</Typography>
+
+        <Link href="/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5">
+          Track upload progress
+        </Link>
+      </Alert>
     </Card>
   )
 }
