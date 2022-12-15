@@ -1,20 +1,26 @@
-import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
+import { Card, Row, BadgeNumber, Button, Select } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { FormControl, Typography } from '@mui/material'
 
 function UserModifyPage() {
   return (
-    <Card action={<Button color="primary">Upload dataset</Button>}>
+    <Card
+      action={
+        <Button
+          color="primary"
+          href="/account/data/download/file/?dataset=car_sales&version=1"
+        >
+          Next
+        </Button>
+      }
+    >
       <Typography variant="h2" gutterBottom>
         <BadgeNumber label="1" /> Select subject
       </Typography>
 
       <Row>
         <FormControl fullWidth size="small">
-          <Select label="Select subject" data={[]}>
-            <option value="" disabled>
-              Please select a dataset
-            </option>
+          <Select label="Select a dataset" data={[]}>
             <optgroup label="automotive">
               <option data-versions="1" value="automotive/car_sales">
                 car_sales
@@ -95,12 +101,6 @@ function UserModifyPage() {
           </Select>
         </FormControl>
       </Row>
-
-      <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="2" /> Choose a file that corresponds to this dataset:
-      </Typography>
-
-      <input name="file" id="file" type="file" />
     </Card>
   )
 }
