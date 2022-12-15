@@ -62,6 +62,7 @@ function UserModifyPage() {
       </Typography>
 
       <SimpleTable
+        sx={{ mb: 4 }}
         list={[
           [
             { children: 'name' },
@@ -115,6 +116,42 @@ function UserModifyPage() {
           { children: 'Partition Index (Optional)' }
         ]}
       />
+
+      <Typography variant="h2" gutterBottom>
+        <BadgeNumber label="4" /> Set the data owner
+      </Typography>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="Owner email"
+          type="email"
+          variant="outlined"
+        />
+      </Row>
+
+      <Row>
+        <TextField fullWidth size="small" label="Owner name" variant="outlined" />
+      </Row>
+
+      <Typography variant="h2" gutterBottom>
+        <BadgeNumber label="5" /> Set the file upload behaviour
+      </Typography>
+
+      <Row>
+        <FormControl fullWidth size="small">
+          <Select label="Update behaviour" data={['APPEND', 'OVERWRITE']} />
+        </FormControl>
+      </Row>
+
+      <Typography variant="h2" gutterBottom>
+        <BadgeNumber label="6" /> Optionally set key value tags
+      </Typography>
+
+      <Typography variant="h2" gutterBottom>
+        <BadgeNumber label="7" /> Optionally set key only tags
+      </Typography>
     </Card>
   )
 }
