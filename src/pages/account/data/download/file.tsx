@@ -1,4 +1,13 @@
-import { Card, SimpleTable, AccountLayout } from '@/components'
+import {
+  Card,
+  SimpleTable,
+  AccountLayout,
+  Button,
+  Select,
+  Link,
+  Row,
+  TextField
+} from '@/components'
 import { CrossCircle } from '@/components/Icon'
 import { TableCellProps, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -10,7 +19,7 @@ const renderTable = (
   }[] = []
 ) => (
   <SimpleTable
-    sx={{ mb: 3 }}
+    sx={{ mb: 4 }}
     list={[
       ...list.map<TableCellProps[]>(({ name, value }) => [
         { children: name, component: 'th' },
@@ -22,49 +31,130 @@ const renderTable = (
 
 function FilePage() {
   const router = useRouter()
-  const { id } = router.query
+  const { dataset, version } = router.query
 
   return (
-    <Card>
-      <CrossCircle />
+    <Card action={<Button color="primary">Download</Button>}>
       <Typography variant="h2" gutterBottom>
-        FAILED
+        Dataset Overview
       </Typography>
-
-      <Typography variant="h2" gutterBottom>
-        {id}
-      </Typography>
-
       {renderTable([
-        { name: 'Job Type', value: 'UPLOAD' },
-        { name: 'Status', value: 'FAILED' },
-        { name: 'Step', value: 'Validation' },
-        { name: 'Filename', value: 'skills.csv' },
-        { name: 'Raw Filename	', value: '56bdf82d-1da9-410a-818e-f78414024807.csv' },
-        { name: 'Domain	', value: 'automotive' },
-        { name: 'Dataset	', value: 'car_sales' },
-        { name: 'Version	', value: '1' }
+        { name: 'Domain', value: 'automotive' },
+        { name: 'Dataset', value: dataset?.toString() },
+        { name: 'Version', value: version?.toString() },
+        { name: 'Last updated	', value: '15 Sep 2022 at 11:18:37' },
+        { name: 'Number of Rows', value: '990300' },
+        { name: 'Number of Columns', value: '17' }
       ])}
+      <Typography variant="h2" gutterBottom>
+        Columns
+      </Typography>
+      <SimpleTable
+        sx={{ mb: 4 }}
+        headers={[
+          { children: 'Name' },
+          { children: 'Data Type' },
+          { children: 'Allows Null' },
+          { children: 'Allows Max' },
+          { children: 'Allows Min' }
+        ]}
+        list={[
+          [
+            { children: 'brand' },
+            { children: 'object' },
+            { children: 'True' },
+            { children: '-' },
+            { children: '-' }
+          ],
+          [
+            { children: 'name' },
+            { children: 'object' },
+            { children: 'True' },
+            { children: '-' },
+            { children: '-' }
+          ],
+          [
+            { children: 'bodytype' },
+            { children: 'object' },
+            { children: 'True' },
+            { children: '-' },
+            { children: '-' }
+          ]
+        ]}
+      />
+      <Typography variant="h2" gutterBottom>
+        Format
+      </Typography>
+      <Row>
+        <Select label="Data format" data={['csv', 'json']} />
+      </Row>
 
       <Typography variant="h2" gutterBottom>
-        Errors
+        Query (optional)
       </Typography>
 
-      <Typography variant="body2" color="error" component="code">
-        Expected columns: ['brand', 'name', 'bodytype', 'color', 'fueltype', 'year',
-        'mileage', 'transmission', 'power', 'price', 'vehicle_configuration',
-        'engine_name', 'engine_displacement', 'date', 'location', 'link', 'parse_date'],
-        received: ['name', 'total_users', 'number_with_skill', 'percentage_with_skill',
-        'number_to_develop_skill', 'percentage_to_develop_skill', 'number_beginners',
-        'percentage_beginners', 'number_advanced_beginners',
-        'percentage_advanced_beginners', 'number_competent', 'percentage_competent',
-        'number_proficient', 'percentage_proficient', 'number_expert',
-        'percentage_expert']
+      <Typography variant="body2" gutterBottom>
+        <Link
+          href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/usage.md#query-structure"
+          target="_blank"
+        >
+          query writing guide
+        </Link>
       </Typography>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="select columns"
+          variant="outlined"
+          placeholder="column1, avg(column2)"
+        />
+      </Row>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="filter"
+          variant="outlined"
+          placeholder="column >= 10"
+        />
+      </Row>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="group by columns"
+          variant="outlined"
+          placeholder="column1, column3"
+        />
+      </Row>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="aggregation conditions"
+          variant="outlined"
+          placeholder="avg(column2) <= 15"
+        />
+      </Row>
+
+      <Row>
+        <TextField
+          fullWidth
+          size="small"
+          label="row limit"
+          variant="outlined"
+          placeholder="30"
+        />
+      </Row>
     </Card>
   )
 }
 
 export default FilePage
 
-FilePage.getLayout = (page) => <AccountLayout title="Job Detail">{page}</AccountLayout>
+FilePage.getLayout = (page) => <AccountLayout title="Download">{page}</AccountLayout>
