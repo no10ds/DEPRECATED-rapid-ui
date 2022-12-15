@@ -1,4 +1,4 @@
-import { Box, styled, Toolbar } from '@mui/material'
+import { Box, Container, styled, Toolbar } from '@mui/material'
 import { Template } from '@/components'
 import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
@@ -37,6 +37,13 @@ const Layout = styled(Box)`
 
 const AccountLayout = ({ children, title, ...props }: Props) => (
   <Layout>
+    <style jsx global>
+      {`
+        body {
+          background-color: #f5f6f8;
+        }
+      `}
+    </style>
     <AppBar
       title={title}
       sx={{
@@ -44,15 +51,8 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
         width: `calc(100% - ${drawerWidth}px)`
       }}
     />
-    <Template disableGutters align="left" sx={{ ml: 0 }}>
-      <style jsx global>
-        {`
-          body {
-            background-color: #f5f6f8;
-          }
-        `}
-      </style>
 
+    <Container maxWidth="xl">
       <Box className="columns" {...props}>
         <Drawer
           variant="permanent"
@@ -104,7 +104,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
           {children}
         </Box>
       </Box>
-    </Template>
+    </Container>
   </Layout>
 )
 
