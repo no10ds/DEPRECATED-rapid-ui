@@ -3,11 +3,11 @@ import { ComponentProps } from 'react'
 
 type Props = { title?: string } & ComponentProps<typeof MuiAlert>
 
-function Alert({ title, ...props }: Props) {
+function Alert({ title, children, ...props }: Props) {
   return (
     <MuiAlert {...props}>
       {title && <AlertTitle>{title}</AlertTitle>}
-      Alert
+      {children}
     </MuiAlert>
   )
 }

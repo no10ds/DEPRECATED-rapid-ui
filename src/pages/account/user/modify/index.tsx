@@ -1,10 +1,16 @@
-import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
+import { Card, Row, BadgeNumber, Button, Select } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
-import { FormControl, Stack, Typography } from '@mui/material'
+import { FormControl, Typography } from '@mui/material'
 
 function UserModifyPage() {
   return (
-    <Card action={<Button color="primary">Create subject</Button>}>
+    <Card
+      action={
+        <Button color="primary" href="/account/user/modify/2/">
+          Next
+        </Button>
+      }
+    >
       <Typography variant="h2" gutterBottom>
         <BadgeNumber label="1" /> Select subject
       </Typography>
@@ -59,5 +65,5 @@ function UserModifyPage() {
 export default UserModifyPage
 
 UserModifyPage.getLayout = (page) => (
-  <AccountLayout title="Modify User">{page}</AccountLayout>
+  <AccountLayout title="Modify User: Step 2">{page}</AccountLayout>
 )
