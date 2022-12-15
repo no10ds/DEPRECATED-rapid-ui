@@ -1,4 +1,4 @@
-import { TableCell } from '@mui/material'
+import { Table, TableCell } from '@mui/material'
 import { ComponentProps, ReactNode } from 'react'
 
 export type DataRow = ComponentProps<typeof TableCell>
@@ -9,4 +9,4 @@ export type Props = {
   list: DataRow[][]
   children?: ReactNode
   noRowContent?: string
-}
+} & ComponentProps<typeof Table>

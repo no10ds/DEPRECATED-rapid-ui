@@ -8,8 +8,6 @@ import {
   TableHead,
   Typography
 } from '@mui/material'
-import { FC } from 'react'
-
 import { Props } from './types'
 
 const Table = styled(MuiTable)`
@@ -23,14 +21,14 @@ const Table = styled(MuiTable)`
   }
 `
 
-const SimpleTable: FC<Props> = ({
+const SimpleTable = ({
   list = [],
   headers,
   loading,
   children,
   noRowContent,
   ...props
-}) => {
+}: Props) => {
   const hasItems = Array.isArray(list) && !!list.length
 
   if (loading) return <TableSkeleton />
