@@ -17,7 +17,7 @@ const Table = styled(MuiTable)`
   }
   th,
   td {
-    padding: ${(p) => p.theme.spacing(3, 0)};
+    padding: ${(p) => p.theme.spacing(2, 3)};
   }
 `
 

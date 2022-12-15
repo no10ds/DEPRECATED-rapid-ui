@@ -1,6 +1,17 @@
-import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
+import {
+  Card,
+  Row,
+  BadgeNumber,
+  Chip,
+  Button,
+  TextField,
+  Select,
+  SimpleTable
+} from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { FormControl, Link, Stack, Typography } from '@mui/material'
+
+const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
 
 function UserModifyPage() {
   return (
@@ -38,7 +49,72 @@ function UserModifyPage() {
         <BadgeNumber label="2" /> Upload the data to generate the schema for
       </Typography>
 
-      <input name="file" id="file" type="file" />
+      <Row>
+        <input name="file" id="file" type="file" />
+      </Row>
+
+      <Typography variant="h2" gutterBottom>
+        <BadgeNumber label="3" /> Validate the data types for the schema
+      </Typography>
+
+      <Typography variant="body2" gutterBottom>
+        Consult the schema writing guide for further information.
+      </Typography>
+
+      <SimpleTable
+        list={[
+          [
+            { children: 'name' },
+            {
+              children: (
+                <FormControl fullWidth size="small">
+                  <Select label="Data type" data={dataTypes} />
+                </FormControl>
+              )
+            },
+            {
+              children: (
+                <FormControl fullWidth size="small">
+                  <Select label="Allows Null" data={['true', 'false']} />
+                </FormControl>
+              )
+            },
+            {
+              children: (
+                <TextField size="small" label="Dataset domain" variant="outlined" />
+              )
+            }
+          ],
+          [
+            { children: 'total_users' },
+            {
+              children: (
+                <FormControl fullWidth size="small">
+                  <Select label="Data type" data={dataTypes} />
+                </FormControl>
+              )
+            },
+            {
+              children: (
+                <FormControl fullWidth size="small">
+                  <Select label="Allows Null" data={['true', 'false']} />
+                </FormControl>
+              )
+            },
+            {
+              children: (
+                <TextField size="small" label="Dataset domain" variant="outlined" />
+              )
+            }
+          ]
+        ]}
+        headers={[
+          { children: 'Name' },
+          { children: 'Data Type' },
+          { children: 'Allows Null' },
+          { children: 'Partition Index (Optional)' }
+        ]}
+      />
     </Card>
   )
 }
