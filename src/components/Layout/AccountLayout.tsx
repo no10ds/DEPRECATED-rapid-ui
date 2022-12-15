@@ -1,5 +1,4 @@
 import { Box, Container, styled, Toolbar } from '@mui/material'
-import { Template } from '@/components'
 import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
 

@@ -1,4 +1,4 @@
-import { Card, Row, BadgeNumber, Button, Select, Alert } from '@/components'
+import { Card, Alert } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 
 function SuccessPage() {

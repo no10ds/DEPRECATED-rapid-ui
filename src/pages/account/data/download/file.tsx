@@ -8,7 +8,6 @@ import {
   Row,
   TextField
 } from '@/components'
-import { CrossCircle } from '@/components/Icon'
 import { TableCellProps, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 

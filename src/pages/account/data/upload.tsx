@@ -1,16 +1,6 @@
-import {
-  Card,
-  Row,
-  BadgeNumber,
-  Chip,
-  Button,
-  TextField,
-  Select,
-  Alert,
-  Link
-} from '@/components'
+import { Card, Row, BadgeNumber, Button, Select, Alert, Link } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
-import { FormControl, Stack, Typography } from '@mui/material'
+import { FormControl, Typography } from '@mui/material'
 
 function UserModifyPage() {
   return (

@@ -26,11 +26,7 @@ const schema = z.object({
 })
 
 function UserModifyPage() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema)
   })
 
@@ -43,8 +39,6 @@ function UserModifyPage() {
     control,
     name: 'keyTags'
   })
-
-  console.log({ errors })
 
   return (
     // eslint-disable-next-line no-console

@@ -1,7 +1,6 @@
-import { Card, Row, BadgeNumber, Button, Select } from '@/components'
+import { Card, BadgeNumber, Button } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
-import { Box, Checkbox, FormControl, FormControlLabel, Typography } from '@mui/material'
-import { Controller } from 'react-hook-form'
+import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material'
 
 function Step1Page() {
   return (
