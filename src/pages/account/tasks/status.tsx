@@ -1,8 +1,16 @@
-import { Card, Row, BadgeNumber, Button, TextField, Select, Link } from '@/components'
-import AccountLayout from '@/components/Layout/AccountLayout'
-import SimpleTable from '@/components/SimpleTable/SimpleTable'
-import { FormControl, Typography } from '@mui/material'
-import ErrorIcon from '@mui/icons-material/Error'
+import {
+  Card,
+  Row,
+  BadgeNumber,
+  Button,
+  TextField,
+  Select,
+  Link,
+  SimpleTable,
+  AccountLayout
+} from '@/components'
+import { CrossCircle, Check, HourGlass } from '@/components/Icon'
+import { Typography } from '@mui/material'
 
 function StatusPage() {
   return (
@@ -18,7 +26,43 @@ function StatusPage() {
             { children: <>automotive</> },
             { children: <>car_sales</> },
             { children: <>1</> },
-            { children: <ErrorIcon /> },
+            { children: <CrossCircle /> },
+            { children: <>Validation</> },
+            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
+            {
+              children: (
+                <Link
+                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
+                >
+                  Failure details
+                </Link>
+              )
+            }
+          ],
+          [
+            { children: <>UPLOAD</> },
+            { children: <>automotive</> },
+            { children: <>car_sales</> },
+            { children: <>1</> },
+            { children: <Check /> },
+            { children: <>Validation</> },
+            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
+            {
+              children: (
+                <Link
+                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
+                >
+                  Failure details
+                </Link>
+              )
+            }
+          ],
+          [
+            { children: <>UPLOAD</> },
+            { children: <>automotive</> },
+            { children: <>car_sales</> },
+            { children: <>1</> },
+            { children: <HourGlass /> },
             { children: <>Validation</> },
             { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
             {

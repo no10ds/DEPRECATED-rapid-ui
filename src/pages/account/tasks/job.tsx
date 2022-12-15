@@ -1,96 +1,72 @@
-import {
-  Card,
-  Row,
-  BadgeNumber,
-  Button,
-  TextField,
-  Select,
-  Link,
-  SimpleTable,
-  AccountLayout
-} from '@/components'
-import { CrossCircle, Check, HourGlass } from '@/components/Icon'
-import { Typography } from '@mui/material'
+import { Card, SimpleTable, AccountLayout } from '@/components'
+import { CrossCircle } from '@/components/Icon'
+import { TableCellProps, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 
-function StatusPage() {
+const renderTable = (
+  list: {
+    name: string
+    value: string
+  }[] = []
+) => (
+  <SimpleTable
+    sx={{ mb: 3 }}
+    list={[
+      ...list.map<TableCellProps[]>(({ name, value }) => [
+        { children: name, component: 'th' },
+        { children: <Typography variant="body2">{value}</Typography> }
+      ])
+    ]}
+  />
+)
+
+function JobDetailPage() {
+  const router = useRouter()
+  const { id } = router.query
+
   return (
-    <Card action={<Button color="primary">Generate Schema</Button>}>
+    <Card>
+      <CrossCircle />
       <Typography variant="h2" gutterBottom>
-        Jobs
+        FAILED
       </Typography>
 
-      <SimpleTable
-        list={[
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <CrossCircle /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
-            {
-              children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
-                </Link>
-              )
-            }
-          ],
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <Check /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
-            {
-              children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
-                </Link>
-              )
-            }
-          ],
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <HourGlass /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
-            {
-              children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
-                </Link>
-              )
-            }
-          ]
-        ]}
-        headers={[
-          { children: 'Type' },
-          { children: 'Domain' },
-          { children: 'Dataset' },
-          { children: 'Version' },
-          { children: 'Status' },
-          { children: 'Step' },
-          { children: 'Job ID' },
-          { children: '' }
-        ]}
-      />
+      <Typography variant="h2" gutterBottom>
+        {id}
+      </Typography>
+
+      {renderTable([
+        { name: 'Job Type', value: 'UPLOAD' },
+        { name: 'Status', value: 'FAILED' },
+        { name: 'Step', value: 'Validation' },
+        { name: 'Filename', value: 'skills.csv' },
+        { name: 'Raw Filename	', value: '56bdf82d-1da9-410a-818e-f78414024807.csv' },
+        { name: 'Domain	', value: 'automotive' },
+        { name: 'Dataset	', value: 'car_sales' },
+        { name: 'Version	', value: '1' }
+      ])}
+
+      <Typography variant="h2" gutterBottom>
+        Errors
+      </Typography>
+
+      <Typography variant="body2" color="error" component="code">
+        Expected columns: ['brand', 'name', 'bodytype', 'color', 'fueltype', 'year',
+        'mileage', 'transmission', 'power', 'price', 'vehicle_configuration',
+        'engine_name', 'engine_displacement', 'date', 'location', 'link', 'parse_date'],
+        received: ['name', 'total_users', 'number_with_skill', 'percentage_with_skill',
+        'number_to_develop_skill', 'percentage_to_develop_skill', 'number_beginners',
+        'percentage_beginners', 'number_advanced_beginners',
+        'percentage_advanced_beginners', 'number_competent', 'percentage_competent',
+        'number_proficient', 'percentage_proficient', 'number_expert',
+        'percentage_expert']
+      </Typography>
     </Card>
   )
 }
 
-export default StatusPage
+export default JobDetailPage
 
-StatusPage.getLayout = (page) => <AccountLayout title="Task Status">{page}</AccountLayout>
+JobDetailPage.getLayout = (page) => (
+  <AccountLayout title="Job Detail">{page}</AccountLayout>
+)
