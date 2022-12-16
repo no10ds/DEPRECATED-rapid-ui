@@ -11,7 +11,16 @@ import { Props } from './types'
 
 const Select: FC<Props> = forwardRef<FC, Props>(
   (
-    { checkboxes, label, data = [], fullWidth = true, children, error, ...props },
+    {
+      checkboxes,
+      label,
+      data = [],
+      fullWidth = true,
+      children,
+      error,
+      helperText,
+      ...props
+    },
     ref
   ) => {
     const id = useId()
@@ -41,7 +50,7 @@ const Select: FC<Props> = forwardRef<FC, Props>(
             {children}
           </BasicSelect>
         )}
-        {!!error && <FormHelperText error>{error}</FormHelperText>}
+        {!!helperText && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>
     )
   }

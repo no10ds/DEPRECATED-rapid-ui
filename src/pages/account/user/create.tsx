@@ -1,72 +1,121 @@
 import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FormControl, Stack, Typography } from '@mui/material'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { SchemaUserCreate } from '@/service'
 
 const userType = ['User', 'Client']
 const managementPermissions = ['Data', 'User']
 const readPermissions = ['All', 'Public', 'Private', 'None']
 
+type UserCreate = z.infer<typeof SchemaUserCreate>
+
 function CreateUserPage() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<UserCreate>({
+    resolver: zodResolver(SchemaUserCreate)
+  })
+
+  console.log({ errors })
+
   return (
-    <Card action={<Button color="primary">Create subject</Button>}>
-      <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="1" /> Populate user info
-      </Typography>
-
-      <Row>
-        <FormControl fullWidth size="small">
-          <Select label="Type of User" data={userType} />
-        </FormControl>
-      </Row>
-
-      <Row>
-        <TextField
-          label="Name"
-          variant="outlined"
-          placeholder="e.g. Joe Bloggs"
-          size="small"
-          fullWidth
-        />
-      </Row>
-
-      <Row>
-        <TextField
-          fullWidth
-          size="small"
-          label="Email"
-          type="email"
-          variant="outlined"
-          placeholder="joe@example.com"
-        />
-      </Row>
-
-      <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="2" /> Select Permissions
-      </Typography>
-
-      <Row>
-        <Typography variant="body2" component="label" gutterBottom>
-          Management Permissions
+    <form onSubmit={handleSubmit((d) => console.log(d))} noValidate>
+      <Card
+        action={
+          <Button color="primary" type="submit">
+            Create subject
+          </Button>
+        }
+      >
+        <Typography variant="h2" gutterBottom>
+          <BadgeNumber label="1" /> Populate user info
         </Typography>
 
-        <Stack direction="row" spacing={1}>
-          {managementPermissions.map((type) => {
-            return <Chip label={type} key={type} toggle />
-          })}
-        </Stack>
-      </Row>
+        <Row>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Select
+                {...field}
+                label="Type of User"
+                data={userType}
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+        </Row>
 
-      <Row>
-        <Typography variant="body2" component="label" gutterBottom>
-          Global Read Permissions
+        <Row>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Email"
+                type="email"
+                variant="outlined"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+        </Row>
+        <Row>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Name"
+                variant="outlined"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+        </Row>
+
+        <Typography variant="h2" gutterBottom>
+          <BadgeNumber label="2" /> Select Permissions
         </Typography>
-        <Stack direction="row" spacing={1}>
-          {readPermissions.map((type) => {
-            return <Chip label={type} key={type} toggle />
-          })}
-        </Stack>
-      </Row>
-    </Card>
+
+        <Row>
+          <Typography variant="body2" component="label" gutterBottom>
+            Management Permissions
+          </Typography>
+
+          <Stack direction="row" spacing={1}>
+            {managementPermissions.map((type) => {
+              return <Chip label={type} key={type} toggle />
+            })}
+          </Stack>
+        </Row>
+
+        <Row>
+          <Typography variant="body2" component="label" gutterBottom>
+            Global Read Permissions
+          </Typography>
+          <Stack direction="row" spacing={1}>
+            {readPermissions.map((type) => {
+              return <Chip label={type} key={type} toggle />
+            })}
+          </Stack>
+        </Row>
+      </Card>
+    </form>
   )
 }
 
