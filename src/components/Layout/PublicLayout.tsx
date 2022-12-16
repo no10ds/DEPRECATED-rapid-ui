@@ -16,8 +16,6 @@ const Main = styled('main')`
     display: flex;
     box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
     background-color: ${(p) => p.theme.colors.grey2};
-    max-width: 1050px;
-    width: 100%;
   }
 
   .promo,
@@ -77,7 +75,7 @@ const Main = styled('main')`
 `
 
 const PublicLayout = ({ children, promo, title, ...props }: Props) => (
-  <Container maxWidth="xl">
+  <Container maxWidth="lg">
     <Main>
       <Box className="columns" {...props}>
         {promo && (
