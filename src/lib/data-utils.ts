@@ -6,7 +6,6 @@ const { publicRuntimeConfig } = getConfig()
 export type ParamsType = Record<string, string | string[] | number>
 
 export const api = async (
-  token: string,
   path: RequestInfo | URL,
   init: RequestInit = {},
   params?: ParamsType
@@ -14,8 +13,7 @@ export const api = async (
   const url = createUrl(`${publicRuntimeConfig.apiUrl}${path}`, params)
   let detailMessage
   const res: Response = await fetch(url, {
-    ...init,
-    headers: { ...init.headers, Authorization: `Token ${token}` }
+    ...init
   })
   if (res.ok) return res
   try {

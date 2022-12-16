@@ -1,12 +1,22 @@
-import { Card, Row, BadgeNumber, Chip, Button, TextField, Select } from '@/components'
+import {
+  Card,
+  Row,
+  BadgeNumber,
+  Chip,
+  Button,
+  TextField,
+  Select,
+  Alert
+} from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormControl, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { SchemaUserCreate } from '@/service'
+import { createClient, SchemaUserCreate } from '@/service'
+import { useMutation } from '@tanstack/react-query'
 
-const userType = ['User', 'Client']
+const userType = ['USER', 'CLIENT']
 const managementPermissions = ['Data', 'User']
 const readPermissions = ['All', 'Public', 'Private', 'None']
 
@@ -23,15 +33,43 @@ function CreateUserPage() {
 
   console.log({ errors })
 
+  const { isLoading, mutate, error } = useMutation<UserCreate, Error, UserCreate>(
+    // async (data) => authFetch(updateUser, data),
+    {
+      mutationFn: createClient,
+      onSuccess: async (data) => {
+        console.log({ data })
+        // queryClient.setQueryData(Query.Me, data)
+        // setError(null)
+        // router.push(nextUrl)
+      },
+      onError: ({ message }) => {
+        console.log({ message })
+      }
+    }
+  )
+
   return (
-    <form onSubmit={handleSubmit((d) => console.log(d))} noValidate>
+    <form
+      onSubmit={handleSubmit(async (data) => {
+        console.log('handleSubmit', { data })
+        await mutate(data)
+      })}
+      noValidate
+    >
       <Card
         action={
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" loading={isLoading}>
             Create subject
           </Button>
         }
       >
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error?.message}
+          </Alert>
+        )}
+
         <Typography variant="h2" gutterBottom>
           <BadgeNumber label="1" /> Populate user info
         </Typography>
