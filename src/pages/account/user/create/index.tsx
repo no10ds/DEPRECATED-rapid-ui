@@ -15,6 +15,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createClient, SchemaUserCreate } from '@/service'
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 
 const userType = ['USER', 'CLIENT']
 const managementPermissions = ['Data', 'User']
@@ -23,6 +24,8 @@ const readPermissions = ['All', 'Public', 'Private', 'None']
 type UserCreate = z.infer<typeof SchemaUserCreate>
 
 function CreateUserPage() {
+  const router = useRouter()
+
   const {
     control,
     handleSubmit,
@@ -33,21 +36,15 @@ function CreateUserPage() {
 
   console.log({ errors })
 
-  const { isLoading, mutate, error } = useMutation<UserCreate, Error, UserCreate>(
-    // async (data) => authFetch(updateUser, data),
-    {
-      mutationFn: createClient,
-      onSuccess: async (data) => {
-        console.log({ data })
-        // queryClient.setQueryData(Query.Me, data)
-        // setError(null)
-        // router.push(nextUrl)
-      },
-      onError: ({ message }) => {
-        console.log({ message })
-      }
+  const { isLoading, mutate, error } = useMutation<UserCreate, Error, UserCreate>({
+    mutationFn: createClient,
+    onSuccess: async (data) => {
+      router.push('/account/user/create/success/')
+    },
+    onError: ({ message }) => {
+      console.log({ message })
     }
-  )
+  })
 
   return (
     <form
