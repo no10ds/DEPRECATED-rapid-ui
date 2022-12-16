@@ -1,7 +1,7 @@
 import { Card, SimpleTable, AccountLayout } from '@/components'
 import { CrossCircle } from '@/components/Icon'
 import { asVerticalTableList } from '@/lib'
-import { TableCellProps, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
 function JobDetailPage() {

@@ -26,30 +26,20 @@ type UserCreate = z.infer<typeof SchemaUserCreate>
 function CreateUserPage() {
   const router = useRouter()
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<UserCreate>({
+  const { control, handleSubmit } = useForm<UserCreate>({
     resolver: zodResolver(SchemaUserCreate)
   })
 
-  console.log({ errors })
-
   const { isLoading, mutate, error } = useMutation<UserCreate, Error, UserCreate>({
     mutationFn: createClient,
-    onSuccess: async (data) => {
+    onSuccess: () => {
       router.push('/account/user/create/success/')
-    },
-    onError: ({ message }) => {
-      console.log({ message })
     }
   })
 
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
-        console.log('handleSubmit', { data })
         await mutate(data)
       })}
       noValidate

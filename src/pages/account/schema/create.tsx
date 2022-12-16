@@ -9,25 +9,15 @@ import {
 } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { FormControl, Link, Typography, Box } from '@mui/material'
-import { z } from 'zod'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { schemaCreateSchema } from '@/service'
 
 const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
 
-const keyValueTags = z.object({
-  key: z.string(),
-  value: z.string()
-})
-
-const schema = z.object({
-  keyValueTags: z.array(keyValueTags),
-  keyTags: z.array(z.string())
-})
-
 function UserModifyPage() {
   const { control, handleSubmit } = useForm({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schemaCreateSchema)
   })
 
   const fieldKeyValueTags = useFieldArray({
