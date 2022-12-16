@@ -12,23 +12,17 @@ import { FormControl, Link, Typography, Box } from '@mui/material'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { schemaCreateSchema } from '@/service'
+import { SchemaCreate } from '@/service/types'
 
 const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
 
 function UserModifyPage() {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm<SchemaCreate>({
     resolver: zodResolver(schemaCreateSchema)
   })
 
-  const fieldKeyValueTags = useFieldArray({
-    control,
-    name: 'keyValueTags'
-  })
-
-  const fieldKeyTags = useFieldArray({
-    control,
-    name: 'keyTags'
-  })
+  const fieldKeyValueTags = useFieldArray({ control, name: 'keyValueTags' })
+  const fieldKeyTags = useFieldArray({ control, name: 'keyTags' })
 
   return (
     // eslint-disable-next-line no-console
@@ -56,17 +50,55 @@ function UserModifyPage() {
         </Typography>
 
         <Row>
-          <FormControl fullWidth size="small">
-            <Select label="sensitivity level" data={['PUBLIC', 'PRIVATE', 'PROTECTED']} />
-          </FormControl>
+          <Controller
+            name="sensitivity"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Select
+                {...field}
+                label="sensitivity level"
+                data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
         </Row>
 
         <Row>
-          <TextField fullWidth size="small" label="Dataset domain" variant="outlined" />
+          <Controller
+            name="domain"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Dataset domain"
+                variant="outlined"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
         </Row>
 
         <Row>
-          <TextField fullWidth size="small" label="Dataset title" variant="outlined" />
+          <Controller
+            name="title"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Dataset title"
+                variant="outlined"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
         </Row>
 
         <Typography variant="h2" gutterBottom>
@@ -226,7 +258,7 @@ function UserModifyPage() {
         {fieldKeyTags.fields.map((_item, index) => (
           <Controller
             key={index}
-            name={`keyTags.${index}`}
+            name={`keyTags.${index}.key`}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
@@ -245,7 +277,7 @@ function UserModifyPage() {
         ))}
 
         <Row>
-          <Button color="primary" onClick={() => fieldKeyTags.append('')}>
+          <Button color="primary" onClick={() => fieldKeyTags.append({ key: '' })}>
             Add
           </Button>
         </Row>
