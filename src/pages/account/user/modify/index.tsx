@@ -17,10 +17,7 @@ function UserModifyPage() {
 
       <Row>
         <FormControl fullWidth size="small">
-          <Select label="Select subject" data={[]}>
-            <option value="" disabled>
-              Please select a Client App or User...
-            </option>
+          <Select label="Select a Client App or User" data={[]} native>
             <optgroup label="Client Apps">
               <option value="42vu4lvllk5gmpredi08sdtsev">demo</option>
               <option value="1ahss7eserpim48ijoqinll1s2">demo_read_public</option>
@@ -45,7 +42,6 @@ function UserModifyPage() {
             </optgroup>
 
             <optgroup label="Users">
-              <option value="1ff8c3f8-e8bc-4898-865d-cbe6aad62520">Jas</option>
               <option value="b1a7c0eb-6cf6-471d-af44-447be19fca95">Test_user_20</option>
               <option value="c76d0250-cb90-47b6-9185-99a47f322d0b">cristhian</option>
               <option value="60b0d79e-10a9-4256-b375-5bc884ee74b3">lcard</option>
