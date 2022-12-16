@@ -8,25 +8,9 @@ import {
   Row,
   TextField
 } from '@/components'
-import { TableCellProps, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-
-const renderTable = (
-  list: {
-    name: string
-    value: string
-  }[] = []
-) => (
-  <SimpleTable
-    sx={{ mb: 4 }}
-    list={[
-      ...list.map<TableCellProps[]>(({ name, value }) => [
-        { children: name, component: 'th' },
-        { children: <Typography variant="body2">{value}</Typography> }
-      ])
-    ]}
-  />
-)
+import { asVerticalTableList } from '@/lib'
 
 function FilePage() {
   const router = useRouter()
@@ -37,14 +21,18 @@ function FilePage() {
       <Typography variant="h2" gutterBottom>
         Dataset Overview
       </Typography>
-      {renderTable([
-        { name: 'Domain', value: 'automotive' },
-        { name: 'Dataset', value: dataset?.toString() },
-        { name: 'Version', value: version?.toString() },
-        { name: 'Last updated	', value: '15 Sep 2022 at 11:18:37' },
-        { name: 'Number of Rows', value: '990300' },
-        { name: 'Number of Columns', value: '17' }
-      ])}
+
+      <SimpleTable
+        list={asVerticalTableList([
+          { name: 'Domain', value: 'automotive' },
+          { name: 'Dataset', value: dataset?.toString() },
+          { name: 'Version', value: version?.toString() },
+          { name: 'Last updated	', value: '15 Sep 2022 at 11:18:37' },
+          { name: 'Number of Rows', value: '990300' },
+          { name: 'Number of Columns', value: '17' }
+        ])}
+      />
+
       <Typography variant="h2" gutterBottom>
         Columns
       </Typography>

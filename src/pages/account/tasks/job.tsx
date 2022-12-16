@@ -1,24 +1,8 @@
 import { Card, SimpleTable, AccountLayout } from '@/components'
 import { CrossCircle } from '@/components/Icon'
+import { asVerticalTableList } from '@/lib'
 import { TableCellProps, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-
-const renderTable = (
-  list: {
-    name: string
-    value: string
-  }[] = []
-) => (
-  <SimpleTable
-    sx={{ mb: 3 }}
-    list={[
-      ...list.map<TableCellProps[]>(({ name, value }) => [
-        { children: name, component: 'th' },
-        { children: <Typography variant="body2">{value}</Typography> }
-      ])
-    ]}
-  />
-)
 
 function JobDetailPage() {
   const router = useRouter()
@@ -35,16 +19,18 @@ function JobDetailPage() {
         {id}
       </Typography>
 
-      {renderTable([
-        { name: 'Job Type', value: 'UPLOAD' },
-        { name: 'Status', value: 'FAILED' },
-        { name: 'Step', value: 'Validation' },
-        { name: 'Filename', value: 'skills.csv' },
-        { name: 'Raw Filename	', value: '56bdf82d-1da9-410a-818e-f78414024807.csv' },
-        { name: 'Domain	', value: 'automotive' },
-        { name: 'Dataset	', value: 'car_sales' },
-        { name: 'Version	', value: '1' }
-      ])}
+      <SimpleTable
+        list={asVerticalTableList([
+          { name: 'Job Type', value: 'UPLOAD' },
+          { name: 'Status', value: 'FAILED' },
+          { name: 'Step', value: 'Validation' },
+          { name: 'Filename', value: 'skills.csv' },
+          { name: 'Raw Filename	', value: '56bdf82d-1da9-410a-818e-f78414024807.csv' },
+          { name: 'Domain	', value: 'automotive' },
+          { name: 'Dataset	', value: 'car_sales' },
+          { name: 'Version	', value: '1' }
+        ])}
+      />
 
       <Typography variant="h2" gutterBottom>
         Errors
