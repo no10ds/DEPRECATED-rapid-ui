@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { SchemaUserCreate } from './schema'
+import { schemaCreateSchema, SchemaUserCreate } from './schema'
 
 export type ClientResponse = {
   client_id: string
@@ -9,3 +9,5 @@ export type ClientResponse = {
 }
 
 export type ClientCreate = z.infer<typeof SchemaUserCreate>
+
+export type SchemaCreate = z.infer<typeof schemaCreateSchema>

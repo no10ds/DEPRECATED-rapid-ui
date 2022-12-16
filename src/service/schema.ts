@@ -13,6 +13,7 @@ import { z } from 'zod'
 //   'USER_ADMIN'
 // ])
 
+const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
 const UserTypeEnum = z.enum(['USER', 'CLIENT'])
 
 export const SchemaUserCreate = z.object({
@@ -22,12 +23,19 @@ export const SchemaUserCreate = z.object({
   permissions: z.array(z.string()).optional()
 })
 
-const keyValueTags = z.object({
-  key: z.string(),
-  value: z.string()
+const keyValueTag = z.object({
+  key: z.string().min(1),
+  value: z.string().min(1)
+})
+
+const keyTag = z.object({
+  key: z.string().min(1)
 })
 
 export const schemaCreateSchema = z.object({
-  keyValueTags: z.array(keyValueTags),
-  keyTags: z.array(z.string())
+  sensitivity: SensitivityEnum,
+  domain: z.string(),
+  title: z.string(),
+  keyValueTags: z.array(keyValueTag.required()),
+  keyTags: z.array(keyTag)
 })
