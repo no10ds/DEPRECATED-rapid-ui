@@ -20,7 +20,7 @@ function UserModifyPage() {
 
       <Row>
         <FormControl fullWidth size="small">
-          <Select label="Select a dataset" data={[]}>
+          <Select label="Select a dataset" native>
             <optgroup label="automotive">
               <option data-versions="1" value="automotive/car_sales">
                 car_sales

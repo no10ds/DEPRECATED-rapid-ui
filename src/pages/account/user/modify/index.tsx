@@ -17,7 +17,7 @@ function UserModifyPage() {
 
       <Row>
         <FormControl fullWidth size="small">
-          <Select label="Select a Client App or User" data={[]} native>
+          <Select label="Select a Client App or User" native>
             <optgroup label="Client Apps">
               <option value="42vu4lvllk5gmpredi08sdtsev">demo</option>
               <option value="1ahss7eserpim48ijoqinll1s2">demo_read_public</option>
