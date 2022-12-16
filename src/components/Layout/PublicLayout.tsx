@@ -1,5 +1,4 @@
-import { Box, styled, Typography } from '@mui/material'
-import { Template } from '@/components'
+import { Box, Container, styled, Typography } from '@mui/material'
 import { Logo, GovLogo, Saly } from '@/components/Icon'
 import { ComponentProps, ReactNode } from 'react'
 
@@ -7,12 +6,19 @@ type Props = { promo?: ReactNode; title: string } & ComponentProps<typeof Box>
 
 const overlap = 50
 
-const Columns = styled(Box)`
+const Main = styled('main')`
   display: flex;
-  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
-  background: linear-gradient(204.28deg, #e6cece 14.76%, #d1ccf4 97.11%);
-  max-width: 1050px;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+
+  .columns {
+    display: flex;
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    background-color: ${(p) => p.theme.colors.grey2};
+    max-width: 1050px;
+    width: 100%;
+  }
 
   .promo,
   .main-content {
@@ -32,9 +38,11 @@ const Columns = styled(Box)`
   .promo {
     color: ${(p) => p.theme.colors.white};
     padding-right: calc(${(p) => p.theme.spacing(4)} + ${overlap}px);
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.55);
     flex-basis: 70%;
     position: relative;
+    svg {
+      color: ${(p) => p.theme.colors.black};
+    }
   }
 
   .main-content {
@@ -53,12 +61,12 @@ const Columns = styled(Box)`
   }
 
   .space-icon {
-    font-size: 582px;
+    font-size: 473px;
     position: absolute;
     right: -103px;
     bottom: -143px;
     z-index: 1;
-    opacity: 0.8;
+    opacity: 0.9;
     pointer-events: none;
   }
   .content {
@@ -69,40 +77,30 @@ const Columns = styled(Box)`
 `
 
 const PublicLayout = ({ children, promo, title, ...props }: Props) => (
-  <Template>
-    <style jsx global>
-      {`
-        body {
-          background: linear-gradient(
-            144.23deg,
-            rgba(209, 204, 244, 0.69) -8.57%,
-            #e6cece 94.27%
-          );
-        }
-      `}
-    </style>
-    <Columns {...props}>
-      {promo && (
-        <div className="promo">
-          <div className="header">
-            <GovLogo />
-          </div>
-          <div className="content">{promo}</div>
-
-          <Saly className="space-icon" />
-        </div>
-      )}
-      <Box className="main-content">
-        {title && (
-          <div className="header">
-            <Typography variant="h1">{title}</Typography>
+  <Container maxWidth="xl">
+    <Main>
+      <Box className="columns" {...props}>
+        {promo && (
+          <div className="promo">
+            <div className="header">
+              <GovLogo />
+            </div>
+            <div className="content">{promo}</div>
+            <Saly className="space-icon" />
           </div>
         )}
-        {children}
+        <Box className="main-content">
+          {title && (
+            <div className="header">
+              <Typography variant="h1">{title}</Typography>
+            </div>
+          )}
+          {children}
+        </Box>
+        <Logo className="logo" />
       </Box>
-      <Logo className="logo" />
-    </Columns>
-  </Template>
+    </Main>
+  </Container>
 )
 
 export default PublicLayout

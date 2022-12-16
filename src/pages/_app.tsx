@@ -31,6 +31,13 @@ export default function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
+          <style jsx global>
+            {`
+              body {
+                background-color: #f5f6f8;
+              }
+            `}
+          </style>
           {getLayout(<Component {...pageProps} />)}
         </QueryClientProvider>
       </ThemeProvider>

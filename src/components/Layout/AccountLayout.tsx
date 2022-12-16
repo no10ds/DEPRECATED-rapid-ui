@@ -36,13 +36,6 @@ const Layout = styled(Box)`
 
 const AccountLayout = ({ children, title, ...props }: Props) => (
   <Layout>
-    <style jsx global>
-      {`
-        body {
-          background-color: #f5f6f8;
-        }
-      `}
-    </style>
     <AppBar
       title={title}
       sx={{
