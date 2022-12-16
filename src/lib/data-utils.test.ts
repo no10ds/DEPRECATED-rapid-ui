@@ -11,7 +11,7 @@ describe('api()', () => {
 
   it('success', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockSuccess), { status: 200 })
-    const data = await (await api('my-token', '/api')).json()
+    const data = await (await api('/api')).json()
     expect(data).toEqual(expect.objectContaining(mockSuccess))
   })
 
@@ -19,7 +19,7 @@ describe('api()', () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockSuccess), { status: 401 })
 
     try {
-      await api('my-token', '/api')
+      await api('/api')
     } catch (e) {
       expect(e.message).toEqual(defaultError)
     }
@@ -33,7 +33,7 @@ describe('api()', () => {
     })
 
     try {
-      await api('my-token', '/api')
+      await api('/api')
     } catch (e) {
       expect(e.message).toEqual(errorMessage)
     }

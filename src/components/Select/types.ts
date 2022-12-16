@@ -13,7 +13,8 @@ export type Props = {
   label: string
   fullWidth?: boolean
   data?: string[]
-  error?: string
+  // error?: string
+  helperText?: string
 } & SelectProps &
   ComponentProps<typeof Select>
 
