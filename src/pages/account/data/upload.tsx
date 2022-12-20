@@ -1,4 +1,4 @@
-import { Card, Row, BadgeNumber, Button, Select, Alert, Link } from '@/components'
+import { Card, Row, Button, Select, Alert, Link } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { FormControl, Typography } from '@mui/material'
 
@@ -6,7 +6,7 @@ function UserModifyPage() {
   return (
     <Card action={<Button color="primary">Upload dataset</Button>}>
       <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="1" /> Select subject
+        Select subject
       </Typography>
 
       <Row>

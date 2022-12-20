@@ -3,12 +3,18 @@ import { ComponentProps } from 'react'
 
 const StyledTextField = styled(MuiTextField)<ComponentProps<typeof MuiTextField>>`
   .MuiInputAdornment-sizeSmall .MuiTypography-root,
-  .MuiInputBase-root,
-  .MuiFormLabel-root {
-    font-size: 16px;
+  .MuiInputBase-root {
+    margin-bottom: 4px;
+    height: 32px;
+    padding: 0px;
   }
-  .MuiOutlinedInput-notchedOutline {
-    border-color: ${(p) => alpha(p.theme.colors.black, 0.23)};
+  .MuiInputBase-input {
+    padding: 4px 15px 0px 15px;
+    height: 100%;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 400;
+    color: ${(p) => p.theme.colors.dark1};
   }
 `
 

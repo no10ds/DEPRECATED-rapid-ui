@@ -1,4 +1,4 @@
-import { Card, BadgeNumber, Button } from '@/components'
+import { Card, Button } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material'
 
@@ -12,7 +12,7 @@ function Step1Page() {
       }
     >
       <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="2" /> Select permissions for demo_read_public
+        Select permissions for demo_read_public
       </Typography>
 
       <Typography gutterBottom>Management permissions</Typography>

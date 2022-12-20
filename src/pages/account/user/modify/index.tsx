@@ -12,7 +12,7 @@ function UserModifyPage() {
       }
     >
       <Typography variant="h2" gutterBottom>
-        <BadgeNumber label="1" /> Select subject
+        Select subject
       </Typography>
 
       <Row>

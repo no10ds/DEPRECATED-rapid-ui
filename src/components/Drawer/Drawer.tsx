@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { Logo } from '@/components/Icon'
 import { Icon } from '@/components/Icon/types'
 import * as Icons from '@/components/Icon'
@@ -41,6 +41,7 @@ const MenuBar = styled(MuiDrawer)`
 
 export default function Drawer({ list, ...props }: Props) {
   const router = useRouter()
+  const [selectedIndex, setSelectedIndex] = useState(-1)
 
   return (
     <MenuBar
@@ -51,27 +52,46 @@ export default function Drawer({ list, ...props }: Props) {
       {...props}
     >
       <Link href="/account/">
-        <Toolbar>
+        <Toolbar variant="dense">
           <Logo className="logo" />
         </Toolbar>
       </Link>
       <Divider />
-      {list.map(({ text, divider, icon, href }) => {
+      {list.map(({ text, divider, icon, href }, index) => {
         const Icon = Icons[icon]
         return (
           <List key={text}>
             <ListItem
-              disablePadding
+              dense
               component={!!href ? 'a' : 'div'}
               href={href || undefined}
               onClick={(e) => {
                 e.preventDefault()
+                href && setSelectedIndex(index)
                 href && router.push(href)
               }}
+              sx={{ paddingTop: '1px', paddingBottom: '1px' }}
             >
-              <ListItemButton>
-                {icon && <ListItemIcon>{<Icon />}</ListItemIcon>}
-                <ListItemText primary={<Typography variant="body2">{text}</Typography>} />
+              <ListItemButton selected={selectedIndex === index ? true : false}>
+                {icon && (
+                  <ListItemIcon sx={{ fontSize: 14, minWidth: 30 }}>
+                    {<Icon />}
+                  </ListItemIcon>
+                )}
+                <ListItemText
+                  primary={
+                    <Typography
+                      variant="body2"
+                      sx={
+                        icon
+                          ? { color: '#000', fontSize: 14, fontWeight: 500 }
+                          : { fontSize: 14 }
+                      }
+                    >
+                      {text}
+                    </Typography>
+                  }
+                />
               </ListItemButton>
             </ListItem>
             {divider && <Divider />}

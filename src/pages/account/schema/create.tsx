@@ -35,11 +35,11 @@ function UserModifyPage() {
         }
       >
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="1" /> Populate dataset properties for the new schema:
+          Populate dataset properties for the new schema:
         </Typography>
 
         <Typography gutterBottom>
-          Consult the
+          Consult the{' '}
           <Link
             href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/schema_creation.md"
             target="_blank"
@@ -54,13 +54,15 @@ function UserModifyPage() {
             name="sensitivity"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Select
-                {...field}
-                label="sensitivity level"
-                data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
-                error={!!error}
-                helperText={error?.message}
-              />
+              <>
+                <Typography variant="caption">Sensitivity Level</Typography>
+                <Select
+                  {...field}
+                  data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              </>
             )}
           />
         </Row>
@@ -70,15 +72,17 @@ function UserModifyPage() {
             name="domain"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                size="small"
-                label="Dataset domain"
-                variant="outlined"
-                error={!!error}
-                helperText={error?.message}
-              />
+              <>
+                <Typography variant="caption">Dataset Domain</Typography>
+                <TextField
+                  {...field}
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  error={!!error}
+                  helperText={error?.message}
+                />{' '}
+              </>
             )}
           />
         </Row>
@@ -88,21 +92,23 @@ function UserModifyPage() {
             name="title"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                size="small"
-                label="Dataset title"
-                variant="outlined"
-                error={!!error}
-                helperText={error?.message}
-              />
+              <>
+                <Typography variant="caption">Dataset Title</Typography>
+                <TextField
+                  {...field}
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              </>
             )}
           />
         </Row>
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="2" /> Upload the data to generate the schema for
+          Upload the data to generate the schema for
         </Typography>
 
         <Row>
@@ -110,11 +116,7 @@ function UserModifyPage() {
         </Row>
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="3" /> Validate the data types for the schema
-        </Typography>
-
-        <Typography variant="body2" gutterBottom>
-          Consult the schema writing guide for further information.
+          Validate the data types for the schema
         </Typography>
 
         <SimpleTable
@@ -137,9 +139,7 @@ function UserModifyPage() {
                 )
               },
               {
-                children: (
-                  <TextField size="small" label="Dataset domain" variant="outlined" />
-                )
+                children: <TextField size="small" variant="outlined" />
               }
             ],
             [
@@ -159,9 +159,7 @@ function UserModifyPage() {
                 )
               },
               {
-                children: (
-                  <TextField size="small" label="Dataset domain" variant="outlined" />
-                )
+                children: <TextField size="small" variant="outlined" />
               }
             ]
           ]}
@@ -174,35 +172,32 @@ function UserModifyPage() {
         />
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="4" /> Set the data owner
+          Set the data owner
         </Typography>
 
         <Row>
-          <TextField
-            fullWidth
-            size="small"
-            label="Owner email"
-            type="email"
-            variant="outlined"
-          />
+          <Typography variant="caption">Owner Email</Typography>
+          <TextField fullWidth size="small" type="email" variant="outlined" />
         </Row>
 
         <Row>
-          <TextField fullWidth size="small" label="Owner name" variant="outlined" />
+          <Typography variant="caption">Owner Name</Typography>
+          <TextField fullWidth size="small" variant="outlined" />
         </Row>
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="5" /> Set the file upload behaviour
+          Set the file upload behaviour
         </Typography>
 
         <Row>
           <FormControl fullWidth size="small">
-            <Select label="Update behaviour" data={['APPEND', 'OVERWRITE']} />
+            <Typography variant="caption">Update Behaviour</Typography>
+            <Select data={['APPEND', 'OVERWRITE']} />
           </FormControl>
         </Row>
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="6" /> Optionally set key value tags
+          Optionally set key value tags
         </Typography>
 
         {fieldKeyValueTags.fields.map((_item, index) => (
@@ -242,7 +237,7 @@ function UserModifyPage() {
 
         <Row>
           <Button
-            color="primary"
+            color="secondary"
             onClick={() => {
               fieldKeyValueTags.append({ key: '', value: '' })
             }}
@@ -252,7 +247,7 @@ function UserModifyPage() {
         </Row>
 
         <Typography variant="h2" gutterBottom>
-          <BadgeNumber label="7" /> Optionally set key only tags
+          Optionally set key only tags
         </Typography>
 
         {fieldKeyTags.fields.map((_item, index) => (
@@ -277,7 +272,7 @@ function UserModifyPage() {
         ))}
 
         <Row>
-          <Button color="primary" onClick={() => fieldKeyTags.append({ key: '' })}>
+          <Button color="secondary" onClick={() => fieldKeyTags.append({ key: '' })}>
             Add
           </Button>
         </Row>

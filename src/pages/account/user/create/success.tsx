@@ -5,8 +5,10 @@ import { Typography } from '@mui/material'
 function SuccessPage() {
   return (
     <Card>
-      <Typography variant="h1">Success</Typography>
-      <Typography>
+      <Typography variant="h1" gutterBottom>
+        Success - Created
+      </Typography>
+      <Typography gutterBottom>
         You will only see this page once. Please make note of the details below.
       </Typography>
       <Typography variant="body2">

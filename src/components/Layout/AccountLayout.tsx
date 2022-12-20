@@ -4,7 +4,7 @@ import { AppBar, Drawer } from '@/components'
 
 type Props = { title?: string } & ComponentProps<typeof Box>
 
-const drawerWidth = 224
+const drawerWidth = 244
 
 const Layout = styled(Box)`
   .columns {
@@ -59,8 +59,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
             {
               text: 'Modify User',
               href: '/account/user/modify/',
-              icon: 'Pencil',
-              divider: true
+              icon: 'Pencil'
             },
             { text: 'Data Management' },
             {
@@ -71,15 +70,13 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
             {
               text: 'Download data',
               href: '/account/data/download/',
-              icon: 'CloudDownload',
-              divider: true
+              icon: 'CloudDownload'
             },
             { text: 'Schema Management' },
             {
               text: 'Create Schema',
               href: '/account/schema/create/',
-              icon: 'AppsAdd',
-              divider: true
+              icon: 'AppsAdd'
             },
             {
               text: 'Task Management'

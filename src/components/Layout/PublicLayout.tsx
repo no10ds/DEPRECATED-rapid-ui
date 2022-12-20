@@ -1,5 +1,5 @@
 import { Box, Container, styled, Typography } from '@mui/material'
-import { Logo, GovLogo, Saly } from '@/components/Icon'
+import { Logo, GovLogo } from '@/components/Icon'
 import { ComponentProps, ReactNode } from 'react'
 
 type Props = { promo?: ReactNode; title: string } & ComponentProps<typeof Box>
@@ -15,7 +15,8 @@ const Main = styled('main')`
   .columns {
     display: flex;
     box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
-    background-color: ${(p) => p.theme.colors.grey2};
+    background-color: ${(p) => p.theme.colors.white};
+    min-height: 540px;
   }
 
   .promo,
@@ -34,7 +35,7 @@ const Main = styled('main')`
   }
 
   .promo {
-    color: ${(p) => p.theme.colors.white};
+    color: ${(p) => p.theme.colors.black};
     padding-right: calc(${(p) => p.theme.spacing(4)} + ${overlap}px);
     flex-basis: 70%;
     position: relative;
@@ -44,11 +45,16 @@ const Main = styled('main')`
   }
 
   .main-content {
-    background-color: ${(p) => p.theme.colors.grey1};
+    background-color: ${(p) => p.theme.colors.dark1};
     flex-grow: 1;
     border-radius: inherit;
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
     margin: -3px 0px -3px -${overlap}px;
+    color: ${(p) => p.theme.colors.white};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo {
@@ -70,7 +76,6 @@ const Main = styled('main')`
   .content {
     z-index: 2;
     position: relative;
-    margin-bottom: 230px;
   }
 `
 
@@ -84,7 +89,6 @@ const PublicLayout = ({ children, promo, title, ...props }: Props) => (
               <GovLogo />
             </div>
             <div className="content">{promo}</div>
-            <Saly className="space-icon" />
           </div>
         )}
         <Box className="main-content">
