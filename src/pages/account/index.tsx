@@ -132,5 +132,5 @@ function AccountIndexPage() {
 export default AccountIndexPage
 
 AccountIndexPage.getLayout = (page) => (
-  <AccountLayout title="Dashbaord">{page}</AccountLayout>
+  <AccountLayout title="Dashboard">{page}</AccountLayout>
 )

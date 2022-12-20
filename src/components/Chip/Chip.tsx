@@ -13,15 +13,6 @@ const StyledChip = styled(MuiChip, config)<Props>`
     opacity: 0.7;
   }
 
-  &.has-custom-color {
-    color: ${(p) => p.theme.colors.white};
-    //prevent light color on light bg
-    &.grey1,
-    &.green2 {
-      color: ${(p) => p.theme.colors.black};
-    }
-  }
-
   .MuiChip-avatar {
     background-color: ${(p) => p.theme.colors.grey2};
     color: ${(p) => p.theme.colors.white};
@@ -30,22 +21,25 @@ const StyledChip = styled(MuiChip, config)<Props>`
   &.can-toggle {
     background-color: ${(p) => p.theme.colors.grey1};
     color: ${(p) => p.theme.colors.black};
-    transition: all 0.5s;
     &.active {
-      color: ${(p) => p.theme.colors.grey1};
-      background-color: ${(p) => p.theme.colors.black};
+      color: ${(p) => p.theme.colors.white};
+      background-color: ${(p) => p.theme.colors.pink2};
 
       .MuiAvatar-root {
-        background-color: ${(p) => p.theme.colors.blue2};
+        background-color: ${(p) => p.theme.colors.pink2};
       }
     }
     &:hover {
       color: ${(p) => p.theme.colors.white};
-      background-color: ${(p) => p.theme.colors.blue1};
+      background-color: ${(p) => p.theme.colors.pink2};
       .MuiChip-deleteIcon {
         fill: #efefef;
       }
     }
+  }
+
+  .MuiChip-label {
+    padding-top: 5px;
   }
 `
 

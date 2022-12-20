@@ -3,24 +3,35 @@ import {
   FormHelperText,
   InputLabel,
   MenuItem,
-  Select as BasicSelect
+  Select as BasicSelect,
+  styled
 } from '@mui/material'
-import { FC, forwardRef, useId } from 'react'
+import { ComponentProps, FC, forwardRef, useId } from 'react'
 import SelectCheckbox from './SelectCheckbox'
 import { Props } from './types'
 
+const StyledBasicSelect = styled(BasicSelect)<ComponentProps<typeof BasicSelect>>`
+  .MuiInputBase-input {
+    padding: 4px 15px 0px 15px;
+    height: 100%;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 400;
+    color: ${(p) => p.theme.colors.dark1};
+  }
+`
+
+const StyledFormControl = styled(FormControl)<ComponentProps<typeof FormControl>>`
+  .MuiInputBase-root {
+    margin-bottom: 4px;
+    height: 32px !important;
+    padding: 0px;
+  }
+`
+
 const Select: FC<Props> = forwardRef<FC, Props>(
   (
-    {
-      checkboxes,
-      label,
-      data = [],
-      fullWidth = true,
-      children,
-      error,
-      helperText,
-      ...props
-    },
+    { checkboxes, data = [], fullWidth = true, children, error, helperText, ...props },
     ref
   ) => {
     const id = useId()
@@ -28,30 +39,29 @@ const Select: FC<Props> = forwardRef<FC, Props>(
 
     const newProps = {
       ...props,
-      label,
       labelId,
       data,
       ref
     }
 
     return (
-      <FormControl error={!!error} fullWidth={fullWidth} size="small">
-        <InputLabel id={labelId}>{label}</InputLabel>
+      <StyledFormControl error={!!error} fullWidth={fullWidth}>
+        <InputLabel id={labelId} />
 
         {checkboxes ? (
           <SelectCheckbox {...newProps} />
         ) : (
-          <BasicSelect {...newProps}>
+          <StyledBasicSelect {...newProps}>
             {data.map((item) => (
               <MenuItem value={item} key={item}>
                 {item}
               </MenuItem>
             ))}
             {children}
-          </BasicSelect>
+          </StyledBasicSelect>
         )}
         {!!helperText && <FormHelperText>{helperText}</FormHelperText>}
-      </FormControl>
+      </StyledFormControl>
     )
   }
 )

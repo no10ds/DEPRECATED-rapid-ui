@@ -81,6 +81,7 @@ function FilePage() {
       </Typography>
 
       <Typography variant="body2" gutterBottom>
+        For further information on writing queries consult the{' '}
         <Link
           href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/usage.md#query-structure"
           target="_blank"
@@ -90,53 +91,43 @@ function FilePage() {
       </Typography>
 
       <Row>
+        <Typography variant="caption">Select Columns</Typography>
         <TextField
           fullWidth
           size="small"
-          label="select columns"
           variant="outlined"
           placeholder="column1, avg(column2)"
         />
       </Row>
 
       <Row>
-        <TextField
-          fullWidth
-          size="small"
-          label="filter"
-          variant="outlined"
-          placeholder="column >= 10"
-        />
+        <Typography variant="caption">Filter</Typography>
+        <TextField fullWidth size="small" variant="outlined" placeholder="column >= 10" />
       </Row>
 
       <Row>
+        <Typography variant="caption">Group by Columns</Typography>
         <TextField
           fullWidth
           size="small"
-          label="group by columns"
           variant="outlined"
           placeholder="column1, column3"
         />
       </Row>
 
       <Row>
+        <Typography variant="caption">Aggregation Conditions</Typography>
         <TextField
           fullWidth
           size="small"
-          label="aggregation conditions"
           variant="outlined"
           placeholder="avg(column2) <= 15"
         />
       </Row>
 
       <Row>
-        <TextField
-          fullWidth
-          size="small"
-          label="row limit"
-          variant="outlined"
-          placeholder="30"
-        />
+        <Typography variant="caption">Row Limit</Typography>
+        <TextField fullWidth size="small" variant="outlined" placeholder="30" />
       </Row>
     </Card>
   )

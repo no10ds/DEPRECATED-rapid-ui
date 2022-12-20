@@ -6,12 +6,17 @@ export type AllColors = keyof Colors
 export type Colors = {
   black: CSSProperties['color']
   white: CSSProperties['color']
-  blue1: CSSProperties['color']
-  blue2: CSSProperties['color']
   grey1: CSSProperties['color']
   grey2: CSSProperties['color']
   grey3: CSSProperties['color']
   grey4: CSSProperties['color']
+  dark1: CSSProperties['color']
+  blue1: CSSProperties['color']
+  blue2: CSSProperties['color']
+  blue3: CSSProperties['color']
+  pink1: CSSProperties['color']
+  pink2: CSSProperties['color']
+  pink3: CSSProperties['color']
 }
 
 declare module '@mui/material/Typography' {

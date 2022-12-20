@@ -14,8 +14,8 @@ import { ComponentProps } from 'react'
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
 
 const MenuBar = styled(MuiAppBar)`
-  background-color: ${(p) => p.theme.colors.grey1};
-  color: ${(p) => p.theme.colors.black};
+  background-color: ${(p) => p.theme.colors.dark1};
+  color: ${(p) => p.theme.colors.white};
 `
 
 export default function AppBar({ title, ...props }: Props) {
@@ -31,7 +31,7 @@ export default function AppBar({ title, ...props }: Props) {
 
   return (
     <MenuBar position="fixed" {...props}>
-      <Toolbar>
+      <Toolbar variant="dense">
         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
           {title}
         </Typography>
@@ -65,12 +65,9 @@ export default function AppBar({ title, ...props }: Props) {
           >
             <MenuItem onClick={handleClose}>
               <Typography textAlign="center" variant="body2">
-                Profile
+                Logout
               </Typography>
             </MenuItem>
-            <Typography textAlign="center" variant="body2">
-              Account
-            </Typography>
           </Menu>
         </div>
       </Toolbar>

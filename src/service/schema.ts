@@ -14,7 +14,7 @@ import { z } from 'zod'
 // ])
 
 const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
-const UserTypeEnum = z.enum(['USER', 'CLIENT'])
+const UserTypeEnum = z.enum(['User', 'Client'])
 
 export const SchemaUserCreate = z.object({
   type: UserTypeEnum,

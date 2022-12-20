@@ -41,7 +41,7 @@ const SimpleTable = ({
     )
 
   return (
-    <Table size="small" {...props}>
+    <Table size="small" {...props} style={{ marginBottom: '30px' }}>
       {headers && (
         <TableHead>
           <TableRow>

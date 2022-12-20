@@ -34,7 +34,7 @@ export default function MyApp({
           <style jsx global>
             {`
               body {
-                background-color: #f5f6f8;
+                background-color: #fbfbfb;
               }
             `}
           </style>
