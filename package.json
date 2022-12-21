@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "react-env -- next dev",
     "build": "next build",
     "build:static": "next build && next export",
-    "start": "next start",
+    "start": "react-env -- next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
     "test:all": "next lint && tsc --noemit && jest",
@@ -14,6 +14,7 @@
     "storybook:build": "build-storybook"
   },
   "dependencies": {
+    "@beam-australia/react-env": "^3.1.1",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",

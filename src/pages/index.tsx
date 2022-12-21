@@ -2,11 +2,18 @@ import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
 import getConfig from 'next/config'
 import { useRouter } from 'next/navigation'
+import env from '@beam-australia/react-env'
+import { useEffect } from 'react'
 
 const { publicRuntimeConfig } = getConfig()
 
 const IndexPage = () => {
   const router = useRouter()
+
+  useEffect(() => {
+    console.log(env('API_URL'))
+  }, [])
+
   return (
     <>
       <Button
