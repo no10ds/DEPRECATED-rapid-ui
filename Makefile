@@ -23,5 +23,9 @@ zip-and-release-ui:
 
 # Setup and config -------------------------
 ##
+npm-setup:
+	@npm i -g next
+	@npm ci
+
 create-static-out: ## Manually create the static files
 	@npm run build:static

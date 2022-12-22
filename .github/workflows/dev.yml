@@ -18,7 +18,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm i -g next
 
       - name: Log commit SHA
         run: echo $GITHUB_SHA
@@ -26,6 +25,9 @@ jobs:
       - name: Populate .env with additional vars
         run: |
           cp ./.github/.github.env .env
+
+      - name: Install packages
+        run: make npm-setup
 
       - name: Build static files
         run: make create-static-out
