@@ -3,19 +3,23 @@ export
 
 IMAGE_NAME=ui-f1-registry
 LATEST_COMMIT_HASH=$(shell git rev-parse --short HEAD)
+ZIP_PATH=./out/$(IMAGE_NAME)-$(LATEST_COMMIT_HASH).zip
 
 # Deployment -------------------------
 ##
 
 zip-contents:
-	@zip -r ./out/out.zip ./out
+	@zip -r $(ZIP_PATH) ./out
 
-upload-to-s3:
-	@aws s3 cp ./out/out.zip s3://$(IMAGE_NAME)/$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)
+upload-to-release:
+	@gh release create [] $(ZIP_PATH) --draft --title "$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)" --notes "" 
 
-zip-and-upload-ui:
+# upload-to-s3:
+# 	@aws s3 cp ./out/out.zip s3://$(IMAGE_NAME)/$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)
+
+zip-and-release-ui:
 	@$(MAKE) zip-contents
-	@$(MAKE) upload-to-s3
+	@$(MAKE) upload-to-release
 
 # Setup and config -------------------------
 ##
