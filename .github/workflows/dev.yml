@@ -32,5 +32,5 @@ jobs:
       - name: Build static files
         run: make create-static-out
 
-      - name: Zip and Upload
-        run: make zip-and-upload-ui
+      - name: Zip and Release
+        run: make zip-and-release-ui
