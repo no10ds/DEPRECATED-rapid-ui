@@ -53,29 +53,29 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
             { text: 'User Management' },
             {
               text: 'Create User',
-              href: '/account/user/create/',
+              href: '/subject/create/',
               icon: 'UserAdd'
             },
             {
               text: 'Modify User',
-              href: '/account/user/modify/',
+              href: '/subject/modify/',
               icon: 'Pencil'
             },
             { text: 'Data Management' },
             {
               text: 'Upload data',
-              href: '/account/data/upload/',
+              href: '/data/upload/',
               icon: 'ArrowUp'
             },
             {
               text: 'Download data',
-              href: '/account/data/download/',
+              href: '/data/download/',
               icon: 'CloudDownload'
             },
             { text: 'Schema Management' },
             {
               text: 'Create Schema',
-              href: '/account/schema/create/',
+              href: '/schema/create/',
               icon: 'AppsAdd'
             },
             {
@@ -83,7 +83,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => (
             },
             {
               text: 'Task Status',
-              href: '/account/tasks/status/',
+              href: '/tasks/',
               icon: 'BarsProgress'
             }
           ]}

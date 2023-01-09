@@ -51,7 +51,7 @@ export default function Drawer({ list, ...props }: Props) {
       }}
       {...props}
     >
-      <Link href="/account/">
+      <Link href="/">
         <Toolbar variant="dense">
           <Logo className="logo" />
         </Toolbar>
