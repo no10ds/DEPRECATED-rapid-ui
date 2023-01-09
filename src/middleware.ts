@@ -7,7 +7,10 @@ export function middleware(request: NextRequest) {
   if (hasRat) {
     return NextResponse.next()
   }
-  return NextResponse.redirect(new URL('/login', request.url))
+
+  const url = request.nextUrl.clone()
+  url.pathname = '/login'
+  return NextResponse.rewrite(url)
 }
 
 export const config = {

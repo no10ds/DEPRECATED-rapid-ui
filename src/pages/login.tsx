@@ -20,7 +20,7 @@ const IndexPage = () => {
         href={publicRuntimeConfig.loginUrl}
         color="primary"
         size="large"
-        onClick={() => router.push('/account/')}
+        onClick={() => router.push('/api/login')}
         fullWidth
         disableRoute
       >
