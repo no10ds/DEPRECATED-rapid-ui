@@ -3,27 +3,39 @@ import { Typography } from '@mui/material'
 import getConfig from 'next/config'
 import { useRouter } from 'next/navigation'
 import env from '@beam-australia/react-env'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const { publicRuntimeConfig } = getConfig()
 
 const IndexPage = () => {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const [authUrl, setAuthUrl] = useState('/login')
 
   useEffect(() => {
-    console.log(env('API_URL'))
+    const fetchAuthUrl = async () => {
+      const API_URL = env('API_URL')
+      const result = await fetch('/api/oauth2/login')
+      if (result.ok) {
+        const data = await result.json()
+        setAuthUrl(data.auth_url)
+      }
+
+      setIsLoading(false)
+    }
+
+    fetchAuthUrl().catch(() => {
+      // TODO Handle some error
+    })
   }, [])
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
 
   return (
     <>
-      <Button
-        href={publicRuntimeConfig.loginUrl}
-        color="primary"
-        size="large"
-        onClick={() => router.push('/api/login')}
-        fullWidth
-        disableRoute
-      >
+      <Button href={authUrl} color="primary" size="large" fullWidth disableRoute>
         Login
       </Button>
     </>

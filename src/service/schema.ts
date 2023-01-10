@@ -16,10 +16,10 @@ import { z } from 'zod'
 const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
 const UserTypeEnum = z.enum(['User', 'Client'])
 
-export const SchemaUserCreate = z.object({
+export const SubjectCreate = z.object({
   type: UserTypeEnum,
+  email: z.string().email().optional(),
   name: z.string(),
-  email: z.string().email(),
   permissions: z.array(z.string()).optional()
 })
 
