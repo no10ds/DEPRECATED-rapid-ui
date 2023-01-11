@@ -26,4 +26,23 @@ export type UserCreateResponse = {
   permissions: string[]
 }
 
-export type SchemaCreate = z.infer<typeof schemaCreateSchema>
+export type FilteredSubjectList = {
+  ClientApps: {
+    subjectId: string
+    subjectName: string
+  }[]
+  Users: {
+    subjectId: string
+    subjectName
+  }[]
+}
+
+export type UpdateSubjectPermissionsResponse = {
+  subject_id: string
+  permissions: string[]
+}
+
+export type UpdateSubjectPermissionsBody = {
+  subject_id: string
+  permissions: string[]
+}
