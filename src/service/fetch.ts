@@ -3,30 +3,32 @@ import {
   ClientCreateBody,
   DataFormats,
   DatasetInfoResponse,
+  AllJobsResponse,
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse,
-  UserCreateBody
+  UserCreateBody,
+  JobResponse
 } from './types'
 import { api } from '@/lib/data-utils'
 
 const API_URL = env('API_URL')
 
+// TODO Move these to the types file
 export const getPermissionsListUi = async (): Promise<{
   [key: string]: { [key: string]: string }[]
 }> => {
   const res = await api(`${API_URL}/permissions_ui`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    method: 'GET'
   })
   return res.json()
 }
 
+// TODO Rename this to just getSubjectList
 export const getSubjectsListUi = async (): Promise<
   Array<Record<string, string | undefined>>
 > => {
   const res = await api(`${API_URL}/subjects`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    method: 'GET'
   })
   return res.json()
 }
@@ -35,8 +37,22 @@ export const getDatasetsUi = async (): Promise<{
   [key: string]: { dataset: string; version: string }[]
 }> => {
   const res = await api(`${API_URL}/datasets_ui`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    method: 'GET'
+  })
+  return res.json()
+}
+
+export const getAllJobs = async (): Promise<AllJobsResponse> => {
+  const res = await api(`${API_URL}/jobs`, {
+    method: 'GET'
+  })
+  return res.json()
+}
+
+export const getJob = async ({ queryKey }): Promise<JobResponse> => {
+  const [_, jobId] = queryKey
+  const res = await api(`${API_URL}/jobs/${jobId}`, {
+    method: 'GET'
   })
   return res.json()
 }
@@ -44,8 +60,7 @@ export const getDatasetsUi = async (): Promise<{
 export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => {
   const [_, subjectId] = queryKey
   const res = await api(`${API_URL}/permissions/${subjectId}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    method: 'GET'
   })
   return res.json()
 }
@@ -89,8 +104,7 @@ export const getDatasetInfo = async ({ queryKey }): Promise<DatasetInfoResponse>
   const res = await api(
     `${API_URL}/datasets/${domain}/${dataset}/info?version=${version}`,
     {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      method: 'GET'
     }
   )
   return res.json()

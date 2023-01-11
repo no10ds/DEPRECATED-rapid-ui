@@ -1,71 +1,57 @@
-import { Card, Button, Link, SimpleTable, AccountLayout } from '@/components'
-import { CrossCircle, Check, HourGlass } from '@/components/Icon'
+import { Card, Link, SimpleTable, AccountLayout } from '@/components'
+import { getAllJobs } from '@/service'
 import { Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CancelIcon from '@mui/icons-material/Cancel'
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder'
+
+function getStatusSymbol(status: string) {
+  if (status === 'SUCCESS') return <CheckCircleOutlineIcon color="success" />
+  else if (status === 'IN PROGRESS') return <QueryBuilderIcon />
+  else if (status === 'FAILED') return <CancelIcon color="error" />
+}
 
 function StatusPage() {
+  const { isLoading, data } = useQuery(['jobs'], getAllJobs)
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
   return (
-    <Card action={<Button color="primary">Generate Schema</Button>}>
+    <Card>
       <Typography variant="h2" gutterBottom>
         Jobs
       </Typography>
 
       <SimpleTable
-        list={[
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <CrossCircle /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
+        list={data.map((job) => {
+          return [
+            { children: <>{job.type}</> },
+            { children: <>{job.domain}</> },
+            { children: <>{job.dataset}</> },
+            { children: <>{job.version}</> },
+            { children: getStatusSymbol(job.status as string) },
+            { children: <>{job.step}</> },
             {
               children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
+                <Link color="inherit" href={`tasks/${job.job_id}`}>
+                  {job.job_id}
                 </Link>
               )
-            }
-          ],
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <Check /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
+            },
             {
-              children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
-                </Link>
-              )
-            }
-          ],
-          [
-            { children: <>UPLOAD</> },
-            { children: <>automotive</> },
-            { children: <>car_sales</> },
-            { children: <>1</> },
-            { children: <HourGlass /> },
-            { children: <>Validation</> },
-            { children: <>f304d1e3-e400-42c4-a96a-1f3ded641bb5</> },
-            {
-              children: (
-                <Link
-                  href={`/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5`}
-                >
-                  Failure details
-                </Link>
-              )
+              children:
+                job.status === 'FAILED' ? (
+                  <Link href={`tasks/${job.job_id}`}>Failure Details</Link>
+                ) : (
+                  <></>
+                )
             }
           ]
-        ]}
+        })}
         headers={[
           { children: 'Type' },
           { children: 'Domain' },

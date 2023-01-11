@@ -1,6 +1,8 @@
 import { z } from 'zod'
 import { schemaCreateSchema } from './schema'
 
+export type SchemaCreate = z.infer<typeof schemaCreateSchema>
+
 export type DataFormats = 'csv' | 'json'
 
 export type ClientCreateBody = {
@@ -84,3 +86,7 @@ export type DatasetInfoResponse = {
     statistics?: { [key: string]: string }
   }[]
 }
+
+// TODO Probably want to type this better
+export type JobResponse = { [key: string]: string | number | string[] }
+export type AllJobsResponse = JobResponse[]
