@@ -1,6 +1,8 @@
 import env from '@beam-australia/react-env'
 import {
   ClientCreateBody,
+  DataFormats,
+  DatasetInfoResponse,
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse,
   UserCreateBody
@@ -80,4 +82,37 @@ export const uploadDataset = async ({ path, data }: { path: string; data: FormDa
     body: data
   })
   return res.json()
+}
+
+export const getDatasetInfo = async ({ queryKey }): Promise<DatasetInfoResponse> => {
+  const [_, domain, dataset, version] = queryKey
+  const res = await api(
+    `${API_URL}/datasets/${domain}/${dataset}/info?version=${version}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
+  return res.json()
+}
+
+export const queryDataset = async ({
+  path,
+  dataFormat,
+  data
+}: {
+  path: string
+  dataFormat: DataFormats
+  data: unknown
+}) => {
+  const acceptHeader = dataFormat === 'json' ? 'application/json' : 'text/csv'
+  const res = await api(`${API_URL}/datasets/${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: acceptHeader
+    },
+    body: JSON.stringify(data)
+  })
+  return res
 }
