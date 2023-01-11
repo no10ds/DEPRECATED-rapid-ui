@@ -29,6 +29,16 @@ export const getSubjectsListUi = async (): Promise<
   return res.json()
 }
 
+export const getDatasetsUi = async (): Promise<{
+  [key: string]: { dataset: string; version: string }[]
+}> => {
+  const res = await api(`${API_URL}/datasets_ui`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  return res.json()
+}
+
 export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => {
   const [_, subjectId] = queryKey
   const res = await api(`${API_URL}/permissions/${subjectId}`, {
@@ -60,6 +70,14 @@ export const updateSubjectPermissions = async (
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
+  })
+  return res.json()
+}
+
+export const uploadDataset = async ({ path, data }: { path: string; data: FormData }) => {
+  const res = await api(`${API_URL}/datasets/${path}`, {
+    method: 'POST',
+    body: data
   })
   return res.json()
 }

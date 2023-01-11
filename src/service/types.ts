@@ -1,3 +1,4 @@
+import { StringLiteralLike } from 'typescript'
 import { z } from 'zod'
 import { schemaCreateSchema } from './schema'
 
@@ -45,4 +46,16 @@ export type UpdateSubjectPermissionsResponse = {
 export type UpdateSubjectPermissionsBody = {
   subject_id: string
   permissions: string[]
+}
+
+export type UploadDatasetResponseDetails = {
+  dataset_version: number
+  job_id: string
+  original_filename: string
+  raw_filename: string
+  status: string
+}
+
+export type UploadDatasetResponse = {
+  details: UploadDatasetResponseDetails
 }
