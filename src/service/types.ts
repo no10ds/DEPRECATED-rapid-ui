@@ -1,9 +1,15 @@
 import { z } from 'zod'
-import { schemaCreateSchema } from './schema'
+import {
+  schemaCreateSchema,
+  schemaGenerateSchema,
+  SensitivityEnum as schemaSensitivityEnum
+} from './schema'
 
 export type SchemaCreate = z.infer<typeof schemaCreateSchema>
+export type SchemaGenerate = z.infer<typeof schemaGenerateSchema>
 
 export type DataFormats = 'csv' | 'json'
+export type SensitivityEnum = z.infer<typeof schemaSensitivityEnum>
 
 export type ClientCreateBody = {
   client_name: string
@@ -85,6 +91,29 @@ export type DatasetInfoResponse = {
     format?: string
     statistics?: { [key: string]: string }
   }[]
+}
+
+export type GenerateSchemaResponse = {
+  metadata: {
+    domain: string
+    dataset: string
+    sensitivity: string
+    update_behaviour: string
+    key_value_tags: { [key: string]: string }
+    key_only_tags: string[]
+    owners?: { name: string; email: string }[]
+  }
+  columns: {
+    name: string
+    partition_index?: number
+    data_type: string
+    allow_null: boolean
+    format?: string
+  }[]
+}
+
+export type CreateSchemaResponse = {
+  details: string
 }
 
 // TODO Probably want to type this better

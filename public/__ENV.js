@@ -1,1 +1,0 @@
-window.__ENV = {"REACT_APP_API_URL":"https://getrapid.link"};

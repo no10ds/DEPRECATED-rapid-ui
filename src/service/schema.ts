@@ -1,19 +1,6 @@
 import { z } from 'zod'
 
-// export const ClientPermissionsEnum = z.enum([
-//   'READ_ALL',
-//   'READ_PUBLIC',
-//   'READ_PRIVATE',
-//   'READ_PROTECTED_{DOMAIN}',
-//   'WRITE_ALL',
-//   'WRITE_PUBLIC',
-//   'WRITE_PRIVATE',
-//   'WRITE_PROTECTED_{DOMAIN}',
-//   'DATA_ADMIN',
-//   'USER_ADMIN'
-// ])
-
-const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
+export const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
 const UserTypeEnum = z.enum(['User', 'Client'])
 
 export const SubjectCreate = z.object({
@@ -36,6 +23,17 @@ export const schemaCreateSchema = z.object({
   sensitivity: SensitivityEnum,
   domain: z.string(),
   title: z.string(),
-  keyValueTags: z.array(keyValueTag.required()),
-  keyTags: z.array(keyTag)
+  ownerEmail: z
+    .string()
+    .email()
+    .refine((arg) => !(arg === 'change_me@email.com'), { message: 'Change Required' }),
+  ownerName: z
+    .string()
+    .refine((arg) => !(arg === 'change_me'), { message: 'Change Required' })
+})
+
+export const schemaGenerateSchema = z.object({
+  sensitivity: SensitivityEnum,
+  domain: z.string(),
+  title: z.string()
 })

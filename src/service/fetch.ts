@@ -7,7 +7,9 @@ import {
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse,
   UserCreateBody,
-  JobResponse
+  JobResponse,
+  GenerateSchemaResponse,
+  CreateSchemaResponse
 } from './types'
 import { api } from '@/lib/data-utils'
 
@@ -129,4 +131,29 @@ export const queryDataset = async ({
     body: JSON.stringify(data)
   })
   return res
+}
+
+export const generateSchema = async ({
+  path,
+  data
+}: {
+  path: string
+  data: FormData
+}) => {
+  const res = await api(`${API_URL}/schema/${path}`, {
+    method: 'POST',
+    body: data
+  })
+  return res.json()
+}
+
+export const createSchema = async (
+  data: GenerateSchemaResponse
+): Promise<CreateSchemaResponse> => {
+  const res = await api(`${API_URL}/schema`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  return res.json()
 }

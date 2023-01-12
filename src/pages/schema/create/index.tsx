@@ -1,52 +1,60 @@
 import {
-  Card,
   Row,
-  BadgeNumber,
-  Button,
-  TextField,
+  AccountLayout,
+  Card,
+  Link,
   Select,
-  SimpleTable
+  TextField,
+  Button,
+  Alert,
+  CreateSchema as CreateSchemaComponent
 } from '@/components'
-import AccountLayout from '@/components/Layout/AccountLayout'
-import { FormControl, Link, Typography, Box } from '@mui/material'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { generateSchema, schemaGenerateSchema } from '@/service'
+import { GenerateSchemaResponse, SchemaGenerate } from '@/service/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { schemaCreateSchema } from '@/service'
-import { SchemaCreate } from '@/service/types'
+import { Typography } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 
-const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
+function CreateSchema() {
+  const [file, setFile] = useState<File | undefined>()
 
-function UserModifyPage() {
-  const { control, handleSubmit } = useForm<SchemaCreate>({
-    resolver: zodResolver(schemaCreateSchema)
+  const { control, handleSubmit } = useForm<SchemaGenerate>({
+    resolver: zodResolver(schemaGenerateSchema)
   })
 
-  const fieldKeyValueTags = useFieldArray({ control, name: 'keyValueTags' })
-  const fieldKeyTags = useFieldArray({ control, name: 'keyTags' })
+  const {
+    isLoading,
+    mutate,
+    error,
+    data: schemaData
+  } = useMutation<GenerateSchemaResponse, Error, { path: string; data: FormData }>({
+    mutationFn: generateSchema
+  })
+
+  if (schemaData) {
+    return <CreateSchemaComponent schemaData={schemaData} />
+  }
 
   return (
-    // eslint-disable-next-line no-console
-    <form onSubmit={handleSubmit((d) => console.log(d))}>
+    <form
+      onSubmit={handleSubmit(async (data) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        const path = `${data.sensitivity}/${data.domain}/${data.title}/generate`
+        await mutate({ path, data: formData })
+      })}
+    >
       <Card
         action={
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" loading={isLoading}>
             Generate Schema
           </Button>
         }
       >
         <Typography variant="h2" gutterBottom>
           Populate dataset properties for the new schema:
-        </Typography>
-
-        <Typography gutterBottom>
-          Consult the{' '}
-          <Link
-            href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/schema_creation.md"
-            target="_blank"
-          >
-            schema writing guide
-          </Link>{' '}
-          for further information.
         </Typography>
 
         <Row>
@@ -112,182 +120,26 @@ function UserModifyPage() {
         </Typography>
 
         <Row>
-          <input name="file" id="file" type="file" />
-        </Row>
-
-        <Typography variant="h2" gutterBottom>
-          Validate the data types for the schema
-        </Typography>
-
-        <SimpleTable
-          sx={{ mb: 4 }}
-          list={[
-            [
-              { children: 'name' },
-              {
-                children: (
-                  <FormControl fullWidth size="small">
-                    <Select label="Data type" data={dataTypes} />
-                  </FormControl>
-                )
-              },
-              {
-                children: (
-                  <FormControl fullWidth size="small">
-                    <Select label="Allows Null" data={['true', 'false']} />
-                  </FormControl>
-                )
-              },
-              {
-                children: <TextField size="small" variant="outlined" />
-              }
-            ],
-            [
-              { children: 'total_users' },
-              {
-                children: (
-                  <FormControl fullWidth size="small">
-                    <Select label="Data type" data={dataTypes} />
-                  </FormControl>
-                )
-              },
-              {
-                children: (
-                  <FormControl fullWidth size="small">
-                    <Select label="Allows Null" data={['true', 'false']} />
-                  </FormControl>
-                )
-              },
-              {
-                children: <TextField size="small" variant="outlined" />
-              }
-            ]
-          ]}
-          headers={[
-            { children: 'Name' },
-            { children: 'Data Type' },
-            { children: 'Allows Null' },
-            { children: 'Partition Index (Optional)' }
-          ]}
-        />
-
-        <Typography variant="h2" gutterBottom>
-          Set the data owner
-        </Typography>
-
-        <Row>
-          <Typography variant="caption">Owner Email</Typography>
-          <TextField fullWidth size="small" type="email" variant="outlined" />
-        </Row>
-
-        <Row>
-          <Typography variant="caption">Owner Name</Typography>
-          <TextField fullWidth size="small" variant="outlined" />
-        </Row>
-
-        <Typography variant="h2" gutterBottom>
-          Set the file upload behaviour
-        </Typography>
-
-        <Row>
-          <FormControl fullWidth size="small">
-            <Typography variant="caption">Update Behaviour</Typography>
-            <Select data={['APPEND', 'OVERWRITE']} />
-          </FormControl>
-        </Row>
-
-        <Typography variant="h2" gutterBottom>
-          Optionally set key value tags
-        </Typography>
-
-        {fieldKeyValueTags.fields.map((_item, index) => (
-          <Box key={index} sx={{ display: 'flex', gap: 3, mb: 1 }}>
-            <Controller
-              name={`keyValueTags.${index}.key`}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  size="small"
-                  label="Key"
-                  variant="outlined"
-                  error={!!error}
-                  helperText={error?.message}
-                />
-              )}
-            />
-            <Controller
-              name={`keyValueTags.${index}.value`}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  size="small"
-                  label="Key"
-                  variant="outlined"
-                  error={!!error}
-                  helperText={error?.message}
-                />
-              )}
-            />{' '}
-          </Box>
-        ))}
-
-        <Row>
-          <Button
-            color="secondary"
-            onClick={() => {
-              fieldKeyValueTags.append({ key: '', value: '' })
-            }}
-          >
-            Add
-          </Button>
-        </Row>
-
-        <Typography variant="h2" gutterBottom>
-          Optionally set key only tags
-        </Typography>
-
-        {fieldKeyTags.fields.map((_item, index) => (
-          <Controller
-            key={index}
-            name={`keyTags.${index}.key`}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                type="text"
-                size="small"
-                label="Key"
-                variant="outlined"
-                error={!!error}
-                helperText={error?.message}
-                sx={{ mb: 1 }}
-              />
-            )}
+          <input
+            name="file"
+            id="file"
+            type="file"
+            onChange={(event) => setFile(event.target.files[0])}
           />
-        ))}
-
-        <Row>
-          <Button color="secondary" onClick={() => fieldKeyTags.append({ key: '' })}>
-            Add
-          </Button>
         </Row>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error?.message}
+          </Alert>
+        )}
       </Card>
     </form>
   )
 }
 
-export default UserModifyPage
+export default CreateSchema
 
-UserModifyPage.getLayout = (page) => (
-  <AccountLayout
-    title="Generate Schema
-"
-  >
-    {page}
-  </AccountLayout>
+CreateSchema.getLayout = (page) => (
+  <AccountLayout title="Create Schema">{page}</AccountLayout>
 )

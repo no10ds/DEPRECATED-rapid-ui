@@ -1,6 +1,7 @@
 import { Box, Container, styled, Toolbar } from '@mui/material'
-import { ComponentProps } from 'react'
+import { ComponentProps, useEffect, useState } from 'react'
 import { AppBar, Drawer } from '@/components'
+import Router, { useRouter } from 'next/router'
 
 type Props = { title?: string } & ComponentProps<typeof Box>
 
@@ -34,67 +35,97 @@ const Layout = styled(Box)`
   }
 `
 
-const AccountLayout = ({ children, title, ...props }: Props) => (
-  <Layout>
-    <AppBar
-      title={title}
-      sx={{
-        marginLeft: `${drawerWidth}px`,
-        width: `calc(100% - ${drawerWidth}px)`
-      }}
-    />
+const AccountLayout = ({ children, title, ...props }: Props) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
 
-    <Container maxWidth="xl">
-      <Box className="columns" {...props}>
-        <Drawer
-          variant="permanent"
-          open
-          list={[
-            { text: 'User Management' },
-            {
-              text: 'Create User',
-              href: '/subject/create/',
-              icon: 'UserAdd'
-            },
-            {
-              text: 'Modify User',
-              href: '/subject/modify/',
-              icon: 'Pencil'
-            },
-            { text: 'Data Management' },
-            {
-              text: 'Upload data',
-              href: '/data/upload/',
-              icon: 'ArrowUp'
-            },
-            {
-              text: 'Download data',
-              href: '/data/download/',
-              icon: 'CloudDownload'
-            },
-            { text: 'Schema Management' },
-            {
-              text: 'Create Schema',
-              href: '/schema/create/',
-              icon: 'AppsAdd'
-            },
-            {
-              text: 'Task Management'
-            },
-            {
-              text: 'Task Status',
-              href: '/tasks/',
-              icon: 'BarsProgress'
-            }
-          ]}
-        />
-        <Box className="main-content">
-          <Toolbar />
-          {children}
+  useEffect(() => {
+    const fetchAuth = async () => {
+      const result = await fetch('/api/oauth2/')
+      if (result.ok) {
+        const data = await result.json()
+        if (data.detail === 'success') {
+          setIsLoading(false)
+        }
+      } else {
+        Router.replace({
+          pathname: '/login'
+        })
+        // setIsLoading(false)
+      }
+    }
+
+    fetchAuth().catch(() => {
+      // TODO Handle some error
+    })
+  }, [])
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
+  return (
+    <Layout>
+      <AppBar
+        title={title}
+        sx={{
+          marginLeft: `${drawerWidth}px`,
+          width: `calc(100% - ${drawerWidth}px)`
+        }}
+      />
+
+      <Container maxWidth="xl">
+        <Box className="columns" {...props}>
+          <Drawer
+            variant="permanent"
+            open
+            list={[
+              { text: 'User Management' },
+              {
+                text: 'Create User',
+                href: '/subject/create/',
+                icon: 'UserAdd'
+              },
+              {
+                text: 'Modify User',
+                href: '/subject/modify/',
+                icon: 'Pencil'
+              },
+              { text: 'Data Management' },
+              {
+                text: 'Upload data',
+                href: '/data/upload/',
+                icon: 'ArrowUp'
+              },
+              {
+                text: 'Download data',
+                href: '/data/download/',
+                icon: 'CloudDownload'
+              },
+              { text: 'Schema Management' },
+              {
+                text: 'Create Schema',
+                href: '/schema/create/',
+                icon: 'AppsAdd'
+              },
+              {
+                text: 'Task Management'
+              },
+              {
+                text: 'Task Status',
+                href: '/tasks/',
+                icon: 'BarsProgress'
+              }
+            ]}
+          />
+          <Box className="main-content">
+            <Toolbar />
+            {children}
+          </Box>
         </Box>
-      </Box>
-    </Container>
-  </Layout>
-)
+      </Container>
+    </Layout>
+  )
+}
 
 export default AccountLayout
