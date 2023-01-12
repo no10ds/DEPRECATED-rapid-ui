@@ -4,7 +4,7 @@ import { getDatasetsUi, uploadDataset } from '@/service'
 import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
 import { FormControl, Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function UserModifyPage() {
   const [file, setFile] = useState<File | undefined>()
@@ -31,6 +31,13 @@ function UserModifyPage() {
       setUploadSuccessDetails(data.details)
     }
   })
+
+  useEffect(() => {
+    if (datasetsList) {
+      const firstKey = Object.keys(datasetsList)[0]
+      setDataset(`${firstKey}/${datasetsList[firstKey][0].dataset}`)
+    }
+  }, [datasetsList])
 
   if (isDatasetsListLoading) {
     return <p>Loading...</p>

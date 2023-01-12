@@ -4,7 +4,7 @@ import { getDatasetsUi } from '@/service'
 import { FormControl, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function UserModifyPage() {
   const router = useRouter()
@@ -14,6 +14,13 @@ function UserModifyPage() {
     ['datasetsList'],
     getDatasetsUi
   )
+
+  useEffect(() => {
+    if (datasetsList) {
+      const firstKey = Object.keys(datasetsList)[0]
+      setDataset(`${firstKey}/${datasetsList[firstKey][0].dataset}`)
+    }
+  }, [datasetsList])
 
   if (isDatasetsListLoading) {
     return <p>Loading...</p>

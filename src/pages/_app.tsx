@@ -17,7 +17,7 @@ interface MyAppProps extends AppProps {
 const clientSideEmotionCache = createEmotionCache()
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 5 * 1000 } }
+  defaultOptions: { queries: { staleTime: 5 * 1000, refetchOnMount: 'always' } }
 })
 
 export default function MyApp({

@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react'
 function SubjectModifyPage() {
   const router = useRouter()
   const [selectedSubjectId, setSelectedSubjectId] = useState('')
-
   const [filteredSubjectListData, setFilteredSubjectListData] =
     useState<FilteredSubjectList>({ ClientApps: [], Users: [] })
 
@@ -39,6 +38,7 @@ function SubjectModifyPage() {
         .sort((a, b) => a.subjectName.localeCompare(b.subjectName))
 
       setFilteredSubjectListData({ ClientApps: clients, Users: users })
+      setSelectedSubjectId(clients[0].subjectId)
     }
   }, [subjectsListData])
 
