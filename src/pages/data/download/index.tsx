@@ -1,4 +1,5 @@
 import { Card, Row, Button, Select } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getDatasetsUi } from '@/service'
 import { FormControl, Typography } from '@mui/material'
@@ -10,10 +11,11 @@ function UserModifyPage() {
   const router = useRouter()
   const [dataset, setDataset] = useState<string>('')
 
-  const { isLoading: isDatasetsListLoading, data: datasetsList } = useQuery(
-    ['datasetsList'],
-    getDatasetsUi
-  )
+  const {
+    isLoading: isDatasetsListLoading,
+    data: datasetsList,
+    error: datasetsError
+  } = useQuery(['datasetsList'], getDatasetsUi)
 
   useEffect(() => {
     if (datasetsList) {
@@ -24,6 +26,10 @@ function UserModifyPage() {
 
   if (isDatasetsListLoading) {
     return <p>Loading...</p>
+  }
+
+  if (datasetsError) {
+    return <ErrorCard error={datasetsError as Error} />
   }
 
   return (

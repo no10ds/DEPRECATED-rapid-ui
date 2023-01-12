@@ -9,6 +9,7 @@ import {
   TextField,
   Alert
 } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import { asVerticalTableList } from '@/lib'
 import { getDatasetInfo, queryDataset } from '@/service'
 import { DataFormats } from '@/service/types'
@@ -19,13 +20,22 @@ import { useState } from 'react'
 
 function DownloadDataset() {
   const router = useRouter()
-  const { domain, dataset, version } = router.query
+  const { domain, dataset } = router.query
+  const version = router.query.version ? router.query.version : 0
   const [dataFormat, setDataFormat] = useState<DataFormats>('csv')
+  const [queryBody, setQueryBody] = useState({
+    select_columns: '',
+    filter: '',
+    group_by_columns: '',
+    aggregation_conditions: '',
+    limit: ''
+  })
 
-  const { isLoading: isDatasetInfoLoading, data: datasetInfoData } = useQuery(
-    ['datasetInfo', domain, dataset, version ? version : 0],
-    getDatasetInfo
-  )
+  const {
+    isLoading: isDatasetInfoLoading,
+    data: datasetInfoData,
+    error: datasetInfoError
+  } = useQuery(['datasetInfo', domain, dataset, version ? version : 0], getDatasetInfo)
 
   const { isLoading, mutate, error } = useMutation<
     Response,
@@ -50,6 +60,36 @@ function DownloadDataset() {
     return <p>Loading...</p>
   }
 
+  if (datasetInfoError) {
+    return <ErrorCard error={datasetInfoError as Error} />
+  }
+
+  const addListValueToQuery = (queryBody, key, value) => {
+    if (value) {
+      queryBody[key] = value.split(',')
+    }
+  }
+
+  const addStringValueToQuery = (queryBody, key, value) => {
+    if (value) {
+      queryBody[key] = value
+    }
+  }
+
+  const createQueryBodyData = () => {
+    const queryBodyData = {}
+    addListValueToQuery(queryBodyData, 'select_columns', queryBody.select_columns)
+    addStringValueToQuery(queryBodyData, 'filter', queryBody.filter)
+    addListValueToQuery(queryBodyData, 'group_by_columns', queryBody.group_by_columns)
+    addStringValueToQuery(
+      queryBodyData,
+      'aggregation_conditions',
+      queryBody.aggregation_conditions
+    )
+    addStringValueToQuery(queryBodyData, 'limit', queryBody.limit)
+    return queryBodyData
+  }
+
   return (
     <Card
       action={
@@ -59,7 +99,7 @@ function DownloadDataset() {
             mutate({
               path: `${domain}/${dataset}/query?version=${version}`,
               dataFormat,
-              data: {}
+              data: createQueryBodyData()
             })
           }
           loading={isLoading}
@@ -144,12 +184,21 @@ function DownloadDataset() {
           size="small"
           variant="outlined"
           placeholder="column1, avg(column2)"
+          onChange={(event) =>
+            setQueryBody({ ...queryBody, select_columns: event.target.value })
+          }
         />
       </Row>
 
       <Row>
         <Typography variant="caption">Filter</Typography>
-        <TextField fullWidth size="small" variant="outlined" placeholder="column >= 10" />
+        <TextField
+          fullWidth
+          size="small"
+          variant="outlined"
+          placeholder="column >= 10"
+          onChange={(event) => setQueryBody({ ...queryBody, filter: event.target.value })}
+        />
       </Row>
 
       <Row>
@@ -159,6 +208,9 @@ function DownloadDataset() {
           size="small"
           variant="outlined"
           placeholder="column1, column3"
+          onChange={(event) =>
+            setQueryBody({ ...queryBody, group_by_columns: event.target.value })
+          }
         />
       </Row>
 
@@ -169,12 +221,21 @@ function DownloadDataset() {
           size="small"
           variant="outlined"
           placeholder="avg(column2) <= 15"
+          onChange={(event) =>
+            setQueryBody({ ...queryBody, aggregation_conditions: event.target.value })
+          }
         />
       </Row>
 
       <Row>
         <Typography variant="caption">Row Limit</Typography>
-        <TextField fullWidth size="small" variant="outlined" placeholder="30" />
+        <TextField
+          fullWidth
+          size="small"
+          variant="outlined"
+          placeholder="30"
+          onChange={(event) => setQueryBody({ ...queryBody, limit: event.target.value })}
+        />
       </Row>
 
       {error && (

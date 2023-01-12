@@ -15,6 +15,7 @@ import {
   ClientCreateResponse,
   UserCreateResponse
 } from '@/service/types'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 
 const userType = ['User', 'Client']
 
@@ -35,7 +36,8 @@ function CreateUserPage() {
   const {
     isLoading: isPermissionsListLoading,
     isSuccess: isPermissionsListSuccess,
-    data: permissionsListData
+    data: permissionsListData,
+    error: permissionsListError
   } = useQuery(['permissionsList'], getPermissionsListUi)
 
   const { control, handleSubmit, watch } = useForm<UserCreate>({
@@ -71,6 +73,10 @@ function CreateUserPage() {
 
   if (isPermissionsListLoading) {
     return <p>Loading....</p>
+  }
+
+  if (permissionsListError) {
+    return <ErrorCard error={permissionsListError as Error} />
   }
 
   if (isPermissionsListSuccess) {

@@ -1,4 +1,5 @@
 import { Card, Row, Button, Select, Alert, Link } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getDatasetsUi, uploadDataset } from '@/service'
 import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
@@ -13,10 +14,11 @@ function UserModifyPage() {
     UploadDatasetResponseDetails | undefined
   >()
 
-  const { isLoading: isDatasetsListLoading, data: datasetsList } = useQuery(
-    ['datasetsList'],
-    getDatasetsUi
-  )
+  const {
+    isLoading: isDatasetsListLoading,
+    data: datasetsList,
+    error: datasetsError
+  } = useQuery(['datasetsList'], getDatasetsUi)
 
   const { isLoading, mutate, error } = useMutation<
     UploadDatasetResponse,
@@ -41,6 +43,10 @@ function UserModifyPage() {
 
   if (isDatasetsListLoading) {
     return <p>Loading...</p>
+  }
+
+  if (datasetsError) {
+    return <ErrorCard error={datasetsError as Error} />
   }
 
   return (

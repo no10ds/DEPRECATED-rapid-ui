@@ -1,4 +1,5 @@
 import { AccountLayout } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import { getSubjectPermissions } from '@/service'
 import { Card, Stack, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
@@ -8,11 +9,20 @@ function SubjectModifyPageSuccess() {
   const router = useRouter()
   const { subjectId, name } = router.query
 
-  const { isLoading: isSubjectPermissionsLoading, data: subjectPermissionsData } =
-    useQuery(['subjectPermissions', subjectId], getSubjectPermissions)
+  const {
+    isLoading: isSubjectPermissionsLoading,
+    data: subjectPermissionsData,
+    error: subjectPermissionsError
+  } = useQuery(['subjectPermissions', subjectId], getSubjectPermissions, {
+    staleTime: 0
+  })
 
   if (isSubjectPermissionsLoading) {
     return <p>Loading...</p>
+  }
+
+  if (subjectPermissionsError) {
+    return <ErrorCard error={subjectPermissionsError as Error} />
   }
 
   return (

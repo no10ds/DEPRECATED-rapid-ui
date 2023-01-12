@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import CancelIcon from '@mui/icons-material/Cancel'
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 
 function getStatusSymbol(status: string) {
   if (status === 'SUCCESS') return <CheckCircleOutlineIcon color="success" />
@@ -14,10 +15,14 @@ function getStatusSymbol(status: string) {
 }
 
 function StatusPage() {
-  const { isLoading, data } = useQuery(['jobs'], getAllJobs)
+  const { isLoading, data, error } = useQuery(['jobs'], getAllJobs)
 
   if (isLoading) {
     return <p>Loading...</p>
+  }
+
+  if (error) {
+    return <ErrorCard error={error as Error} />
   }
 
   return (

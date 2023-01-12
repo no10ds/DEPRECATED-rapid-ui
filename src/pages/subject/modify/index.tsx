@@ -1,4 +1,5 @@
 import { Card, Row, Button, Select } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getSubjectsListUi } from '@/service'
 import { FilteredSubjectList } from '@/service/types'
@@ -16,7 +17,8 @@ function SubjectModifyPage() {
   const {
     isLoading: isSubjectsListLoading,
     isSuccess: isSubjectsListSuccess,
-    data: subjectsListData
+    data: subjectsListData,
+    error: subjectListError
   } = useQuery(['subjectsList'], getSubjectsListUi)
 
   useEffect(() => {
@@ -44,6 +46,10 @@ function SubjectModifyPage() {
 
   if (isSubjectsListLoading) {
     return <p>Loading...</p>
+  }
+
+  if (subjectListError) {
+    return <ErrorCard error={subjectListError as Error} />
   }
 
   return (

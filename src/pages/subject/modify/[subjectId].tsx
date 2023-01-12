@@ -1,4 +1,5 @@
 import { Button, Card, Chip, Row } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import {
   getPermissionsListUi,
@@ -28,13 +29,17 @@ function SubjectModifyPage() {
 
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([])
 
-  const { isLoading: isPermissionsListLoading, data: permissionsListData } = useQuery(
-    ['permissionsList'],
-    getPermissionsListUi
-  )
+  const {
+    isLoading: isPermissionsListDataLoading,
+    data: permissionsListData,
+    error: permissionsListDataError
+  } = useQuery(['permissionsList'], getPermissionsListUi)
 
-  const { isLoading: isSubjectPermissionsLoading, data: subjectPermissionsData } =
-    useQuery(['subjectPermissions', subjectId], getSubjectPermissions)
+  const {
+    isLoading: isSubjectPermissionsLoading,
+    data: subjectPermissionsData,
+    error: subjectPermissionsError
+  } = useQuery(['subjectPermissions', subjectId], getSubjectPermissions)
 
   useEffect(() => {
     if (subjectPermissionsData) {
@@ -53,8 +58,16 @@ function SubjectModifyPage() {
     }
   })
 
-  if (isPermissionsListLoading || isSubjectPermissionsLoading) {
+  if (isPermissionsListDataLoading || isSubjectPermissionsLoading) {
     return <p>Loading....</p>
+  }
+
+  if (permissionsListDataError || subjectPermissionsError) {
+    return (
+      <ErrorCard
+        error={(permissionsListDataError as Error) || (subjectPermissionsError as Error)}
+      />
+    )
   }
 
   return (

@@ -1,3 +1,4 @@
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import SimpleTable from '@/components/SimpleTable/SimpleTable'
 import { asVerticalTableList } from '@/lib'
@@ -10,10 +11,14 @@ function GetJob() {
   const router = useRouter()
   const { jobId } = router.query
 
-  const { isLoading, data } = useQuery(['getJob', jobId], getJob)
+  const { isLoading, data, error } = useQuery(['getJob', jobId], getJob)
 
   if (isLoading) {
     return <p>Loading...</p>
+  }
+
+  if (error) {
+    return <ErrorCard error={error as Error} />
   }
 
   return (
