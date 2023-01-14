@@ -1,7 +1,9 @@
-import { Box, Container, styled, Toolbar } from '@mui/material'
-import { ComponentProps, useEffect, useState } from 'react'
+import { Box, Container, LinearProgress, styled, Toolbar } from '@mui/material'
+import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
-import Router, { useRouter } from 'next/router'
+import Router from 'next/router'
+import { getAuth } from '@/service'
+import { useQuery } from '@tanstack/react-query'
 
 type Props = { title?: string } & ComponentProps<typeof Box>
 
@@ -36,32 +38,21 @@ const Layout = styled(Box)`
 `
 
 const AccountLayout = ({ children, title, ...props }: Props) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
 
-  useEffect(() => {
-    const fetchAuth = async () => {
-      const result = await fetch('/api/oauth2/')
-      if (result.ok) {
-        const data = await result.json()
-        if (data.detail === 'success') {
-          setIsLoading(false)
-        }
-      } else {
-        Router.replace({
-          pathname: '/login'
-        })
-        // setIsLoading(false)
-      }
-    }
-
-    fetchAuth().catch(() => {
-      // TODO Handle some error
-    })
-  }, [])
+  const { isLoading, error } = useQuery({
+    queryKey: ['auth'],
+    queryFn: getAuth,
+    onError: () => {
+      Router.replace({
+        pathname: '/login'
+      })
+    },
+    cacheTime: 0,
+    refetchInterval: 1000 // Poll every second
+  })
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   return (

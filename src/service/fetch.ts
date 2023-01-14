@@ -15,6 +15,11 @@ import { api } from '@/lib/data-utils'
 
 const API_URL = env('API_URL')
 
+export const getAuth = async (): Promise<{ detail: string }> => {
+  const res = await api(`${API_URL}/oauth2`, { method: 'GET' })
+  return res.json()
+}
+
 // TODO Move these to the types file
 export const getPermissionsListUi = async (): Promise<{
   [key: string]: { [key: string]: string }[]

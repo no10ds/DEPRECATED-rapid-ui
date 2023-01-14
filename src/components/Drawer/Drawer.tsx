@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps } from 'react'
 import { Logo } from '@/components/Icon'
 import { Icon } from '@/components/Icon/types'
 import * as Icons from '@/components/Icon'

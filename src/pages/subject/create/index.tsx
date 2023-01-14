@@ -70,7 +70,7 @@ function CreateUserPage() {
     }
   })
 
-  if (!isPermissionsListLoading) {
+  if (isPermissionsListLoading) {
     return <LinearProgress />
   }
 

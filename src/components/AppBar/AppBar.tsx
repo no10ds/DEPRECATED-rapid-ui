@@ -11,6 +11,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MenuItem from '@mui/material/MenuItem'
 import { ComponentProps } from 'react'
 import Link from '../Link'
+import env from '@beam-australia/react-env'
+import { useRouter } from 'next/router'
+
+const API_URL = env('API_URL')
 
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
 
@@ -20,6 +24,7 @@ const MenuBar = styled(MuiAppBar)`
 `
 
 export default function AppBar({ title, ...props }: Props) {
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,6 +33,7 @@ export default function AppBar({ title, ...props }: Props) {
 
   const handleClose = () => {
     setAnchorEl(null)
+    router.push(`${API_URL}/oauth2/logout`)
   }
 
   return (
@@ -46,7 +52,7 @@ export default function AppBar({ title, ...props }: Props) {
         <Link
           color="rgb(255, 255, 255)"
           style={{ textDecoration: 'none', marginRight: '2rem' }}
-          href="/api/docs"
+          href={`${API_URL}/docs`}
         >
           Docs
         </Link>
