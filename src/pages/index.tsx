@@ -1,34 +1,132 @@
+import { Typography, Grid, Stack } from '@mui/material'
+import Image, { StaticImageData } from 'next/image'
 import AccountLayout from '@/components/Layout/AccountLayout'
-import { Typography } from '@mui/material'
+import { Link, Row } from '@/components'
+
+import userIcon from '../../public/img/user_icon.png'
+import dataIcon from '../../public/img/data_icon.png'
+import schemaIcon from '../../public/img/schema_icon.png'
+import taskIcon from '../../public/img/task_icon.png'
+import { ReactNode } from 'react'
+
+function ManagementCard({
+  iconImage,
+  title,
+  children
+}: {
+  iconImage: StaticImageData
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <Grid item xs={6}>
+      <Stack direction="row" spacing={2}>
+        <Image src={iconImage} width={120} height={120} alt="User Management" />
+        <Stack>
+          <Typography variant="h2">{title}</Typography>
+          {children}
+        </Stack>
+      </Stack>
+    </Grid>
+  )
+}
 
 function AccountIndexPage() {
   return (
     <div>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-        elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus
-        in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id
-        interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-        adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies integer quis.
-        Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis
-        imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis
-        at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-        sapien faucibus et molestie ac.
+      <Typography variant="h1" gutterBottom>
+        Welcome to rAPId
       </Typography>
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget
-        nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim neque
-        volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus
-        sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod
-        lacinia at quis risus sed vulputate odio. Morbi tincidunt ornare massa eget
-        egestas purus viverra accumsan in. In hendrerit gravida rutrum quisque non tellus
-        orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-        euismod elementum nisi quis eleifend. Commodo viverra maecenas accumsan lacus vel
-        facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-      </Typography>
+
+      <div style={{ marginBottom: '3rem ' }}>
+        <Typography variant="h2">Getting Started</Typography>
+        <Typography paragraph>
+          With rAPId you can easily allows users and clients to ingest, validate and query
+          data via an API. The rAPId web application makes interactions with the API
+          quicker and easier.
+        </Typography>
+        <Typography paragraph gutterBottom>
+          To read more about the API or for technical architure see the links below.
+          Otherwise to get started choose an action from the menu below.
+        </Typography>
+
+        <Stack sx={{ marginBottom: '1rem' }} spacing={1}>
+          <Link color="inherit" href="/api/docs" variant="body1">
+            View the API docs
+          </Link>
+          <Link
+            color="inherit"
+            href="https://github.com/no10ds/rapid-api"
+            variant="body1"
+          >
+            See the source code
+          </Link>
+          <Link
+            color="inherit"
+            href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/usage.md"
+            variant="body1"
+          >
+            View the rAPId Architecture
+          </Link>
+          <Link
+            color="inherit"
+            href="https://ukgovernmentdigital.slack.com/archives/C03E5GV2LQM"
+            variant="body1"
+          >
+            Contact
+          </Link>
+        </Stack>
+      </div>
+
+      <Row>
+        <Grid container spacing={4}>
+          <ManagementCard iconImage={userIcon} title="User Management">
+            <>
+              <Typography paragraph>
+                Create and modify different users and clients.
+              </Typography>
+              <Link color="inherit" href="/subject/create">
+                Create User
+              </Link>
+              <Link color="inherit" href="/subject/modify">
+                Modify User
+              </Link>
+            </>
+          </ManagementCard>
+
+          <ManagementCard iconImage={dataIcon} title="Data Management">
+            <>
+              <Typography paragraph>Upload and download existing data files.</Typography>
+              <Link color="inherit" href="/data/download">
+                Download Data
+              </Link>
+              <Link color="inherit" href="/data/upload">
+                Upload Data
+              </Link>
+            </>
+          </ManagementCard>
+
+          <ManagementCard iconImage={schemaIcon} title="Schema Management">
+            <>
+              <Typography paragraph>
+                Manually create new schemas from raw data.
+              </Typography>
+              <Link color="inherit" href="/schema/create">
+                Create Schema
+              </Link>
+            </>
+          </ManagementCard>
+
+          <ManagementCard iconImage={taskIcon} title="Task Status">
+            <>
+              <Typography paragraph>View pending and complete api tasks.</Typography>
+              <Link color="inherit" href="/tasks">
+                Tasks
+              </Link>
+            </>
+          </ManagementCard>
+        </Grid>
+      </Row>
     </div>
   )
 }

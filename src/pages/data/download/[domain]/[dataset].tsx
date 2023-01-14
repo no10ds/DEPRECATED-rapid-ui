@@ -13,7 +13,7 @@ import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import { asVerticalTableList } from '@/lib'
 import { getDatasetInfo, queryDataset } from '@/service'
 import { DataFormats } from '@/service/types'
-import { Typography } from '@mui/material'
+import { Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -57,7 +57,7 @@ function DownloadDataset() {
   })
 
   if (isDatasetInfoLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (datasetInfoError) {

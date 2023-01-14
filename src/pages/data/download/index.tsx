@@ -2,7 +2,7 @@ import { Card, Row, Button, Select } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getDatasetsUi } from '@/service'
-import { FormControl, Typography } from '@mui/material'
+import { FormControl, Typography, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -25,7 +25,7 @@ function UserModifyPage() {
   }, [datasetsList])
 
   if (isDatasetsListLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (datasetsError) {

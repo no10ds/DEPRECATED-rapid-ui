@@ -10,6 +10,7 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MenuItem from '@mui/material/MenuItem'
 import { ComponentProps } from 'react'
+import Link from '../Link'
 
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
 
@@ -35,6 +36,20 @@ export default function AppBar({ title, ...props }: Props) {
         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
           {title}
         </Typography>
+        <Link
+          color="rgb(255, 255, 255)"
+          style={{ textDecoration: 'none', marginRight: '2rem' }}
+          href="/"
+        >
+          Home
+        </Link>
+        <Link
+          color="rgb(255, 255, 255)"
+          style={{ textDecoration: 'none', marginRight: '2rem' }}
+          href="/api/docs"
+        >
+          Docs
+        </Link>
 
         <div>
           <IconButton

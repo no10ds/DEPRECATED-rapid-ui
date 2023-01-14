@@ -3,7 +3,7 @@ import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getSubjectsListUi } from '@/service'
 import { FilteredSubjectList } from '@/service/types'
-import { FormControl, Typography } from '@mui/material'
+import { FormControl, Typography, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -16,7 +16,6 @@ function SubjectModifyPage() {
 
   const {
     isLoading: isSubjectsListLoading,
-    isSuccess: isSubjectsListSuccess,
     data: subjectsListData,
     error: subjectListError
   } = useQuery(['subjectsList'], getSubjectsListUi)
@@ -45,7 +44,7 @@ function SubjectModifyPage() {
   }, [subjectsListData])
 
   if (isSubjectsListLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (subjectListError) {

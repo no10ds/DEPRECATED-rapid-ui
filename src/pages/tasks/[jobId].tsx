@@ -3,7 +3,7 @@ import AccountLayout from '@/components/Layout/AccountLayout'
 import SimpleTable from '@/components/SimpleTable/SimpleTable'
 import { asVerticalTableList } from '@/lib'
 import { getJob } from '@/service'
-import { Card, Typography } from '@mui/material'
+import { Card, Typography, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
@@ -14,7 +14,7 @@ function GetJob() {
   const { isLoading, data, error } = useQuery(['getJob', jobId], getJob)
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (error) {

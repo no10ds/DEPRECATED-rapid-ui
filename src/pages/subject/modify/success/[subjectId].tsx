@@ -1,7 +1,7 @@
 import { AccountLayout } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import { getSubjectPermissions } from '@/service'
-import { Card, Stack, Typography } from '@mui/material'
+import { Card, Stack, Typography, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
@@ -18,7 +18,7 @@ function SubjectModifyPageSuccess() {
   })
 
   if (isSubjectPermissionsLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (subjectPermissionsError) {

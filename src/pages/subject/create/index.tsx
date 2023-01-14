@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card, Row, Chip, Button, TextField, Select, Alert } from '@/components'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Stack, Typography } from '@mui/material'
+import { Stack, Typography, LinearProgress } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createClient, SubjectCreate } from '@/service'
@@ -35,7 +35,6 @@ function CreateUserPage() {
 
   const {
     isLoading: isPermissionsListLoading,
-    isSuccess: isPermissionsListSuccess,
     data: permissionsListData,
     error: permissionsListError
   } = useQuery(['permissionsList'], getPermissionsListUi)
@@ -71,15 +70,15 @@ function CreateUserPage() {
     }
   })
 
-  if (isPermissionsListLoading) {
-    return <p>Loading....</p>
+  if (!isPermissionsListLoading) {
+    return <LinearProgress />
   }
 
   if (permissionsListError) {
     return <ErrorCard error={permissionsListError as Error} />
   }
 
-  if (isPermissionsListSuccess) {
+  if (permissionsListData) {
     return (
       <form
         onSubmit={handleSubmit(async (data) => {

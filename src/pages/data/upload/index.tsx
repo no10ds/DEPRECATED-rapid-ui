@@ -3,7 +3,7 @@ import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { getDatasetsUi, uploadDataset } from '@/service'
 import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
-import { FormControl, Typography } from '@mui/material'
+import { FormControl, Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -42,7 +42,7 @@ function UserModifyPage() {
   }, [datasetsList])
 
   if (isDatasetsListLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (datasetsError) {

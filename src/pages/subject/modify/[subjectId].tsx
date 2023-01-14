@@ -10,7 +10,7 @@ import {
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse
 } from '@/service/types'
-import { Alert, Stack, Typography } from '@mui/material'
+import { Alert, Stack, Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -59,7 +59,7 @@ function SubjectModifyPage() {
   })
 
   if (isPermissionsListDataLoading || isSubjectPermissionsLoading) {
-    return <p>Loading....</p>
+    return <LinearProgress />
   }
 
   if (permissionsListDataError || subjectPermissionsError) {

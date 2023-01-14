@@ -1,8 +1,7 @@
 import { Card, Link, SimpleTable, AccountLayout } from '@/components'
 import { getAllJobs } from '@/service'
-import { Typography } from '@mui/material'
+import { Typography, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import CancelIcon from '@mui/icons-material/Cancel'
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder'
@@ -18,7 +17,7 @@ function StatusPage() {
   const { isLoading, data, error } = useQuery(['jobs'], getAllJobs)
 
   if (isLoading) {
-    return <p>Loading...</p>
+    return <LinearProgress />
   }
 
   if (error) {
