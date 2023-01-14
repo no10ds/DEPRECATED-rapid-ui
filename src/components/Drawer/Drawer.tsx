@@ -41,7 +41,7 @@ const MenuBar = styled(MuiDrawer)`
 
 export default function Drawer({ list, ...props }: Props) {
   const router = useRouter()
-  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const { asPath } = router
 
   return (
     <MenuBar
@@ -67,12 +67,11 @@ export default function Drawer({ list, ...props }: Props) {
               href={href || undefined}
               onClick={(e) => {
                 e.preventDefault()
-                href && setSelectedIndex(index)
                 href && router.push(href)
               }}
               sx={{ paddingTop: '1px', paddingBottom: '1px' }}
             >
-              <ListItemButton selected={selectedIndex === index ? true : false}>
+              <ListItemButton selected={asPath.includes(href)}>
                 {icon && (
                   <ListItemIcon sx={{ fontSize: 14, minWidth: 30 }}>
                     {<Icon />}
