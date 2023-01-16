@@ -42,9 +42,9 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
     queryKey: ['auth'],
     queryFn: getAuth,
     onError: () => {
-      Router.replace({
-        pathname: '/login'
-      })
+      // Router.replace({
+      //   pathname: '/login'
+      // })
     },
     cacheTime: 0,
     refetchInterval: 1000 // Poll every second
