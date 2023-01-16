@@ -1,5 +1,5 @@
 import { Box, Container, LinearProgress, styled, Toolbar } from '@mui/material'
-import { ComponentProps } from 'react'
+import { ComponentProps, useEffect, useState } from 'react'
 import { AppBar, Drawer } from '@/components'
 import Router from 'next/router'
 import { getAuth } from '@/service'
@@ -38,19 +38,28 @@ const Layout = styled(Box)`
 `
 
 const AccountLayout = ({ children, title, ...props }: Props) => {
-  const { isLoading, error } = useQuery({
-    queryKey: ['auth'],
-    queryFn: getAuth,
-    onError: () => {
-      // Router.replace({
-      //   pathname: '/login'
-      // })
-    },
-    cacheTime: 0,
-    refetchInterval: 1000 // Poll every second
-  })
+  const [isLoading, setIsLoading] = useState(true)
 
-  if (!isLoading) {
+  useEffect(() => {
+    const fetchAuthUrl = async () => {
+      const result = await fetch('/api/oauth2/login')
+      if (result.ok) {
+        setIsLoading(false)
+      } else {
+        Router.replace({
+          pathname: '/login'
+        })
+      }
+    }
+
+    fetchAuthUrl().catch(() => {
+      Router.replace({
+        pathname: '/login'
+      })
+    })
+  }, [])
+
+  if (isLoading) {
     return <LinearProgress />
   }
 
