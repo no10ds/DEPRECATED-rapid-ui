@@ -42,7 +42,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
 
   useEffect(() => {
     const fetchAuthUrl = async () => {
-      const result = await fetch('/api/oauth2/success')
+      const result = await fetch('/api/oauth2/')
       if (result.ok) {
         setIsLoading(false)
       } else {
