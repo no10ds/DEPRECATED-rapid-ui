@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "react-env -- next dev",
     "build": "next build",
-    "build:static": "next build && next export",
+    "build:static": "react-env -- next build && next export",
     "start": "react-env -- next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
