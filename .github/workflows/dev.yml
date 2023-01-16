@@ -13,6 +13,7 @@ jobs:
     runs-on: self-hosted
     env:
       GH_TOKEN: ${{ github.token }}
+      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +28,6 @@ jobs:
       - name: Populate .env with additional vars
         run: |
           cp ./.github/.github.env .env
-          echo REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} >> .env
 
       - name: Install packages
         run: make npm-setup
