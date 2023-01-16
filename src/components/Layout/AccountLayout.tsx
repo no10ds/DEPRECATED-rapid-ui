@@ -57,7 +57,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
         pathname: '/login'
       })
     })
-  }, [])
+  })
 
   if (isLoading) {
     return <LinearProgress />
