@@ -38,7 +38,6 @@ const Layout = styled(Box)`
 `
 
 const AccountLayout = ({ children, title, ...props }: Props) => {
-
   const { isLoading, error } = useQuery({
     queryKey: ['auth'],
     queryFn: getAuth,
@@ -51,7 +50,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
     refetchInterval: 1000 // Poll every second
   })
 
-  if (isLoading) {
+  if (!isLoading) {
     return <LinearProgress />
   }
 
