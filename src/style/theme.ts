@@ -147,7 +147,13 @@ const theme = createTheme({
               fontWeight: 900
             }
           },
+          '&.Mui-disabled': {
+            opacity: 1
+          },
           borderRadius: 5
+        },
+        disabled: {
+          opacity: 1
         }
       }
     },

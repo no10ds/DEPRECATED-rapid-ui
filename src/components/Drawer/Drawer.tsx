@@ -71,7 +71,11 @@ export default function Drawer({ list, ...props }: Props) {
               }}
               sx={{ paddingTop: '1px', paddingBottom: '1px' }}
             >
-              <ListItemButton selected={asPath.includes(href)}>
+              <ListItemButton
+                selected={asPath.includes(href)}
+                disabled={!icon}
+                disableRipple
+              >
                 {icon && (
                   <ListItemIcon sx={{ fontSize: 14, minWidth: 30 }}>
                     {<Icon />}
@@ -83,8 +87,8 @@ export default function Drawer({ list, ...props }: Props) {
                       variant="body2"
                       sx={
                         icon
-                          ? { color: '#000', fontSize: 14, fontWeight: 500 }
-                          : { fontSize: 14 }
+                          ? { fontSize: 14, fontWeight: 500 }
+                          : { fontSize: 14, color: '#000' }
                       }
                     >
                       {text}

@@ -61,17 +61,16 @@ function AccountIndexPage() {
       <div style={{ marginBottom: '3rem ' }}>
         <Typography variant="h2">Getting Started</Typography>
         <Typography paragraph>
-          With rAPId you can easily allows users and clients to ingest, validate and query
-          data via an API. The rAPId web application makes interactions with the API
-          quicker and easier.
+          With rAPId, users and clients can ingest, validate and query data via an API.
+          The rAPId web application makes interactions with the API quicker and easier.
         </Typography>
         <Typography paragraph gutterBottom>
-          To read more about the API or for technical architure see the links below.
-          Otherwise to get started choose an action from the menu below.
+          To read more about the API or for technical architecture, see the links below.
+          Otherwise, to get started choose an action from the menu below.
         </Typography>
 
         <Stack sx={{ marginBottom: '1rem' }} spacing={1}>
-          <Link color="inherit" href="/api/docs" variant="body1">
+          <Link color="inherit" href={`${API_URL}/docs`} variant="body1">
             View the API docs
           </Link>
           <Link
