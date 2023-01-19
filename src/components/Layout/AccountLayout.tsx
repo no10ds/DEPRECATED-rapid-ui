@@ -1,9 +1,17 @@
 import { Box, Container, LinearProgress, styled, Toolbar } from '@mui/material'
-import { ComponentProps, useEffect, useState } from 'react'
+import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
 import Router from 'next/router'
-import { getAuth } from '@/service'
-import { useQuery } from '@tanstack/react-query'
+import env from '@beam-australia/react-env'
+import { useQueries } from '@tanstack/react-query'
+import { AuthResponse, MethodsResponse } from '@/service/types'
+import {
+  dataDownloadMethod,
+  dataUploadMethod,
+  schemaManagementMethods,
+  taskManagementMethods,
+  userManagementMethods
+} from '@/service/constants'
 
 type Props = { title?: string } & ComponentProps<typeof Box>
 
@@ -37,31 +45,66 @@ const Layout = styled(Box)`
   }
 `
 
+const filterSidebarList = (methods: MethodsResponse) => {
+  const baseMethods = []
+  if (methods.can_manage_users) baseMethods.push(...userManagementMethods)
+  if (methods.can_upload || methods.can_download) {
+    baseMethods.push({ text: 'Data Management' })
+    if (methods.can_download) baseMethods.push(...dataDownloadMethod)
+    if (methods.can_upload) baseMethods.push(...dataUploadMethod)
+    if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
+    baseMethods.push(...taskManagementMethods)
+  }
+
+  return baseMethods
+}
+
 const AccountLayout = ({ children, title, ...props }: Props) => {
-  const [isLoading, setIsLoading] = useState(true)
+  const API_URL = env('API_URL')
 
-  useEffect(() => {
-    const fetchAuthUrl = async () => {
-      const result = await fetch('/api/oauth2/')
-      if (result.ok) {
-        setIsLoading(false)
-      } else {
-        Router.replace({
-          pathname: '/login'
-        })
-      }
-    }
-
-    fetchAuthUrl().catch(() => {
-      Router.replace({
-        pathname: '/login'
-      })
+  const redirect = () => {
+    Router.replace({
+      pathname: '/login'
     })
+  }
+
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['authStatus'],
+        queryFn: async (): Promise<AuthResponse> => {
+          const res = await fetch(`${API_URL}/oauth2`, { credentials: 'include' })
+          return res.json()
+        },
+        keepPreviousData: false,
+        cacheTime: 0,
+        refetchInterval: 0,
+        onError: () => redirect(),
+        onSuccess: (data) => {
+          const { detail } = data
+          if (detail === 'fail') {
+            redirect()
+          }
+        }
+      },
+      {
+        queryKey: ['methods'],
+        queryFn: async (): Promise<MethodsResponse> => {
+          const res = await fetch(`${API_URL}/methods`, { credentials: 'include' })
+          return res.json()
+        },
+        keepPreviousData: false,
+        cacheTime: 0,
+        refetchInterval: 0
+      }
+    ]
   })
 
-  if (isLoading) {
+  if (results[0].isLoading || results[1].isLoading) {
     return <LinearProgress />
   }
+
+  const allowedDrawerMethods = filterSidebarList(results[1].data)
 
   return (
     <Layout>
@@ -75,48 +118,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
 
       <Container maxWidth="xl">
         <Box className="columns" {...props}>
-          <Drawer
-            variant="permanent"
-            open
-            list={[
-              { text: 'User Management' },
-              {
-                text: 'Create User',
-                href: '/subject/create/',
-                icon: 'UserAdd'
-              },
-              {
-                text: 'Modify User',
-                href: '/subject/modify/',
-                icon: 'Pencil'
-              },
-              { text: 'Data Management' },
-              {
-                text: 'Upload data',
-                href: '/data/upload/',
-                icon: 'ArrowUp'
-              },
-              {
-                text: 'Download data',
-                href: '/data/download/',
-                icon: 'CloudDownload'
-              },
-              { text: 'Schema Management' },
-              {
-                text: 'Create Schema',
-                href: '/schema/create/',
-                icon: 'AppsAdd'
-              },
-              {
-                text: 'Task Management'
-              },
-              {
-                text: 'Task Status',
-                href: '/tasks/',
-                icon: 'BarsProgress'
-              }
-            ]}
-          />
+          <Drawer variant="permanent" open list={allowedDrawerMethods} />
           <Box className="main-content">
             <Toolbar />
             {children}

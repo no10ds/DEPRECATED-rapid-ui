@@ -1,5 +1,6 @@
-import { Typography, Grid, Stack } from '@mui/material'
+import { Typography, Grid, Stack, LinearProgress } from '@mui/material'
 import Image, { StaticImageData } from 'next/image'
+import env from '@beam-australia/react-env'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { Link, Row } from '@/components'
 
@@ -8,6 +9,8 @@ import dataIcon from '../../public/img/data_icon.png'
 import schemaIcon from '../../public/img/schema_icon.png'
 import taskIcon from '../../public/img/task_icon.png'
 import { ReactNode } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { MethodsResponse } from '@/service/types'
 
 function ManagementCard({
   iconImage,
@@ -32,6 +35,23 @@ function ManagementCard({
 }
 
 function AccountIndexPage() {
+  const API_URL = env('API_URL')
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['methods'],
+    queryFn: async (): Promise<MethodsResponse> => {
+      const res = await fetch(`${API_URL}/methods`, { credentials: 'include' })
+      return res.json()
+    },
+    keepPreviousData: false,
+    cacheTime: 0,
+    refetchInterval: 0
+  })
+
+  if (isLoading) {
+    return <LinearProgress />
+  }
+
   return (
     <div>
       <Typography variant="h1" gutterBottom>
@@ -80,51 +100,66 @@ function AccountIndexPage() {
 
       <Row>
         <Grid container spacing={4}>
-          <ManagementCard iconImage={userIcon} title="User Management">
-            <>
-              <Typography paragraph>
-                Create and modify different users and clients.
-              </Typography>
-              <Link color="inherit" href="/subject/create">
-                Create User
-              </Link>
-              <Link color="inherit" href="/subject/modify">
-                Modify User
-              </Link>
-            </>
-          </ManagementCard>
+          {data.can_manage_users && (
+            <ManagementCard iconImage={userIcon} title="User Management">
+              <>
+                <Typography paragraph>
+                  Create and modify different users and clients.
+                </Typography>
+                <Link color="inherit" href="/subject/create">
+                  Create User
+                </Link>
+                <Link color="inherit" href="/subject/modify">
+                  Modify User
+                </Link>
+              </>
+            </ManagementCard>
+          )}
 
-          <ManagementCard iconImage={dataIcon} title="Data Management">
+          {(data.can_upload || data.can_download) && (
             <>
-              <Typography paragraph>Upload and download existing data files.</Typography>
-              <Link color="inherit" href="/data/download">
-                Download Data
-              </Link>
-              <Link color="inherit" href="/data/upload">
-                Upload Data
-              </Link>
-            </>
-          </ManagementCard>
+              <ManagementCard iconImage={dataIcon} title="Data Management">
+                <>
+                  <Typography paragraph>
+                    Upload and download existing data files.
+                  </Typography>
+                  {data.can_download && (
+                    <Link color="inherit" href="/data/download">
+                      Download Data
+                    </Link>
+                  )}
 
-          <ManagementCard iconImage={schemaIcon} title="Schema Management">
-            <>
-              <Typography paragraph>
-                Manually create new schemas from raw data.
-              </Typography>
-              <Link color="inherit" href="/schema/create">
-                Create Schema
-              </Link>
-            </>
-          </ManagementCard>
+                  {data.can_download && (
+                    <Link color="inherit" href="/data/upload">
+                      Upload Data
+                    </Link>
+                  )}
+                </>
+              </ManagementCard>
 
-          <ManagementCard iconImage={taskIcon} title="Task Status">
-            <>
-              <Typography paragraph>View pending and complete api tasks.</Typography>
-              <Link color="inherit" href="/tasks">
-                Tasks
-              </Link>
+              {data.can_create_schema && (
+                <ManagementCard iconImage={schemaIcon} title="Schema Management">
+                  <>
+                    <Typography paragraph>
+                      Manually create new schemas from raw data.
+                    </Typography>
+                    <Link color="inherit" href="/schema/create">
+                      Create Schema
+                    </Link>
+                  </>
+                </ManagementCard>
+              )}
+
+              <ManagementCard iconImage={taskIcon} title="Task Status">
+                <>
+                  <Typography paragraph>View pending and complete api tasks.</Typography>
+                  <Link color="inherit" href="/tasks">
+                    Tasks
+                  </Link>
+                </>
+              </ManagementCard>
             </>
-          </ManagementCard>
+          )}
         </Grid>
       </Row>
     </div>

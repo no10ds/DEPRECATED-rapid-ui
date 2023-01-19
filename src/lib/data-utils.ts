@@ -13,6 +13,7 @@ export const api = async (
   const url = createUrl(`${path}`, params)
   let detailMessage
   const res: Response = await fetch(url, {
+    credentials: "include",
     ...init
   })
   if (res.ok) return res

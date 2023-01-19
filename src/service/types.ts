@@ -119,3 +119,15 @@ export type CreateSchemaResponse = {
 // TODO Probably want to type this better
 export type JobResponse = { [key: string]: string | number | string[] }
 export type AllJobsResponse = JobResponse[]
+
+export type MethodsResponse = {
+  message: string | null
+  can_manage_users?: boolean
+  can_upload?: boolean
+  can_download?: boolean
+  can_create_schema: boolean
+}
+
+export type AuthResponse = {
+  detail: string
+}
