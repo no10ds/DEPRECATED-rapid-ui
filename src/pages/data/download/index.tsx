@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react'
 function UserModifyPage() {
   const router = useRouter()
   const [dataset, setDataset] = useState<string>('')
+  const [versions, setVersions] = useState(0)
+  const [versionSelected, setVersionSelected] = useState(0)
 
   const {
     isLoading: isDatasetsListLoading,
@@ -24,6 +26,20 @@ function UserModifyPage() {
     }
   }, [datasetsList])
 
+  useEffect(() => {
+    let version = 0
+    if (dataset) {
+      const splits = dataset.split('/')
+      const domain = splits[0]
+      const _dataset = splits[1]
+      version = parseInt(
+        datasetsList[domain].filter((item) => item.dataset === _dataset)[0].version
+      )
+    }
+    setVersions(version)
+    setVersionSelected(version ? 1 : 0)
+  }, [dataset])
+
   if (isDatasetsListLoading) {
     return <LinearProgress />
   }
@@ -35,14 +51,17 @@ function UserModifyPage() {
   return (
     <Card
       action={
-        <Button color="primary" onClick={() => router.push(`/data/download/${dataset}`)}>
+        <Button
+          color="primary"
+          onClick={() =>
+            router.push(`/data/download/${dataset}?version=${versionSelected}`)
+          }
+        >
           Next
         </Button>
       }
     >
-      <Typography variant="h2" gutterBottom>
-        Select subject
-      </Typography>
+      <Typography variant="h2">Select subject</Typography>
 
       <Row>
         <FormControl fullWidth size="small">
@@ -54,10 +73,7 @@ function UserModifyPage() {
             {Object.keys(datasetsList).map((key) => (
               <optgroup label={key} key={key}>
                 {datasetsList[key].map((item) => (
-                  <option
-                    value={`${key}/${item.dataset}?version=${item.version}`}
-                    key={item.dataset}
-                  >
+                  <option value={`${key}/${item.dataset}`} key={item.dataset}>
                     {item.dataset}
                   </option>
                 ))}
@@ -66,6 +82,28 @@ function UserModifyPage() {
           </Select>
         </FormControl>
       </Row>
+
+      {versions && (
+        <>
+          <Typography variant="h2">Select version</Typography>
+
+          <Row>
+            <Select
+              label="Select version"
+              onChange={(event) => setVersionSelected(event.target.value as number)}
+              native
+            >
+              {Array(versions)
+                .fill(0)
+                .map((_, index) => (
+                  <option value={index + 1} key={index}>
+                    {index + 1}
+                  </option>
+                ))}
+            </Select>
+          </Row>
+        </>
+      )}
     </Card>
   )
 }

@@ -108,7 +108,7 @@ function UserModifyPage() {
               Version: {uploadSuccessDetails.dataset_version}
             </Typography>
 
-            <Link href="/account/tasks/job/?id=f304d1e3-e400-42c4-a96a-1f3ded641bb5">
+            <Link href={`/tasks/${uploadSuccessDetails.job_id}`}>
               Track upload progress
             </Link>
           </Alert>

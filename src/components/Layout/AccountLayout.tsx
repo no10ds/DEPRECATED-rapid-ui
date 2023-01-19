@@ -73,13 +73,15 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
       {
         queryKey: ['authStatus'],
         queryFn: async (): Promise<AuthResponse> => {
-          const res = await fetch(`${API_URL}/oauth2`, { credentials: 'include' })
+          const res = await fetch(`${API_URL}/auth`, { credentials: 'include' })
           return res.json()
         },
         keepPreviousData: false,
         cacheTime: 0,
         refetchInterval: 0,
-        onError: () => redirect(),
+        onError: () => {
+          redirect()
+        },
         onSuccess: (data) => {
           const { detail } = data
           if (detail === 'fail') {
