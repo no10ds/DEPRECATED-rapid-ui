@@ -65,6 +65,11 @@ function UserModifyPage() {
           </Button>
         }
       >
+        <Typography variant="body1" gutterBottom>
+          Upload a new file to the selected data source. It assumes a given a schema has
+          been uploaded for the data source and the data to upload matches this schema.
+        </Typography>
+
         <Typography variant="h2" gutterBottom>
           Select subject
         </Typography>

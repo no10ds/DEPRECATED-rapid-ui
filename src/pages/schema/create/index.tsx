@@ -86,6 +86,7 @@ function CreateSchema() {
                   fullWidth
                   size="small"
                   variant="outlined"
+                  placeholder="showcase"
                   error={!!error}
                   helperText={error?.message}
                 />{' '}
@@ -106,6 +107,7 @@ function CreateSchema() {
                   fullWidth
                   size="small"
                   variant="outlined"
+                  placeholder="movies"
                   error={!!error}
                   helperText={error?.message}
                 />

@@ -26,6 +26,11 @@ function StatusPage() {
 
   return (
     <Card>
+      <Typography variant="body1" gutterBottom>
+        View all the tracked asynchronous processing jobs and the status of each job.
+        Press the desired job id to get greater details on it's run.
+      </Typography>
+
       <Typography variant="h2" gutterBottom>
         Jobs
       </Typography>

@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-function UserModifyPage() {
+function DownloadData() {
   const router = useRouter()
   const [dataset, setDataset] = useState<string>('')
   const [versions, setVersions] = useState(0)
@@ -61,7 +61,11 @@ function UserModifyPage() {
         </Button>
       }
     >
-      <Typography variant="h2">Select subject</Typography>
+      <Typography variant="body1" gutterBottom>
+        Download the contents of a datasource from rAPId. Select the relevant dataset you
+        want to download and then the version to download from. Please note it might take
+        some time to for the API to query the dataset especially if they are large.
+      </Typography>
 
       <Row>
         <FormControl fullWidth size="small">
@@ -108,8 +112,8 @@ function UserModifyPage() {
   )
 }
 
-export default UserModifyPage
+export default DownloadData
 
-UserModifyPage.getLayout = (page) => (
-  <AccountLayout title="Download">{page}</AccountLayout>
+DownloadData.getLayout = (page) => (
+  <AccountLayout title="Download Data">{page}</AccountLayout>
 )

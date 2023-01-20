@@ -72,6 +72,11 @@ function SubjectModifyPage() {
         </Button>
       }
     >
+      <Typography variant="body1" gutterBottom>
+        Modify the permissions a user or client can have. Select the user or client from
+        the list below and update their permissions on the next screen.
+      </Typography>
+
       <Typography variant="h2" gutterBottom>
         Select Subject
       </Typography>
