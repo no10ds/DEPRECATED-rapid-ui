@@ -9,9 +9,7 @@
     "start": "react-env -- next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
-    "test:all": "next lint && tsc --noemit && jest",
-    "storybook:dev": "start-storybook -p 6006",
-    "storybook:build": "build-storybook"
+    "test:all": "next lint && tsc --noemit && jest"
   },
   "dependencies": {
     "@beam-australia/react-env": "^3.1.1",
