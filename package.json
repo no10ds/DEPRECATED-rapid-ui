@@ -9,7 +9,8 @@
     "start": "react-env -- next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
-    "test:all": "next lint && tsc --noemit && jest"
+    "test:all": "next lint && tsc --noemit && jest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@beam-australia/react-env": "^3.1.1",
@@ -60,6 +61,7 @@
     "jest-fetch-mock": "^3.0.3",
     "prettier": "^2.8.1",
     "pretty-format": "^29.3.1",
-    "storybook-addon-designs": "^6.3.1"
+    "storybook-addon-designs": "^6.3.1",
+    "husky": "^8.0.0"
   }
 }

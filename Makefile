@@ -14,8 +14,8 @@ zip-contents:
 upload-to-release:
 	@gh release create [] $(ZIP_PATH) --draft --title "$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)" --notes "" 
 
-# upload-to-s3:
-# 	@aws s3 cp ./out/out.zip s3://$(IMAGE_NAME)/$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)
+create-static-out: ## Manually create the static files
+	@npm run build:static
 
 zip-and-release-ui:
 	@$(MAKE) zip-contents
@@ -26,6 +26,9 @@ zip-and-release-ui:
 npm-setup:
 	@npm i -g next
 	@npm ci
+	@npm run prepare
 
-create-static-out: ## Manually create the static files
-	@npm run build:static
+## Running -------------------------
+##
+dev:
+	@npm run dev
