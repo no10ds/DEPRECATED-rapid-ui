@@ -1,4 +1,4 @@
-name: rAPId UI Tests
+name: rAPId UI Dev Deployment
 
 on:
   push:
@@ -28,9 +28,12 @@ jobs:
       - name: Populate .env with additional vars
         run: |
           cp ./.github/.github.env .env
-        
+
       - name: Install packages
         run: make npm-setup
 
-      - name: Run tests
-        run: make test
+      - name: Build static files
+        run: make create-static-out
+
+      - name: Zip and Release
+        run: make zip-and-release-ui

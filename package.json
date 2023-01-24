@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "react-env -- next dev",
     "build": "next build",
-    "build:static": "next build && next export",
-    "start": "next start",
+    "build:static": "react-env -- next build && next export",
+    "start": "react-env -- next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
     "test:all": "next lint && tsc --noemit && jest",
-    "storybook:dev": "start-storybook -p 6006",
-    "storybook:build": "build-storybook"
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@beam-australia/react-env": "^3.1.1",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
@@ -61,6 +61,7 @@
     "jest-fetch-mock": "^3.0.3",
     "prettier": "^2.8.1",
     "pretty-format": "^29.3.1",
-    "storybook-addon-designs": "^6.3.1"
+    "storybook-addon-designs": "^6.3.1",
+    "husky": "^8.0.0"
   }
 }

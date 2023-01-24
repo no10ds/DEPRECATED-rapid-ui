@@ -1,4 +1,3 @@
-import { red } from '@mui/material/colors'
 import { createTheme, Shadows } from '@mui/material/styles'
 import { Colors } from './types'
 
@@ -146,6 +145,9 @@ const theme = createTheme({
             '.MuiListItemText-root': {
               fontWeight: 900
             }
+          },
+          '&.Mui-disabled': {
+            opacity: 1
           },
           borderRadius: 5
         }

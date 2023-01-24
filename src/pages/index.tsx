@@ -1,54 +1,172 @@
-import { Button, PublicLayout } from '@/components'
-import { Typography } from '@mui/material'
-import getConfig from 'next/config'
-import { useRouter } from 'next/navigation'
+import { Typography, Grid, Stack, LinearProgress } from '@mui/material'
+import Image, { StaticImageData } from 'next/image'
+import env from '@beam-australia/react-env'
+import AccountLayout from '@/components/Layout/AccountLayout'
+import { Link, Row } from '@/components'
 
-const { publicRuntimeConfig } = getConfig()
+import userIcon from '../../public/img/user_icon.png'
+import dataIcon from '../../public/img/data_icon.png'
+import schemaIcon from '../../public/img/schema_icon.png'
+import taskIcon from '../../public/img/task_icon.png'
+import { ReactNode } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { MethodsResponse } from '@/service/types'
 
-const IndexPage = () => {
-  const router = useRouter()
+function ManagementCard({
+  iconImage,
+  title,
+  children
+}: {
+  iconImage: StaticImageData
+  title: string
+  children: ReactNode
+}) {
   return (
-    <>
-      <Button
-        href={publicRuntimeConfig.loginUrl}
-        color="primary"
-        size="large"
-        onClick={() => router.push('/account/')}
-        fullWidth
-        disableRoute
-      >
-        Login
-      </Button>
-    </>
+    <Grid item xs={6}>
+      <Stack direction="row" spacing={2}>
+        <Image src={iconImage} width={120} height={120} alt="User Management" />
+        <Stack>
+          <Typography variant="h2">{title}</Typography>
+          {children}
+        </Stack>
+      </Stack>
+    </Grid>
   )
 }
 
-export default IndexPage
-IndexPage.getLayout = (page) => (
-  <PublicLayout
-    title="Welcome Back"
-    promo={
-      <>
-        <Typography gutterBottom variant="body1">
-          Project rAPId aims to create consistent, secure, interoperable data storage and
-          sharing interfaces (APIs) that enable departments to discover, manage and share
-          data and metadata amongst themselves.
+function AccountIndexPage() {
+  const API_URL = env('API_URL')
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['methods'],
+    queryFn: async (): Promise<MethodsResponse> => {
+      const res = await fetch(`${API_URL}/methods`, { credentials: 'include' })
+      return res.json()
+    },
+    keepPreviousData: false,
+    cacheTime: 0,
+    refetchInterval: 0
+  })
+
+  if (isLoading) {
+    return <LinearProgress />
+  }
+
+  return (
+    <div>
+      <Typography variant="h1" gutterBottom>
+        Welcome to rAPId
+      </Typography>
+
+      <div style={{ marginBottom: '3rem ' }}>
+        <Typography variant="h2">Getting Started</Typography>
+        <Typography paragraph>
+          With rAPId, users and clients can ingest, validate and query data via an API.
+          The rAPId web application makes interactions with the API quicker and easier.
+        </Typography>
+        <Typography paragraph gutterBottom>
+          To read more about the API or for technical architecture, see the links below.
+          Otherwise, to get started choose an action from the menu below.
         </Typography>
 
-        <Typography gutterBottom variant="body1">
-          This will improve the government's use of data by making it more scalable,
-          secure, and resilient, helping to match the rising demand for good-quality
-          evidence in the design, delivery, and evaluation of public policy.
-        </Typography>
+        <Stack sx={{ marginBottom: '1rem' }} spacing={1}>
+          <Link color="inherit" href={`${API_URL}/docs`} variant="body1">
+            View the API docs
+          </Link>
+          <Link
+            color="inherit"
+            href="https://github.com/no10ds/rapid-api"
+            variant="body1"
+          >
+            See the source code
+          </Link>
+          <Link
+            color="inherit"
+            href="https://github.com/no10ds/rapid-api/blob/main/docs/guides/usage/usage.md"
+            variant="body1"
+          >
+            View the rAPId Architecture
+          </Link>
+          <Link
+            color="inherit"
+            href="https://ukgovernmentdigital.slack.com/archives/C03E5GV2LQM"
+            variant="body1"
+          >
+            Contact
+          </Link>
+        </Stack>
+      </div>
 
-        <Typography gutterBottom variant="body1">
-          The project aims to deliver a replicable template for simple data storage
-          infrastructure in AWS, a RESTful API and custom frontend UI to ingest and share
-          named, standardised datasets.
-        </Typography>
-      </>
-    }
-  >
-    {page}
-  </PublicLayout>
+      <Row>
+        <Grid container spacing={4}>
+          {data.can_manage_users && (
+            <ManagementCard iconImage={userIcon} title="User Management">
+              <>
+                <Typography paragraph>
+                  Create and modify different users and clients.
+                </Typography>
+                <Link color="inherit" href="/subject/create">
+                  Create User
+                </Link>
+                <Link color="inherit" href="/subject/modify">
+                  Modify User
+                </Link>
+              </>
+            </ManagementCard>
+          )}
+
+          {(data.can_upload || data.can_download) && (
+            <>
+              <ManagementCard iconImage={dataIcon} title="Data Management">
+                <>
+                  <Typography paragraph>
+                    Upload and download existing data files.
+                  </Typography>
+                  {data.can_download && (
+                    <Link color="inherit" href="/data/download">
+                      Download Data
+                    </Link>
+                  )}
+
+                  {data.can_download && (
+                    <Link color="inherit" href="/data/upload">
+                      Upload Data
+                    </Link>
+                  )}
+                </>
+              </ManagementCard>
+
+              {data.can_create_schema && (
+                <ManagementCard iconImage={schemaIcon} title="Schema Management">
+                  <>
+                    <Typography paragraph>
+                      Manually create new schemas from raw data.
+                    </Typography>
+                    <Link color="inherit" href="/schema/create">
+                      Create Schema
+                    </Link>
+                  </>
+                </ManagementCard>
+              )}
+
+              <ManagementCard iconImage={taskIcon} title="Task Status">
+                <>
+                  <Typography paragraph>View pending and complete api tasks.</Typography>
+                  <Link color="inherit" href="/tasks">
+                    Tasks
+                  </Link>
+                </>
+              </ManagementCard>
+            </>
+          )}
+        </Grid>
+      </Row>
+    </div>
+  )
+}
+
+export default AccountIndexPage
+
+AccountIndexPage.getLayout = (page) => (
+  <AccountLayout title="Dashboard">{page}</AccountLayout>
 )

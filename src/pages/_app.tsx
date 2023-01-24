@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 import { AppProps } from 'next/app'
 import { NextPage } from 'next'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Head from 'next/head'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -17,7 +18,7 @@ interface MyAppProps extends AppProps {
 const clientSideEmotionCache = createEmotionCache()
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 5 * 1000 } }
+  defaultOptions: { queries: { staleTime: 5 * 1000, cacheTime: 0, retry: false } }
 })
 
 export default function MyApp({
@@ -38,6 +39,9 @@ export default function MyApp({
               }
             `}
           </style>
+          <Head>
+            <title>rAPId</title>
+          </Head>
           {getLayout(<Component {...pageProps} />)}
         </QueryClientProvider>
       </ThemeProvider>
