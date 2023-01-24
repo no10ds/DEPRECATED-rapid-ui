@@ -14,4 +14,4 @@ See [vX.X.X] changes
 
 ### Security
 
-[vX.X.X]: https://github.com/no10ds/rapid-infrastructure/compare/<previous_version>...HEAD
+[vX.X.X]: https://github.com/no10ds/rapid-ui/compare/<previous_version>...HEAD
