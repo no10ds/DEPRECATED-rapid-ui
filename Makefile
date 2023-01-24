@@ -20,7 +20,11 @@ help:	## List targets and description
 # Deployment -------------------------
 ##
 zip-contents:		## Zip contents of the built static html files
+ifdef tag
+	@zip -r ${tag} ./out
+else
 	@zip -r $(ZIP_PATH) ./out
+endif
 
 upload-to-release:	## Upload the zipped built static files to a Github draft release
 	@gh release create [] $(ZIP_PATH) --draft --title "$(TAG_NAME)" --notes "" 

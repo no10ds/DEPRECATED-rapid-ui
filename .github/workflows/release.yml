@@ -38,5 +38,5 @@ jobs:
         env:
           TAG: ${{ github.event.release.tag_name }}
         run: |
-          make zip-contents
+          make zip-contents tag=$TAG
           make upload-to-release-prod tag=$TAG
