@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: 19
 
+      - name: Log tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: echo $TAG
+
       - name: Populate .env with additional vars
         run: |
           cp ./.github/.github.env .env
@@ -30,6 +35,8 @@ jobs:
         run: make create-static-out
 
       - name: Zip and release
+        env:
+          TAG: ${{ github.event.release.tag_name }}
         run: |
           make zip-contents
-          make upload-to-release-prod tag="${{ github.event.release.name }}"
+          make upload-to-release-prod tag=$TAG
