@@ -10,15 +10,6 @@ export const SubjectCreate = z.object({
   permissions: z.array(z.string()).optional()
 })
 
-const keyValueTag = z.object({
-  key: z.string().min(1),
-  value: z.string().min(1)
-})
-
-const keyTag = z.object({
-  key: z.string().min(1)
-})
-
 export const schemaCreateSchema = z.object({
   sensitivity: SensitivityEnum,
   domain: z.string(),

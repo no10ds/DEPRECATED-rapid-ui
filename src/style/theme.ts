@@ -1,4 +1,3 @@
-import { red } from '@mui/material/colors'
 import { createTheme, Shadows } from '@mui/material/styles'
 import { Colors } from './types'
 

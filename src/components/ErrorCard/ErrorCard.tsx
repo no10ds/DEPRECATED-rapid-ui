@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import Alert from '../Alert/Alert'
 import Card from '../Card/Card'
 

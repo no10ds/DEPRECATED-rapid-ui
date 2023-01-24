@@ -1,14 +1,9 @@
 import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
-import getConfig from 'next/config'
-import { useRouter } from 'next/navigation'
 import env from '@beam-australia/react-env'
 import { useEffect, useState } from 'react'
 
-const { publicRuntimeConfig } = getConfig()
-
 const IndexPage = () => {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [authUrl, setAuthUrl] = useState('/login')
 
@@ -25,7 +20,7 @@ const IndexPage = () => {
     }
 
     fetchAuthUrl().catch(() => {
-      // TODO Handle some error
+      // TODO
     })
   }, [])
 
