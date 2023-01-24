@@ -21,7 +21,7 @@ Since rAPId version 5.0 the user interface to interact with the API was seperate
 - NextJs
 # Developing
 
-This is a quick guide to running the rAPId UI locally for development. For greater details please see the [Contributing README](docs/guides/contributing.md)
+This is a quick guide to running the rAPId UI locally for development. For greater details please see the [Contributing README](CONTRIBUTING.md)
 
 ## Prerequisites
 
