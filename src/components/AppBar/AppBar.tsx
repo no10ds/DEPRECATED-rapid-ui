@@ -33,7 +33,7 @@ export default function AppBar({ title, ...props }: Props) {
 
   const handleClose = () => {
     setAnchorEl(null)
-    router.push(`${API_URL}/oauth2/logout`)
+    router.replace(`${API_URL}/oauth2/logout`)
   }
 
   return (
