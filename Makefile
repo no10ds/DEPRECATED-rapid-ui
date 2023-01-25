@@ -21,7 +21,7 @@ help:	## List targets and description
 ##
 zip-contents:		## Zip contents of the built static html files
 ifdef tag
-	@zip -r ${tag} ./out
+	@zip -r "${tag}.zip" ./out
 else
 	@zip -r $(ZIP_PATH) ./out
 endif
@@ -30,7 +30,7 @@ upload-to-release:	## Upload the zipped built static files to a Github draft rel
 	@gh release create [] $(ZIP_PATH) --draft --title "$(TAG_NAME)" --notes "" 
 
 upload-to-release-prod:	## Upload the zipped built static files to a production Github release
-	@gh release upload ${tag} $(ZIP_PATH) --clobber
+	@gh release upload ${tag} "${tag}.zip" --clobber
 
 create-static-out: 	## Manually create the static files
 	@npm run build:static
