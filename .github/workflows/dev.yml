@@ -1,10 +1,6 @@
 name: rAPId UI Dev Deployment
 
 on:
-  push:
-    branches:
-      - "**"
-
   workflow_dispatch:
 
 jobs:
