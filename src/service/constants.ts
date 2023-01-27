@@ -47,3 +47,10 @@ export const taskManagementMethods = [
     icon: 'BarsProgress'
   }
 ]
+
+export const catalogManagementMethods = [
+  {
+    text: 'Data Catalog',
+    href: '/catalog/'
+  }
+]

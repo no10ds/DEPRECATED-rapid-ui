@@ -131,3 +131,12 @@ export type MethodsResponse = {
 export type AuthResponse = {
   detail: string
 }
+
+export type MetadataItem = {
+  dataset: string
+  domain: string
+  data: string
+  data_type: 'column_name' | 'data_name' | 'description'
+}
+
+export type MetadataSearchResponse = MetadataItem[]

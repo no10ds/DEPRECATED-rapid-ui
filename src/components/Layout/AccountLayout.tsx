@@ -6,6 +6,7 @@ import env from '@beam-australia/react-env'
 import { useQueries } from '@tanstack/react-query'
 import { AuthResponse, MethodsResponse } from '@/service/types'
 import {
+  catalogManagementMethods,
   dataDownloadMethod,
   dataUploadMethod,
   schemaManagementMethods,
@@ -55,6 +56,7 @@ const filterSidebarList = (methods: MethodsResponse) => {
       if (methods.can_upload) baseMethods.push(...dataUploadMethod)
       if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
       baseMethods.push(...taskManagementMethods)
+      baseMethods.push(...catalogManagementMethods)
     }
   }
 
