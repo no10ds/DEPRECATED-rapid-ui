@@ -6,6 +6,7 @@ import env from '@beam-australia/react-env'
 import { useQueries } from '@tanstack/react-query'
 import { AuthResponse, MethodsResponse } from '@/service/types'
 import {
+  catalogManagementMethods,
   dataDownloadMethod,
   dataUploadMethod,
   schemaManagementMethods,
@@ -47,13 +48,16 @@ const Layout = styled(Box)`
 
 const filterSidebarList = (methods: MethodsResponse) => {
   const baseMethods = []
-  if (methods.can_manage_users) baseMethods.push(...userManagementMethods)
-  if (methods.can_upload || methods.can_download) {
-    baseMethods.push({ text: 'Data Management' })
-    if (methods.can_download) baseMethods.push(...dataDownloadMethod)
-    if (methods.can_upload) baseMethods.push(...dataUploadMethod)
-    if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
-    baseMethods.push(...taskManagementMethods)
+  if (methods) {
+    if (methods.can_manage_users) baseMethods.push(...userManagementMethods)
+    if (methods.can_upload || methods.can_download) {
+      baseMethods.push({ text: 'Data Management' })
+      if (methods.can_download) baseMethods.push(...dataDownloadMethod)
+      if (methods.can_upload) baseMethods.push(...dataUploadMethod)
+      if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
+      baseMethods.push(...taskManagementMethods)
+      if (methods.can_download) baseMethods.push(...catalogManagementMethods)
+    }
   }
 
   return baseMethods

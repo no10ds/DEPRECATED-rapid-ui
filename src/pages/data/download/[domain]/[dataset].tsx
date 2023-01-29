@@ -116,6 +116,7 @@ function DownloadDataset() {
         list={asVerticalTableList([
           { name: 'Domain', value: domain as string },
           { name: 'Dataset', value: dataset as string },
+          { name: 'Description', value: datasetInfoData.metadata.description },
           { name: 'Version', value: version as string },
           { name: 'Last updated	', value: datasetInfoData.metadata.last_updated },
           {

@@ -74,6 +74,7 @@ export type DatasetInfoResponse = {
     domain: string
     dataset: string
     sensitivity: string
+    description?: string
     version?: number
     key_value_tags: { [key: string]: string }
     key_only_tags: string[]
@@ -98,6 +99,7 @@ export type GenerateSchemaResponse = {
     domain: string
     dataset: string
     sensitivity: string
+    description?: string
     update_behaviour: string
     key_value_tags: { [key: string]: string }
     key_only_tags: string[]
@@ -131,3 +133,13 @@ export type MethodsResponse = {
 export type AuthResponse = {
   detail: string
 }
+
+export type MetadataItem = {
+  dataset: string
+  domain: string
+  data: string
+  version: string
+  data_type: 'column_name' | 'data_name' | 'description'
+}
+
+export type MetadataSearchResponse = MetadataItem[]

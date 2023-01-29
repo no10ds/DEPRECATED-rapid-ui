@@ -21,6 +21,26 @@ function GetJob() {
     return <ErrorCard error={error as Error} />
   }
 
+  const renderErrors = () => {
+    if (data.errors) {
+      if ((data.errors as string[]).length) {
+        return (
+          <>
+            <Typography variant="h2" gutterBottom>
+              Errors
+            </Typography>
+            {(data.errors as string[]).map((error, index) => (
+              <Typography variant="body2" color="error" component="code" key={index}>
+                {error}
+              </Typography>
+            ))}
+          </>
+        )
+      }
+    }
+    return null
+  }
+
   return (
     <Card>
       <Typography variant="h2" gutterBottom>
@@ -43,18 +63,7 @@ function GetJob() {
         ])}
       />
 
-      {(data.errors as string[]).length ? (
-        <>
-          <Typography variant="h2" gutterBottom>
-            Errors
-          </Typography>
-          {(data.errors as string[]).map((error, index) => (
-            <Typography variant="body2" color="error" component="code" key={index}>
-              {error}
-            </Typography>
-          ))}
-        </>
-      ) : null}
+      {renderErrors()}
     </Card>
   )
 }

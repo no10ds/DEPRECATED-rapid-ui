@@ -5,7 +5,7 @@ const StyledTextField = styled(MuiTextField)<ComponentProps<typeof MuiTextField>
   .MuiInputAdornment-sizeSmall .MuiTypography-root,
   .MuiInputBase-root {
     margin-bottom: 4px;
-    height: 32px;
+    min-height: 32px;
     padding: 0px;
   }
   .MuiInputBase-input {

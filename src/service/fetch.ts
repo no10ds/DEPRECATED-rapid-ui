@@ -9,7 +9,8 @@ import {
   UserCreateBody,
   JobResponse,
   GenerateSchemaResponse,
-  CreateSchemaResponse
+  CreateSchemaResponse,
+  MetadataSearchResponse
 } from './types'
 import { api } from '@/lib/data-utils'
 
@@ -67,6 +68,16 @@ export const getJob = async ({ queryKey }): Promise<JobResponse> => {
 export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => {
   const [_, subjectId] = queryKey
   const res = await api(`${API_URL}/permissions/${subjectId}`, {
+    method: 'GET'
+  })
+  return res.json()
+}
+
+export const getMetadataSearch = async ({
+  queryKey
+}): Promise<MetadataSearchResponse> => {
+  const [_, search] = queryKey
+  const res = await api(`${API_URL}/datasets/search/${search}`, {
     method: 'GET'
   })
   return res.json()
