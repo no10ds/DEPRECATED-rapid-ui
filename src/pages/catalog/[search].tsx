@@ -11,7 +11,10 @@ function GetSearch() {
 
   const { isLoading, data, error } = useQuery(
     ['metadataSearch', search],
-    getMetadataSearch
+    getMetadataSearch,
+    {
+      refetchOnMount: false
+    }
   )
 
   if (isLoading) {
@@ -34,7 +37,6 @@ function GetSearch() {
   }
 
   const getChipLabel = (type) => {
-    console.log(type)
     if (type === 'column_name') {
       return 'Column'
     } else if (type === 'dataset_name') {
@@ -67,6 +69,7 @@ function GetSearch() {
           return [
             { children: item.domain },
             { children: item.dataset },
+            { children: item.version },
             { children: item.data },
             {
               children: (
@@ -82,6 +85,7 @@ function GetSearch() {
         headers={[
           { children: 'Dataset Domain' },
           { children: 'Dataset Title' },
+          { children: 'Version' },
           { children: 'Match Result' },
           { children: 'Type' }
         ]}

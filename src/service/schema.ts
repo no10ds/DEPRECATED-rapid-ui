@@ -14,6 +14,7 @@ export const schemaCreateSchema = z.object({
   sensitivity: SensitivityEnum,
   domain: z.string(),
   title: z.string(),
+  description: z.string().optional(),
   ownerEmail: z
     .string()
     .email()

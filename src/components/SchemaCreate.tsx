@@ -81,6 +81,7 @@ function CreateSchema({ schemaData }: { schemaData: GenerateSchemaResponse }) {
         data.metadata.sensitivity = _data.sensitivity
         data.metadata.domain = _data.domain
         data.metadata.dataset = _data.title
+        data.metadata.description = _data.description
         await mutate(data)
       })}
     >
@@ -150,6 +151,31 @@ function CreateSchema({ schemaData }: { schemaData: GenerateSchemaResponse }) {
                   variant="outlined"
                   error={!!error}
                   helperText={error?.message}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+              </>
+            )}
+          />
+        </Row>
+
+        <Row>
+          <Controller
+            name="description"
+            control={control}
+            defaultValue={newSchemaData.metadata.description}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Typography variant="caption">Dataset Description</Typography>
+                <TextField
+                  {...field}
+                  fullWidth
+                  multiline
+                  rows={2}
+                  size="small"
+                  variant="outlined"
+                  error={!!error}
+                  helperText={error?.message}
+                  placeholder="Enter a human readable descriptive to describe the dataset..."
                   onChange={(e) => field.onChange(e.target.value)}
                 />
               </>

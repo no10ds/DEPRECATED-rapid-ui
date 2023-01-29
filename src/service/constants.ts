@@ -50,7 +50,11 @@ export const taskManagementMethods = [
 
 export const catalogManagementMethods = [
   {
-    text: 'Data Catalog',
-    href: '/catalog/'
+    text: 'Data Catalog'
+  },
+  {
+    text: 'Search Catalog',
+    href: '/catalog/',
+    icon: 'Search'
   }
 ]

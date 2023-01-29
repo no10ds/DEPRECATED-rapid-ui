@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '@/lib/createEmotionCache'
+import { ErrorBoundary } from 'react-error-boundary'
 import { ReactNode, useEffect } from 'react'
 import { AppProps } from 'next/app'
 import { NextPage } from 'next'
@@ -8,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import env from '@beam-australia/react-env'
+import ErrorBoundryComponent from '@/components/ErrorBoundryComponent'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -63,22 +65,24 @@ export default function MyApp({
   }, [router.pathname])
 
   return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <style jsx global>
-            {`
-              body {
-                background-color: #fbfbfb;
-              }
-            `}
-          </style>
-          <Head>
-            <title>rAPId</title>
-          </Head>
-          {getLayout(<Component {...pageProps} />)}
-        </QueryClientProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <ErrorBoundary FallbackComponent={ErrorBoundryComponent}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <style jsx global>
+              {`
+                body {
+                  background-color: #fbfbfb;
+                }
+              `}
+            </style>
+            <Head>
+              <title>rAPId</title>
+            </Head>
+            {getLayout(<Component {...pageProps} />)}
+          </QueryClientProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </ErrorBoundary>
   )
 }
