@@ -29,7 +29,8 @@ else
 endif
 
 upload-to-release:	## Upload the zipped built static files to a Github draft release
-	@gh release create [] $(ZIP_PATH) --draft --title "$(TAG_NAME)" --notes "" 
+	@gh release create [] "$(ZIP_PATH).zip" --draft --title "$(TAG_NAME)" --notes ""
+	@gh release create [] "$(ZIP_PATH)-router-lambda.zip" --draft --title "$(TAG_NAME)" --notes ""
 
 upload-to-release-prod:	## Upload the zipped built static files to a production Github release
 	@gh release upload ${tag} "${tag}.zip" --clobber
