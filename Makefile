@@ -5,7 +5,7 @@ export
 
 IMAGE_NAME=ui-f1-registry
 LATEST_COMMIT_HASH=$(shell git rev-parse --short HEAD)
-ZIP_PATH=./out/$(IMAGE_NAME)-$(LATEST_COMMIT_HASH).zip
+ZIP_PATH=$(IMAGE_NAME)-$(LATEST_COMMIT_HASH)
 
 LATEST_TAG=$(shell gh api /repos/no10ds/rapid-ui/releases/latest | jq -r ".tag_name")
 ifeq ($(LATEST_TAG), null)
@@ -22,15 +22,19 @@ help:	## List targets and description
 zip-contents:		## Zip contents of the built static html files
 ifdef tag
 	@zip -r "${tag}.zip" ./out
+	@zip -r "${tag}-router-lambda.zip" ./lambda/lambda.js
 else
-	@zip -r $(ZIP_PATH) ./out
+	@zip -r "$(ZIP_PATH).zip" ./out
+	@zip -r "$(ZIP_PATH)-router-lambda.zip" ./lambda/lambda.js
 endif
 
 upload-to-release:	## Upload the zipped built static files to a Github draft release
-	@gh release create [] $(ZIP_PATH) --draft --title "$(TAG_NAME)" --notes "" 
+	@gh release create [] "$(ZIP_PATH).zip" --draft --title "$(TAG_NAME)" --notes ""
+	@gh release create [] "$(ZIP_PATH)-router-lambda.zip" --draft --title "$(TAG_NAME)" --notes ""
 
 upload-to-release-prod:	## Upload the zipped built static files to a production Github release
 	@gh release upload ${tag} "${tag}.zip" --clobber
+	@gh release upload ${tag} "${tag}-router-lambda.zip" --clobber
 
 create-static-out: 	## Manually create the static files
 	@npm run build:static

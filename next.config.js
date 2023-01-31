@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  trailingSlash: true,
-  publicRuntimeConfig: {
-    apiUrl: process.env.NEXT_PUBLIC_API_URL,
-    loginUrl: process.env.NEXT_PUBLIC_LOGIN_URL
-  },
+  trailingSlash: false,
   swcMinify: true,
   webpack(config) {
     config.module.rules.push({
@@ -15,8 +11,8 @@ const nextConfig = {
     return config
   },
   images: {
-    unoptimized: true,
-  },
+    unoptimized: true
+  }
 }
 
 module.exports = nextConfig
