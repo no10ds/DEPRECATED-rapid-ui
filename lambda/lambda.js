@@ -5,16 +5,6 @@ exports.handler = function (event, _, callback) {
   const { request } = event.Records[0].cf
   const uri = request.uri
 
-  console.log('URI', uri)
-
-  // Handle route without a suffix
-  if (uri.match(regexSuffixless)) {
-    request.uri = uri + '.html'
-    console.log('MATCHED 1', request.uri)
-    callback(null, request)
-    return
-  }
-
   // Handle dynamic routes
   const dynamicRoutes = {
     '/catalog/[search].html': /\/catalog\/[0-9a-zA-Z]/,
@@ -23,26 +13,37 @@ exports.handler = function (event, _, callback) {
     '/subject/modify/success/[subjectId].html': /\/subject\/modify\/success\/[^/]+/,
     '/tasks/[jobId].html': /\/tasks\/[^/]+/
   }
-  if (uri && regexTrailingSlash.test(uri)) {
+  if (uri && !uri.endsWith('.js')) {
+    let found = false
     Object.keys(dynamicRoutes).forEach((key) => {
       const value = dynamicRoutes[key]
       const isDynamicRouteMatch = value.test(uri)
       if (isDynamicRouteMatch) {
         request.uri = key
-        console.log('MATCHED 2', request.uri)
-        callback(null, request)
+        found = true
         return
       }
     })
+    if (found) {
+      callback(null, request)
+      return
+    }
+  }
+
+  // Handle route without a suffix
+  if (uri.match(regexSuffixless)) {
+    request.uri = uri + '.html'
+    callback(null, request)
+    return
   }
 
   // Handle all other routes that have a trailing slash
   if (uri.match(regexTrailingSlash)) {
     request.uri = uri + 'index.html'
-    console.log('MATCHED 3', request.uri)
     callback(null, request)
     return
   }
 
-  return callback(null, request)
+  callback(null, request)
+  return
 }
