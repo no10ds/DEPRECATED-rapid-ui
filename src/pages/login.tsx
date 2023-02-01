@@ -1,30 +1,52 @@
 import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
 import env from '@beam-australia/react-env'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useQueries } from '@tanstack/react-query'
+import { AuthResponse } from '@/service/types'
+import Router from 'next/router'
 
 const IndexPage = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const API_URL = env('API_URL')
   const [authUrl, setAuthUrl] = useState('/login')
 
-  useEffect(() => {
-    const fetchAuthUrl = async () => {
-      const API_URL = env('API_URL')
-      const result = await fetch('/api/oauth2/login')
-      if (result.ok) {
-        const data = await result.json()
-        setAuthUrl(data.auth_url)
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['authStatus'],
+        queryFn: async (): Promise<AuthResponse> => {
+          const res = await fetch(`${API_URL}/auth`, { credentials: 'include' })
+          return res.json()
+        },
+        keepPreviousData: false,
+        cacheTime: 0,
+        refetchInterval: 0,
+        onSuccess: (data) => {
+          const { detail } = data
+          if (detail === 'success') {
+            Router.replace({
+              pathname: '/'
+            })
+          }
+        }
+      },
+      {
+        queryKey: ['loginLink'],
+        queryFn: async () => {
+          const res = await fetch(`${API_URL}/oauth2/login`)
+          return res.json()
+        },
+        onSuccess: (data) => {
+          setAuthUrl(data.auth_url)
+        },
+        keepPreviousData: false,
+        cacheTime: 0,
+        refetchInterval: 0
       }
+    ]
+  })
 
-      setIsLoading(false)
-    }
-
-    fetchAuthUrl().catch(() => {
-      // TODO
-    })
-  }, [])
-
-  if (isLoading) {
+  if (results[0].isLoading || results[1].isLoading) {
     return <p>Loading...</p>
   }
 

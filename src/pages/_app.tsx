@@ -25,8 +25,6 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 5 * 1000, cacheTime: 0, retry: false } }
 })
 
-const API_URL = env('API_URL')
-
 export default function MyApp({
   Component,
   emotionCache = clientSideEmotionCache,
@@ -35,6 +33,7 @@ export default function MyApp({
   const router = useRouter()
   const { asPath } = router
   const getLayout = Component.getLayout ?? ((page) => page)
+  const API_URL = env('API_URL')
 
   let timeout: NodeJS.Timeout | null = null
 
