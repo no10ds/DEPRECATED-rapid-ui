@@ -3,17 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "react-env -- next dev",
+    "dev": "next dev",
     "build": "next build",
-    "build:static": "react-env -- next build && next export",
-    "start": "react-env -- next start",
+    "build:static": "next build && next export",
+    "start": "next start",
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
     "test:all": "next lint && tsc --noemit && jest",
     "prepare": "husky install"
   },
   "dependencies": {
-    "@beam-australia/react-env": "^3.1.1",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",

@@ -13,7 +13,6 @@ jobs:
     runs-on: self-hosted
     env:
       GH_TOKEN: ${{ github.token }}
-      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
     steps:
       - uses: actions/checkout@v3

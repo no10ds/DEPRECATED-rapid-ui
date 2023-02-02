@@ -35,12 +35,4 @@ Install the packages and pre-commit hooks.
 
 ## Running Locally 🏃‍♂️
 
-First you need to set the following environment variable:
-
-```
-REACT_APP_API_URL=
-```
-
-This is the url of the locally running version of rAPId you want to test the UI against.
-
 To run the app locally you can then run `make dev`.

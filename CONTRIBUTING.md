@@ -8,12 +8,6 @@ To maintain a consistent version of node across machines we use node version man
 nvm use
 ```
 
-When running locally you can specify what version of the api you want to hit by providing the relevant environment variable.
-
-```
-REACT_APP_API_URL=
-```
-
 By default the application checks for a valid rAPId access token (rat) cookie, if this is not available you will be redirected to the login page. When developing locally to bypass this you need to generate a valid rat token and place this as a cookie in both the frontend and in the api.
 
 ## Testing

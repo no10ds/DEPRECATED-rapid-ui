@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 function GetJob() {
   const router = useRouter()
   const { jobId } = router.query
-
   const { isLoading, data, error } = useQuery(['getJob', jobId], getJob)
 
   if (isLoading) {

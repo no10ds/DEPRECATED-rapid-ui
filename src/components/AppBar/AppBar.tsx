@@ -11,10 +11,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MenuItem from '@mui/material/MenuItem'
 import { ComponentProps } from 'react'
 import Link from '../Link'
-import env from '@beam-australia/react-env'
 import { useRouter } from 'next/router'
-
-const API_URL = env('API_URL')
 
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
 
@@ -33,7 +30,7 @@ export default function AppBar({ title, ...props }: Props) {
 
   const handleClose = () => {
     setAnchorEl(null)
-    router.replace(`${API_URL}/oauth2/logout`)
+    router.replace(`/api/oauth2/logout`)
   }
 
   return (
@@ -52,7 +49,7 @@ export default function AppBar({ title, ...props }: Props) {
         <Link
           color="rgb(255, 255, 255)"
           style={{ textDecoration: 'none', marginRight: '2rem' }}
-          href={`${API_URL}/docs`}
+          href={`/api/docs`}
         >
           Docs
         </Link>

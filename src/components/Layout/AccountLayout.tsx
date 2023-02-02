@@ -2,7 +2,6 @@ import { Box, Container, LinearProgress, styled, Toolbar } from '@mui/material'
 import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
 import Router from 'next/router'
-import env from '@beam-australia/react-env'
 import { useQueries } from '@tanstack/react-query'
 import { AuthResponse, MethodsResponse } from '@/service/types'
 import {
@@ -64,8 +63,6 @@ const filterSidebarList = (methods: MethodsResponse) => {
 }
 
 const AccountLayout = ({ children, title, ...props }: Props) => {
-  const API_URL = env('API_URL')
-
   const redirect = () => {
     Router.replace({
       pathname: '/login'
@@ -77,7 +74,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
       {
         queryKey: ['authStatus'],
         queryFn: async (): Promise<AuthResponse> => {
-          const res = await fetch(`${API_URL}/auth`, { credentials: 'include' })
+          const res = await fetch(`/api/auth`, { credentials: 'include' })
           return res.json()
         },
         keepPreviousData: false,
@@ -96,7 +93,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
       {
         queryKey: ['methods'],
         queryFn: async (): Promise<MethodsResponse> => {
-          const res = await fetch(`${API_URL}/methods`, { credentials: 'include' })
+          const res = await fetch(`/api/methods`, { credentials: 'include' })
           return res.json()
         },
         keepPreviousData: false,

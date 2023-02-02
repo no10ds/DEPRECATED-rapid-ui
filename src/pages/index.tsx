@@ -1,6 +1,5 @@
 import { Typography, Grid, Stack, LinearProgress } from '@mui/material'
 import Image, { StaticImageData } from 'next/image'
-import env from '@beam-australia/react-env'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { Link, Row } from '@/components'
 
@@ -35,12 +34,10 @@ function ManagementCard({
 }
 
 function AccountIndexPage() {
-  const API_URL = env('API_URL')
-
   const { data, isLoading } = useQuery({
     queryKey: ['methods'],
     queryFn: async (): Promise<MethodsResponse> => {
-      const res = await fetch(`${API_URL}/methods`, { credentials: 'include' })
+      const res = await fetch(`/api/methods`, { credentials: 'include' })
       return res.json()
     },
     keepPreviousData: false,
@@ -70,7 +67,7 @@ function AccountIndexPage() {
         </Typography>
 
         <Stack sx={{ marginBottom: '1rem' }} spacing={1}>
-          <Link color="inherit" href={`${API_URL}/docs`} variant="body1">
+          <Link color="inherit" href={`/api/docs`} variant="body1">
             View the API docs
           </Link>
           <Link

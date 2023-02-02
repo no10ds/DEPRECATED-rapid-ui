@@ -1,13 +1,11 @@
 import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
-import env from '@beam-australia/react-env'
 import { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { AuthResponse } from '@/service/types'
 import Router from 'next/router'
 
 const IndexPage = () => {
-  const API_URL = env('API_URL')
   const [authUrl, setAuthUrl] = useState('/login')
 
   const results = useQueries({
@@ -15,7 +13,7 @@ const IndexPage = () => {
       {
         queryKey: ['authStatus'],
         queryFn: async (): Promise<AuthResponse> => {
-          const res = await fetch(`${API_URL}/auth`, { credentials: 'include' })
+          const res = await fetch(`/api/auth`, { credentials: 'include' })
           return res.json()
         },
         keepPreviousData: false,
@@ -33,7 +31,7 @@ const IndexPage = () => {
       {
         queryKey: ['loginLink'],
         queryFn: async () => {
-          const res = await fetch(`${API_URL}/oauth2/login`)
+          const res = await fetch(`/api/oauth2/login`)
           return res.json()
         },
         onSuccess: (data) => {

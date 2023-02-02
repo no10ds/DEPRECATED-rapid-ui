@@ -9,9 +9,9 @@ exports.handler = function (event, _, callback) {
   const dynamicRoutes = {
     '/catalog/[search].html': /\/catalog\/[0-9a-zA-Z]/,
     '/data/download/[domain]/[dataset].html': /\/data\/download\/[^/]+\/[^/]+/,
-    '/subject/modify/[subjectId].html': /\/subject\/modify\/[^/]+/,
-    '/subject/modify/success/[subjectId].html': /\/subject\/modify\/success\/[^/]+/,
-    '/tasks/[jobId].html': /\/tasks\/[^/]+/
+    '/subject/modify/[subjectId].html': /\/subject\/modify\/[0-9]+/,
+    '/subject/modify/success/[subjectId].html': /\/subject\/modify\/success\/[0-9]+/,
+    '/tasks/[jobId].html': /\/tasks\/[0-9]+/
   }
   if (uri && !uri.endsWith('.js')) {
     let found = false
