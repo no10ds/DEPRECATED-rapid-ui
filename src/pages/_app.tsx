@@ -8,7 +8,6 @@ import { NextPage } from 'next'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import env from '@beam-australia/react-env'
 import ErrorBoundryComponent from '@/components/ErrorBoundryComponent'
 
 interface MyAppProps extends AppProps {
@@ -33,7 +32,6 @@ export default function MyApp({
   const router = useRouter()
   const { asPath } = router
   const getLayout = Component.getLayout ?? ((page) => page)
-  const API_URL = env('API_URL')
 
   let timeout: NodeJS.Timeout | null = null
 
@@ -47,8 +45,8 @@ export default function MyApp({
     }
 
     timeout = setTimeout(
-      () => {
-        router.replace(`${API_URL}/oauth2/logout`)
+      async () => {
+        await fetch('/api/oauth2/logout', { method: 'GET', credentials: 'include' })
       },
       isLongTimeout() ? 1800000 : 300000 // 30 mins and 5 mins respectively
     )
