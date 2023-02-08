@@ -1,4 +1,3 @@
-import { screen } from '@testing-library/react'
 import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders } from '@/lib/test-utils'
 import AppPage from '@/pages/_app'
