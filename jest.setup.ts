@@ -18,3 +18,8 @@ jest.mock('next/config', () => () => ({
     apiUrl: 'http://myapp'
   }
 }))
+
+jest.mock('next/router', () => ({
+  ...jest.requireActual('next/router'),
+  useRouter: jest.fn(() => ({ locale: 'en', push: jest.fn(), replace: jest.fn() }))
+}))
