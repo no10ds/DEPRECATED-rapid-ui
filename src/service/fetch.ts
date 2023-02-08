@@ -9,12 +9,30 @@ import {
   JobResponse,
   GenerateSchemaResponse,
   CreateSchemaResponse,
-  MetadataSearchResponse
+  MetadataSearchResponse,
+  AuthResponse,
+  GetLoginResponse,
+  MethodsResponse
 } from './types'
 import { api } from '@/lib/data-utils'
 
+export const getAuthStatus = async (): Promise<AuthResponse> => {
+  const res = await api(`/api/auth`, { method: 'GET' })
+  return res.json()
+}
+
+export const getLogin = async (): Promise<GetLoginResponse> => {
+  const res = await api('/api/oauth2/login', { method: 'GET' })
+  return res.json()
+}
+
 export const getAuth = async (): Promise<{ detail: string }> => {
   const res = await api(`/api/oauth2`, { method: 'GET' })
+  return res.json()
+}
+
+export const getMethods = async (): Promise<MethodsResponse> => {
+  const res = await api('/api/methods', { method: 'GET' })
   return res.json()
 }
 

@@ -12,6 +12,7 @@ import {
   taskManagementMethods,
   userManagementMethods
 } from '@/service/constants'
+import { getAuthStatus, getMethods } from '@/service'
 
 type Props = { title?: string } & ComponentProps<typeof Box>
 
@@ -73,10 +74,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
     queries: [
       {
         queryKey: ['authStatus'],
-        queryFn: async (): Promise<AuthResponse> => {
-          const res = await fetch(`/api/auth`, { credentials: 'include' })
-          return res.json()
-        },
+        queryFn: getAuthStatus,
         keepPreviousData: false,
         cacheTime: 0,
         refetchInterval: 0,
@@ -92,10 +90,7 @@ const AccountLayout = ({ children, title, ...props }: Props) => {
       },
       {
         queryKey: ['methods'],
-        queryFn: async (): Promise<MethodsResponse> => {
-          const res = await fetch(`/api/methods`, { credentials: 'include' })
-          return res.json()
-        },
+        queryFn: getMethods,
         keepPreviousData: false,
         cacheTime: 0,
         refetchInterval: 0

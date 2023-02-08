@@ -134,6 +134,10 @@ export type AuthResponse = {
   detail: string
 }
 
+export type GetLoginResponse = {
+  auth_url: string
+}
+
 export type MetadataItem = {
   dataset: string
   domain: string

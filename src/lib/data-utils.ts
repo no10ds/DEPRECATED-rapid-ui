@@ -8,7 +8,9 @@ export const api = async (
   init: RequestInit = {},
   params?: ParamsType
 ): Promise<Response> => {
-  const url = createUrl(`${path}`, params)
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
+  const baseUrl = API_URL ? `${API_URL}${path}` : path
+  const url = createUrl(`${baseUrl}`, params)
   let detailMessage
   const res: Response = await fetch(url, {
     credentials: 'include',

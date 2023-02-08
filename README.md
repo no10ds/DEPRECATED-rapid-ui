@@ -35,4 +35,6 @@ Install the packages and pre-commit hooks.
 
 ## Running Locally 🏃‍♂️
 
+Copy over the `.env.example` file into a seperate `.env.local` file and then populate the environment variable to point the api url to your current running rAPId api. To get authentication working you will need the relevant `rat` cookie stored in the browser.
+
 To run the app locally you can then run `make dev`.

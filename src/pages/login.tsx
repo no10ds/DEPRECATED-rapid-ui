@@ -2,8 +2,8 @@ import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
 import { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
-import { AuthResponse } from '@/service/types'
 import Router from 'next/router'
+import { getAuthStatus, getLogin } from '@/service'
 
 const IndexPage = () => {
   const [authUrl, setAuthUrl] = useState('/login')
@@ -12,10 +12,7 @@ const IndexPage = () => {
     queries: [
       {
         queryKey: ['authStatus'],
-        queryFn: async (): Promise<AuthResponse> => {
-          const res = await fetch(`/api/auth`, { credentials: 'include' })
-          return res.json()
-        },
+        queryFn: getAuthStatus,
         keepPreviousData: false,
         cacheTime: 0,
         refetchInterval: 0,
@@ -30,10 +27,7 @@ const IndexPage = () => {
       },
       {
         queryKey: ['loginLink'],
-        queryFn: async () => {
-          const res = await fetch(`/api/oauth2/login`)
-          return res.json()
-        },
+        queryFn: getLogin,
         onSuccess: (data) => {
           setAuthUrl(data.auth_url)
         },
