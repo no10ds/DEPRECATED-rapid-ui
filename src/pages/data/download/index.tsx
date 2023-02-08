@@ -38,6 +38,7 @@ function DownloadData() {
     }
     setVersions(version)
     setVersionSelected(version ? 1 : 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataset])
 
   if (isDatasetsListLoading) {

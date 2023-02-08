@@ -57,7 +57,7 @@ export default function Drawer({ list, ...props }: Props) {
         </Toolbar>
       </Link>
       <Divider />
-      {list.map(({ text, divider, icon, href }, index) => {
+      {list.map(({ text, divider, icon, href }) => {
         const Icon = Icons[icon]
         return (
           <List key={text}>

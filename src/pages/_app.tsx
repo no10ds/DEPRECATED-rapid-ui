@@ -59,6 +59,7 @@ export default function MyApp({
     document.addEventListener('touchstart', restartAutoReset)
     document.addEventListener('click', restartAutoReset)
     document.addEventListener('keydown', restartAutoReset)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname])
 
   return (

@@ -73,7 +73,7 @@ export const getAllJobs = async (): Promise<AllJobsResponse> => {
 }
 
 export const getJob = async ({ queryKey }): Promise<JobResponse> => {
-  const [_, jobId] = queryKey
+  const [, jobId] = queryKey
   const res = await api(`/api/jobs/${jobId}`, {
     method: 'GET'
   })
@@ -81,7 +81,7 @@ export const getJob = async ({ queryKey }): Promise<JobResponse> => {
 }
 
 export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => {
-  const [_, subjectId] = queryKey
+  const [, subjectId] = queryKey
   const res = await api(`/api/permissions/${subjectId}`, {
     method: 'GET'
   })
@@ -91,7 +91,7 @@ export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => 
 export const getMetadataSearch = async ({
   queryKey
 }): Promise<MetadataSearchResponse> => {
-  const [_, search] = queryKey
+  const [, search] = queryKey
   const res = await api(`/api/datasets/search/${search}`, {
     method: 'GET'
   })
@@ -133,7 +133,7 @@ export const uploadDataset = async ({ path, data }: { path: string; data: FormDa
 }
 
 export const getDatasetInfo = async ({ queryKey }): Promise<DatasetInfoResponse> => {
-  const [_, domain, dataset, version] = queryKey
+  const [, domain, dataset, version] = queryKey
   const res = await api(`/api/datasets/${domain}/${dataset}/info?version=${version}`, {
     method: 'GET'
   })
