@@ -10,6 +10,7 @@ import taskIcon from '../../public/img/task_icon.png'
 import { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { MethodsResponse } from '@/service/types'
+import { getMethods } from '@/service'
 
 function ManagementCard({
   iconImage,
@@ -36,10 +37,7 @@ function ManagementCard({
 function AccountIndexPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['methods'],
-    queryFn: async (): Promise<MethodsResponse> => {
-      const res = await fetch(`/api/methods`, { credentials: 'include' })
-      return res.json()
-    },
+    queryFn: getMethods,
     keepPreviousData: false,
     cacheTime: 0,
     refetchInterval: 0
