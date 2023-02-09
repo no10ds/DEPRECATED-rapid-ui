@@ -39,7 +39,7 @@ const IndexPage = () => {
   })
 
   if (results[0].isLoading || results[1].isLoading) {
-    return <p>Loading...</p>
+    return <p role="progressbar">Loading...</p>
   }
 
   return (
