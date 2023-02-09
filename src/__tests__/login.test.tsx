@@ -2,7 +2,7 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders } from '@/lib/test-utils'
 import LoginPage from '@/pages/login'
-import { AuthResponse, GetLoginResponse, MethodsResponse } from '@/service/types'
+import { AuthResponse, GetLoginResponse } from '@/service/types'
 
 const mockAuth: AuthResponse = { detail: 'success' }
 const mockLogin: GetLoginResponse = { auth_url: 'http://my-apiurl/' }
@@ -22,7 +22,7 @@ describe('Page: Login page', () => {
     jest.clearAllMocks()
   })
 
-  it('renders aftre preloader', async () => {
+  it('renders after preloader', async () => {
     renderWithProviders(<LoginPage />)
 
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
@@ -42,5 +42,8 @@ describe('Page: Login page', () => {
         pathname: '/'
       })
     })
+    expect(screen.getByTestId('login-link')).toHaveAttribute('href', mockLogin.auth_url)
   })
+
+  it.skip('on error', () => jest.fn())
 })
