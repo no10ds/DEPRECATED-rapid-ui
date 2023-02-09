@@ -4,7 +4,7 @@ import { renderWithProviders } from '@/lib/test-utils'
 import IndexPage from '@/pages/index'
 import { MethodsResponse } from '@/service/types'
 
-describe('Page: Debug page', () => {
+describe('Page: Index page', () => {
   afterEach(() => {
     fetchMock.resetMocks()
   })
