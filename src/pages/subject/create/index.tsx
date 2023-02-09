@@ -209,7 +209,7 @@ function CreateUserPage() {
                       <Chip
                         label={item.display_name}
                         key={item.display_name_full}
-                        onToggle={(e, active) => {
+                        onToggle={(_e, active) => {
                           if (active) {
                             setSelectedPermissions([...selectedPermissions, item.name])
                           } else {

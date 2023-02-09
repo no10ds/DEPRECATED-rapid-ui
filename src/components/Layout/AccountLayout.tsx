@@ -3,7 +3,7 @@ import { ComponentProps } from 'react'
 import { AppBar, Drawer } from '@/components'
 import Router from 'next/router'
 import { useQueries } from '@tanstack/react-query'
-import { AuthResponse, MethodsResponse } from '@/service/types'
+import { MethodsResponse } from '@/service/types'
 import {
   catalogManagementMethods,
   dataDownloadMethod,
