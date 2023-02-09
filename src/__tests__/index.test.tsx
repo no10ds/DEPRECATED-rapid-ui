@@ -4,14 +4,6 @@ import { renderWithProviders } from '@/lib/test-utils'
 import IndexPage from '@/pages/index'
 import { MethodsResponse } from '@/service/types'
 
-const mockData: MethodsResponse = {
-  can_manage_users: false,
-  can_upload: false,
-  can_download: false,
-  can_create_schema: false,
-  message: 'hello world'
-}
-
 describe('Page: Debug page', () => {
   afterEach(() => {
     fetchMock.resetMocks()
@@ -24,6 +16,14 @@ describe('Page: Debug page', () => {
   })
 
   describe('permissions', () => {
+    const mockData: MethodsResponse = {
+      can_manage_users: false,
+      can_upload: false,
+      can_download: false,
+      can_create_schema: false,
+      message: 'some error message'
+    }
+
     it('none', async () => {
       fetchMock.mockResponseOnce(JSON.stringify(mockData))
       renderWithProviders(<IndexPage />)
@@ -34,10 +34,62 @@ describe('Page: Debug page', () => {
 
       expect(screen.getByTestId('intro')).toBeVisible()
 
-      expect(screen.queryByTitle('User Management')).not.toBeInTheDocument()
-      expect(screen.queryByTitle('Data Management')).not.toBeInTheDocument()
-      expect(screen.queryByTitle('Schema Management')).not.toBeInTheDocument()
-      expect(screen.queryByTitle('Task Status')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('user-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('data-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('schema-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('task-status')).not.toBeInTheDocument()
+    })
+
+    it('User Management', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify({ ...mockData, can_manage_users: true }))
+      renderWithProviders(<IndexPage />)
+
+      await waitFor(async () =>
+        expect(screen.getByTestId('user-management')).toBeVisible()
+      )
+
+      expect(screen.queryByTestId('data-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('schema-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('task-status')).not.toBeInTheDocument()
+    })
+
+    it('Data Management', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify({ ...mockData, can_upload: true }))
+      renderWithProviders(<IndexPage />)
+
+      await waitFor(async () =>
+        expect(screen.getByTestId('data-management')).toBeVisible()
+      )
+      expect(screen.getByTestId('task-status')).toBeInTheDocument()
+      expect(screen.queryByTestId('user-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('schema-management')).not.toBeInTheDocument()
+    })
+
+    it('Data Management for downloading data', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify({ ...mockData, can_download: true }))
+      renderWithProviders(<IndexPage />)
+
+      await waitFor(async () =>
+        expect(screen.getByTestId('data-management')).toBeVisible()
+      )
+      expect(screen.getByTestId('task-status')).toBeInTheDocument()
+      expect(screen.queryByTestId('user-management')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('schema-management')).not.toBeInTheDocument()
+    })
+
+    it('Schema Management', async () => {
+      fetchMock.mockResponseOnce(
+        JSON.stringify({ ...mockData, can_upload: true, can_create_schema: true })
+      )
+      renderWithProviders(<IndexPage />)
+
+      await waitFor(async () =>
+        expect(screen.getByTestId('data-management')).toBeVisible()
+      )
+      expect(screen.getByTestId('schema-management')).toBeVisible()
+      expect(screen.getByTestId('task-status')).toBeInTheDocument()
+
+      expect(screen.queryByTestId('user-management')).not.toBeInTheDocument()
     })
   })
 })

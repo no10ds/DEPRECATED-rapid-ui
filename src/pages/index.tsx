@@ -7,21 +7,22 @@ import userIcon from '../../public/img/user_icon.png'
 import dataIcon from '../../public/img/data_icon.png'
 import schemaIcon from '../../public/img/schema_icon.png'
 import taskIcon from '../../public/img/task_icon.png'
-import { ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { MethodsResponse } from '@/service/types'
 
 function ManagementCard({
   iconImage,
   title,
-  children
+  children,
+  ...rest
 }: {
   iconImage: StaticImageData
   title: string
   children: ReactNode
-}) {
+} & ComponentProps<typeof Grid>) {
   return (
-    <Grid item xs={6}>
+    <Grid item xs={6} {...rest}>
       <Stack direction="row" spacing={2}>
         <Image src={iconImage} width={120} height={120} alt="User Management" />
         <Stack>
@@ -97,7 +98,11 @@ function AccountIndexPage() {
       <Row>
         <Grid container spacing={4}>
           {data.can_manage_users && (
-            <ManagementCard iconImage={userIcon} title="User Management">
+            <ManagementCard
+              iconImage={userIcon}
+              title="User Management"
+              data-testid="user-management"
+            >
               <>
                 <Typography paragraph>
                   Create and modify different users and clients.
@@ -114,7 +119,11 @@ function AccountIndexPage() {
 
           {(data.can_upload || data.can_download) && (
             <>
-              <ManagementCard iconImage={dataIcon} title="Data Management">
+              <ManagementCard
+                iconImage={dataIcon}
+                title="Data Management"
+                data-testid="data-management"
+              >
                 <>
                   <Typography paragraph>
                     Upload and download existing data files.
@@ -134,7 +143,11 @@ function AccountIndexPage() {
               </ManagementCard>
 
               {data.can_create_schema && (
-                <ManagementCard iconImage={schemaIcon} title="Schema Management">
+                <ManagementCard
+                  iconImage={schemaIcon}
+                  title="Schema Management"
+                  data-testid="schema-management"
+                >
                   <>
                     <Typography paragraph>
                       Manually create new schemas from raw data.
@@ -146,7 +159,11 @@ function AccountIndexPage() {
                 </ManagementCard>
               )}
 
-              <ManagementCard iconImage={taskIcon} title="Task Status">
+              <ManagementCard
+                iconImage={taskIcon}
+                title="Task Status"
+                data-testid="task-status"
+              >
                 <>
                   <Typography paragraph>View pending and complete api tasks.</Typography>
                   <Link color="inherit" href="/tasks">
