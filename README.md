@@ -40,9 +40,11 @@ Copy over the `.env.example` file into a seperate `.env.local` file and then pop
 
 To run the app locally you can then run `make dev`.
 
-## Env variables
+## Local environment variables
+
+Use the below to proxy to a third party auth server
 
 ```
-NEXT_PUBLIC_API_URL=https://some-apiurl
-NEXT_PUBLIC_API_URL_PROXY=https://some-apiurl #optional for local development only
+NEXT_PUBLIC_API_URL=/myapi
+NEXT_PUBLIC_API_URL_PROXY=https://some-apiurl-from-another-server #optional for local development only
 ```
