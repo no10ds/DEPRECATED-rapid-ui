@@ -55,7 +55,7 @@ function AccountIndexPage() {
         Welcome to rAPId
       </Typography>
 
-      <div style={{ marginBottom: '3rem ' }}>
+      <div style={{ marginBottom: '3rem ' }} data-testid="intro">
         <Typography variant="h2">Getting Started</Typography>
         <Typography paragraph>
           With rAPId, users and clients can ingest, validate and query data via an API.
