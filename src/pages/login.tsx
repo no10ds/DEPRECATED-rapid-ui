@@ -2,11 +2,12 @@ import { Button, PublicLayout } from '@/components'
 import { Typography } from '@mui/material'
 import { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { getAuthStatus, getLogin } from '@/service'
 
 const IndexPage = () => {
   const [authUrl, setAuthUrl] = useState('/login')
+  const router = useRouter()
 
   const results = useQueries({
     queries: [
@@ -19,7 +20,7 @@ const IndexPage = () => {
         onSuccess: (data) => {
           const { detail } = data
           if (detail === 'success') {
-            Router.replace({
+            router.replace({
               pathname: '/'
             })
           }
@@ -39,12 +40,19 @@ const IndexPage = () => {
   })
 
   if (results[0].isLoading || results[1].isLoading) {
-    return <p>Loading...</p>
+    return <p role="progressbar">Loading...</p>
   }
 
   return (
     <>
-      <Button href={authUrl} color="primary" size="large" fullWidth disableRoute>
+      <Button
+        href={authUrl}
+        color="primary"
+        size="large"
+        fullWidth
+        disableRoute
+        data-testid="login-link"
+      >
         Login
       </Button>
     </>

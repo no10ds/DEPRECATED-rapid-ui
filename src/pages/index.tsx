@@ -2,14 +2,12 @@ import { Typography, Grid, Stack, LinearProgress } from '@mui/material'
 import Image, { StaticImageData } from 'next/image'
 import AccountLayout from '@/components/Layout/AccountLayout'
 import { Link, Row } from '@/components'
-
 import userIcon from '../../public/img/user_icon.png'
 import dataIcon from '../../public/img/data_icon.png'
 import schemaIcon from '../../public/img/schema_icon.png'
 import taskIcon from '../../public/img/task_icon.png'
 import { ComponentProps, ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { MethodsResponse } from '@/service/types'
 import { getMethods } from '@/service'
 
 function ManagementCard({

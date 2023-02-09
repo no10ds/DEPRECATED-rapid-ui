@@ -5,7 +5,7 @@ import AppPage from '@/pages/_app'
 jest.useFakeTimers()
 jest.spyOn(global, 'setTimeout')
 
-describe('Page: Debug page', () => {
+describe('Page: App page', () => {
   afterEach(() => {
     fetchMock.resetMocks()
   })
