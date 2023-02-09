@@ -45,7 +45,14 @@ const IndexPage = () => {
 
   return (
     <>
-      <Button href={authUrl} color="primary" size="large" fullWidth disableRoute>
+      <Button
+        href={authUrl}
+        color="primary"
+        size="large"
+        fullWidth
+        disableRoute
+        data-testid="login-link"
+      >
         Login
       </Button>
     </>
