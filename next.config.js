@@ -1,3 +1,4 @@
+const apiProx = process.env.NEXT_PUBLIC_API_URL_PROXY || null
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,6 +13,16 @@ const nextConfig = {
   },
   images: {
     unoptimized: true
+  },
+  async rewrites() {
+    return process.env.NODE_ENV === 'development' && !!apiProx
+      ? [
+          {
+            source: process.env.NEXT_PUBLIC_API_URL + '/:path*',
+            destination: apiProx + '/:path*'
+          }
+        ]
+      : []
   }
 }
 

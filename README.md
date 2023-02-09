@@ -2,7 +2,6 @@
 
 <img src="https://github.com/no10ds/rapid-api/blob/main/logo.png?raw=true" display=block margin-left=auto margin-right=auto width=60%;/>
 
-
 The rAPId service allows users to ingest, validate and query data via an API. This repo provides the user interface service for rAPId version >= 5.0
 
 <br />
@@ -19,6 +18,7 @@ Since rAPId version 5.0 the user interface to interact with the API was seperate
 - Typescript
 - NodeJs
 - NextJs
+
 # Developing
 
 This is a quick guide to running the rAPId UI locally for development. For greater details please see the [Contributing README](CONTRIBUTING.md)
@@ -26,8 +26,9 @@ This is a quick guide to running the rAPId UI locally for development. For great
 ## Prerequisites
 
 Install all the required tools
+
 - [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm#installing-and-updating)
-- Install and use the required version of node `nvm use` 
+- Install and use the required version of node `nvm use`
 
 Install the packages and pre-commit hooks.
 
@@ -38,3 +39,10 @@ Install the packages and pre-commit hooks.
 Copy over the `.env.example` file into a seperate `.env.local` file and then populate the environment variable to point the api url to your current running rAPId api. To get authentication working you will need the relevant `rat` cookie stored in the browser.
 
 To run the app locally you can then run `make dev`.
+
+## Env variables
+
+```
+NEXT_PUBLIC_API_URL=https://some-apiurl
+NEXT_PUBLIC_API_URL_PROXY=https://some-apiurl #optional for local development only
+```
