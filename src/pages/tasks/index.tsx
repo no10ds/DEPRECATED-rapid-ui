@@ -25,7 +25,7 @@ function StatusPage() {
   }
 
   return (
-    <Card>
+    <Card data-testid="tasks-content">
       <Typography variant="body1" gutterBottom>
         View all the tracked asynchronous processing jobs and the status of each job.
         Press the desired job id to get greater details on it's run.
