@@ -53,6 +53,7 @@ function DownloadData() {
     <Card
       action={
         <Button
+          data-testid="submit"
           color="primary"
           onClick={() =>
             router.push(`/data/download/${dataset}?version=${versionSelected}`)
@@ -74,6 +75,7 @@ function DownloadData() {
             label="Select a dataset"
             onChange={(event) => setDataset(event.target.value as string)}
             native
+            inputProps={{ 'data-testid': 'select-dataset' }}
           >
             {Object.keys(datasetsList).map((key) => (
               <optgroup label={key} key={key}>
@@ -97,6 +99,7 @@ function DownloadData() {
               label="Select version"
               onChange={(event) => setVersionSelected(event.target.value as number)}
               native
+              inputProps={{ 'data-testid': 'select-version' }}
             >
               {Array(versions)
                 .fill(0)
