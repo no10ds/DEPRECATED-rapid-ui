@@ -60,7 +60,7 @@ function UserModifyPage() {
     >
       <Card
         action={
-          <Button color="primary" type="submit" loading={isLoading}>
+          <Button color="primary" type="submit" loading={isLoading} data-testid="submit">
             Upload dataset
           </Button>
         }
@@ -80,6 +80,7 @@ function UserModifyPage() {
               label="Select dataset"
               onChange={(event) => setDataset(event.target.value as string)}
               native
+              inputProps={{ 'data-testid': 'select-dataset' }}
             >
               {Object.keys(datasetsList).map((key) => (
                 <optgroup label={key} key={key}>
@@ -99,12 +100,16 @@ function UserModifyPage() {
             name="file"
             id="file"
             type="file"
+            data-testid="upload"
             onChange={(event) => setFile(event.target.files[0])}
           />
         </Row>
 
         {uploadSuccessDetails ? (
-          <Alert title={`File accepted: ${uploadSuccessDetails.original_filename}`}>
+          <Alert
+            title={`File accepted: ${uploadSuccessDetails.original_filename}`}
+            data-testid="upload-status"
+          >
             <Typography variant="body2">
               Raw file name: {uploadSuccessDetails.raw_filename}
             </Typography>

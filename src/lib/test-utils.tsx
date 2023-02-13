@@ -71,3 +71,22 @@ export const bugfixForTimeout = async () =>
 
 export * from '@testing-library/react'
 export { renderWithProviders as render }
+
+export const mockDataSetsList: { [key: string]: { [key: string]: string }[] } = {
+  Pizza: [
+    {
+      dataset: 'bit_complicated',
+      version: '3'
+    },
+    {
+      dataset: 'again_complicated_high',
+      version: '3'
+    }
+  ],
+  Apples: [
+    {
+      dataset: 'juicy',
+      version: '2'
+    }
+  ]
+}

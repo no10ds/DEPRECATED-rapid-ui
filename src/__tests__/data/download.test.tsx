@@ -6,27 +6,8 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
-import { renderWithProviders } from '@/lib/test-utils'
+import { mockDataSetsList, renderWithProviders } from '@/lib/test-utils'
 import DownloadPage from '@/pages/data/download/'
-
-const mockData: { [key: string]: { [key: string]: string }[] } = {
-  Pizza: [
-    {
-      dataset: 'complicated',
-      version: '3'
-    },
-    {
-      dataset: 'complicated_high',
-      version: '3'
-    }
-  ],
-  Apples: [
-    {
-      dataset: 'juicy',
-      version: '2'
-    }
-  ]
-}
 
 const pushSpy = jest.fn()
 jest.mock('next/router', () => ({
@@ -37,23 +18,23 @@ jest.mock('next/router', () => ({
   }))
 }))
 
-describe('Page: Login page', () => {
+describe('Page: Download page', () => {
   afterEach(() => {
     fetchMock.resetMocks()
     jest.clearAllMocks()
   })
 
   it('renders dataset drodown', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
     renderWithProviders(<DownloadPage />)
 
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
     const datasetDropdown = screen.getByTestId('select-dataset')
     expect(datasetDropdown).toBeVisible()
 
-    for (const key in mockData) {
-      mockData[key].forEach
-      for (const { dataset } of mockData[key]) {
+    for (const key in mockDataSetsList) {
+      mockDataSetsList[key].forEach
+      for (const { dataset } of mockDataSetsList[key]) {
         const option = within(datasetDropdown).getByRole('option', {
           name: dataset
         })
@@ -64,7 +45,7 @@ describe('Page: Login page', () => {
   })
 
   it('renders version', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
 
     renderWithProviders(<DownloadPage />)
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
@@ -90,7 +71,7 @@ describe('Page: Login page', () => {
   })
 
   it('on submit', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
 
     renderWithProviders(<DownloadPage />)
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
@@ -101,7 +82,9 @@ describe('Page: Login page', () => {
     await userEvent.click(screen.getByTestId('submit'))
 
     await waitFor(async () => {
-      expect(pushSpy).toHaveBeenCalledWith(`/data/download/Pizza/complicated?version=1`)
+      expect(pushSpy).toHaveBeenCalledWith(
+        `/data/download/Pizza/bit_complicated?version=1`
+      )
     })
   })
 })
