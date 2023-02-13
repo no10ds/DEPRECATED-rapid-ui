@@ -53,6 +53,7 @@ function DownloadData() {
     <Card
       action={
         <Button
+          data-testid="submit"
           color="primary"
           onClick={() =>
             router.push(`/data/download/${dataset}?version=${versionSelected}`)

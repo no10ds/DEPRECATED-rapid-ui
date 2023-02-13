@@ -4,6 +4,7 @@ import {
   waitForElementToBeRemoved,
   within
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders } from '@/lib/test-utils'
 import DownloadPage from '@/pages/data/download/'
@@ -27,12 +28,12 @@ const mockData: { [key: string]: { [key: string]: string }[] } = {
   ]
 }
 
-const replaceSpy = jest.fn()
+const pushSpy = jest.fn()
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
   useRouter: jest.fn(() => ({
     locale: 'en',
-    replace: replaceSpy
+    push: pushSpy
   }))
 }))
 
@@ -88,28 +89,19 @@ describe('Page: Login page', () => {
     expect(screen.getByText('fake error message')).toBeInTheDocument()
   })
 
-  // it('renders after preloader', async () => {
-  //   renderWithProviders(<DownloadPage />)
+  it('on submit', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
 
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-  //   const link = screen.getByTestId('login-link')
-  //   expect(link).toBeVisible()
-  //   expect(link).toHaveAttribute('href', '/login')
-  // })
+    renderWithProviders(<DownloadPage />)
+    await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+    await waitFor(async () => {
+      expect(screen.getByTestId('select-version')).toBeInTheDocument()
+    })
 
-  // it('on valid auth redirects', async () => {
-  //   fetchMock.mockResponses(
-  //     [JSON.stringify(mockAuth), { status: 200 }],
-  //     [JSON.stringify(mockLogin), { status: 200 }]
-  //   )
-  //   renderWithProviders(<DownloadPage />)
-  //   await waitFor(async () => {
-  //     expect(replaceSpy).toHaveBeenCalledWith({
-  //       pathname: '/'
-  //     })
-  //   })
-  //   expect(screen.getByTestId('login-link')).toHaveAttribute('href', mockLogin.auth_url)
-  // })
+    await userEvent.click(screen.getByTestId('submit'))
 
-  // it.skip('on error', () => jest.fn())
+    await waitFor(async () => {
+      expect(pushSpy).toHaveBeenCalledWith(`/data/download/Pizza/complicated?version=1`)
+    })
+  })
 })
