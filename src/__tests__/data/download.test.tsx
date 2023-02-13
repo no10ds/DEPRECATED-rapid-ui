@@ -18,7 +18,7 @@ jest.mock('next/router', () => ({
   }))
 }))
 
-describe('Page: Login page', () => {
+describe('Page: Download page', () => {
   afterEach(() => {
     fetchMock.resetMocks()
     jest.clearAllMocks()
