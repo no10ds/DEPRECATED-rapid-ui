@@ -80,6 +80,7 @@ function UserModifyPage() {
               label="Select dataset"
               onChange={(event) => setDataset(event.target.value as string)}
               native
+              inputProps={{ 'data-testid': 'select-dataset' }}
             >
               {Object.keys(datasetsList).map((key) => (
                 <optgroup label={key} key={key}>
@@ -99,6 +100,7 @@ function UserModifyPage() {
             name="file"
             id="file"
             type="file"
+            data-testid="upload"
             onChange={(event) => setFile(event.target.files[0])}
           />
         </Row>
