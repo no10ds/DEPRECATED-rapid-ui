@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   screen,
   waitFor,
   waitForElementToBeRemoved,
@@ -29,6 +30,7 @@ describe('Page: Upload page', () => {
     renderWithProviders(<UploadPage />)
 
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+
     const datasetDropdown = screen.getByTestId('select-dataset')
     expect(datasetDropdown).toBeVisible()
 
@@ -46,47 +48,62 @@ describe('Page: Upload page', () => {
     expect(screen.getByTestId('upload')).toBeInTheDocument()
   })
 
-  // it('renders version', async () => {
-  //   fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
+  it('error on fetch', async () => {
+    fetchMock.mockReject(new Error('fake error message'))
+    renderWithProviders(<UploadPage />)
 
-  //   renderWithProviders(<UploadPage />)
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-  //   await waitFor(async () => {
-  //     expect(screen.getByTestId('select-version')).toBeInTheDocument()
-  //   })
-  //   ;[...Array(2).keys()].forEach((i) => {
-  //     expect(
-  //       within(screen.getByTestId('select-version')).getByRole('option', {
-  //         name: (i + 1).toString()
-  //       })
-  //     ).toBeInTheDocument()
-  //   })
-  // })
+    await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
 
-  // it('fetch error', async () => {
-  //   fetchMock.mockReject(new Error('fake error message'))
+    await waitFor(async () => {
+      expect(screen.getByText('fake error message')).toBeInTheDocument()
+    })
+  })
 
-  //   renderWithProviders(<UploadPage />)
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+  describe('on submit', () => {
+    const file = new File(['test'], 'testfile.txt', { type: 'text/plain' })
 
-  //   expect(screen.getByText('fake error message')).toBeInTheDocument()
-  // })
+    it('success', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
+      renderWithProviders(<UploadPage />)
 
-  // it('on submit', async () => {
-  //   fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
+      await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
 
-  //   renderWithProviders(<UploadPage />)
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-  //   await waitFor(async () => {
-  //     expect(screen.getByTestId('select-version')).toBeInTheDocument()
-  //   })
+      await fireEvent.change(screen.getByTestId('upload'), {
+        target: { files: [file] }
+      })
 
-  //   await userEvent.click(screen.getByTestId('submit'))
+      userEvent.selectOptions(
+        screen.getByTestId('select-dataset'),
+        mockDataSetsList['Pizza'][0].dataset
+      )
 
-  //   await waitFor(async () => {
-  //     expect(pushSpy).toHaveBeenCalledWith(
-  //       `/data/download/Pizza/bit_complicated?version=1`
-  //     )
-  //   })
-  // })
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(fetchMock).toHaveBeenLastCalledWith(
+          '/api/datasets/Pizza/bit_complicated',
+          expect.objectContaining({
+            body: new FormData(),
+            credentials: 'include',
+            method: 'POST'
+          })
+        )
+      })
+    })
+
+    it('api error', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
+      renderWithProviders(<UploadPage />)
+
+      await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+
+      fetchMock.mockReject(new Error('fake error message'))
+
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(screen.getByText('fake error message')).toBeInTheDocument()
+      })
+    })
+  })
 })

@@ -60,7 +60,7 @@ function UserModifyPage() {
     >
       <Card
         action={
-          <Button color="primary" type="submit" loading={isLoading}>
+          <Button color="primary" type="submit" loading={isLoading} data-testid="submit">
             Upload dataset
           </Button>
         }
