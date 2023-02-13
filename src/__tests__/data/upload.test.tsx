@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import { mockDataSetsList, renderWithProviders } from '@/lib/test-utils'
 import UploadPage from '@/pages/data/upload'
+import { UploadDatasetResponse } from '@/service/types'
 
 const pushSpy = jest.fn()
 jest.mock('next/router', () => ({
@@ -89,6 +90,40 @@ describe('Page: Upload page', () => {
           })
         )
       })
+    })
+
+    it('upload status', async () => {
+      const mockSuccess: UploadDatasetResponse = {
+        details: {
+          dataset_version: 12314,
+          job_id: 'abc123',
+          original_filename: 'my_original_name.txt',
+          raw_filename: 'my_raw_name.txt',
+          status: 'winning'
+        }
+      }
+
+      fetchMock.mockResponses(
+        [JSON.stringify(mockDataSetsList), { status: 200 }],
+        [JSON.stringify(mockSuccess), { status: 200 }]
+      )
+      renderWithProviders(<UploadPage />)
+      await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(screen.getByTestId('upload-status')).toBeInTheDocument()
+      })
+
+      const trackLink = screen.getByText('Track upload progress')
+
+      expect(screen.getByText('Raw file name: my_raw_name.txt')).toBeInTheDocument()
+      expect(screen.getByText('Status: winning')).toBeInTheDocument()
+      expect(screen.getByText('Status: winning')).toBeInTheDocument()
+      expect(screen.getByText('Version: 12314')).toBeInTheDocument()
+      expect(trackLink).toBeInTheDocument()
+      expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
     })
 
     it('api error', async () => {

@@ -106,7 +106,10 @@ function UserModifyPage() {
         </Row>
 
         {uploadSuccessDetails ? (
-          <Alert title={`File accepted: ${uploadSuccessDetails.original_filename}`}>
+          <Alert
+            title={`File accepted: ${uploadSuccessDetails.original_filename}`}
+            data-testid="upload-status"
+          >
             <Typography variant="body2">
               Raw file name: {uploadSuccessDetails.raw_filename}
             </Typography>
