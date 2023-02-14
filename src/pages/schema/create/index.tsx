@@ -47,7 +47,7 @@ function CreateSchema() {
     >
       <Card
         action={
-          <Button color="primary" type="submit" loading={isLoading}>
+          <Button color="primary" type="submit" loading={isLoading} data-testid="submit">
             Generate Schema
           </Button>
         }
@@ -68,6 +68,7 @@ function CreateSchema() {
                   data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
                   error={!!error}
                   helperText={error?.message}
+                  inputProps={{ 'data-testid': 'field-level' }}
                 />
               </>
             )}
@@ -89,6 +90,7 @@ function CreateSchema() {
                   placeholder="showcase"
                   error={!!error}
                   helperText={error?.message}
+                  inputProps={{ 'data-testid': 'field-domain' }}
                 />{' '}
               </>
             )}
@@ -110,6 +112,7 @@ function CreateSchema() {
                   placeholder="movies"
                   error={!!error}
                   helperText={error?.message}
+                  inputProps={{ 'data-testid': 'field-title' }}
                 />
               </>
             )}
@@ -125,6 +128,7 @@ function CreateSchema() {
             name="file"
             id="file"
             type="file"
+            data-testid="field-file"
             onChange={(event) => setFile(event.target.files[0])}
           />
         </Row>
