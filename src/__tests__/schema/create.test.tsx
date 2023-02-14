@@ -4,7 +4,9 @@ import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders } from '@/lib/test-utils'
 import SchemaCreatePage from '@/pages/schema/create'
 
-jest.mock('@/components/SchemaCreate', () => () => {
+const mockProps = jest.fn()
+jest.mock('@/components/SchemaCreate', () => (props) => {
+  mockProps(props)
   return <div data-testid="create-schema-component" />
 })
 
@@ -98,6 +100,11 @@ describe('Page: Upload page', () => {
       await waitFor(async () => {
         expect(screen.getByTestId('create-schema-component')).toBeInTheDocument()
       })
+      expect(mockProps).toHaveBeenCalledWith(
+        expect.objectContaining({
+          schemaData: expect.objectContaining({ ...mockGenerate })
+        })
+      )
     })
   })
 })
