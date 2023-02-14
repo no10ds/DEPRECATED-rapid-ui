@@ -66,11 +66,18 @@ function CreateSchema() {
                 <Select
                   {...field}
                   defaultValue=""
-                  data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
+                  native
                   error={!!error}
                   helperText={error?.message}
                   inputProps={{ 'data-testid': 'field-level' }}
-                />
+                >
+                  <option value="" disabled>
+                    Please select
+                  </option>
+                  {['PUBLIC', 'PRIVATE', 'PROTECTED'].map((value) => (
+                    <option key={value}>{value}</option>
+                  ))}
+                </Select>
               </>
             )}
           />

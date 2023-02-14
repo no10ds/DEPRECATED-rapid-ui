@@ -1,24 +1,39 @@
-import {
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
-import { mockDataSetsList, renderWithProviders } from '@/lib/test-utils'
+import { renderWithProviders } from '@/lib/test-utils'
 import SchemaCreatePage from '@/pages/schema/create'
-import { UploadDatasetResponse } from '@/service/types'
 
-const pushSpy = jest.fn()
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'),
-  useRouter: jest.fn(() => ({
-    locale: 'en',
-    push: pushSpy
-  }))
-}))
+jest.mock('@/components/SchemaCreate', () => () => {
+  return <div data-testid="create-schema-component" />
+})
+
+const mockGenerate = {
+  metadata: {
+    domain: 'example.com',
+    dataset: 'My dataset example',
+    sensitivity: 'PUBLIC',
+    description: 'In a very long description far far away....',
+    key_value_tags: {},
+    key_only_tags: [],
+    owners: [
+      {
+        name: 'Tiny Tim',
+        email: 'owners@test.com'
+      }
+    ],
+    update_behaviour: 'APPEND'
+  },
+  columns: [
+    {
+      name: 'contents of file',
+      partition_index: null,
+      data_type: 'object',
+      allow_null: true,
+      format: null
+    }
+  ]
+}
 
 describe('Page: Upload page', () => {
   afterEach(() => {
@@ -36,37 +51,11 @@ describe('Page: Upload page', () => {
     expect(screen.getByTestId('field-file')).toBeInTheDocument()
   })
 
-  // it('renders', async () => {
-  // fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
-  // renderWithProviders(<SchemaCreatePage />)
-  // await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-  // const datasetDropdown = screen.getByTestId('select-dataset')
-  // expect(datasetDropdown).toBeVisible()
-  // for (const key in mockDataSetsList) {
-  //   mockDataSetsList[key].forEach
-  //   for (const { dataset } of mockDataSetsList[key]) {
-  //     const option = within(datasetDropdown).getByRole('option', {
-  //       name: dataset
-  //     })
-  //     expect(option).toBeInTheDocument()
-  //     expect(option).toHaveValue(`${key}/${dataset}`)
-  //   }
-  // }
-  // expect(screen.getByTestId('upload')).toBeInTheDocument()
-  // })
-
-  // it('error on fetch', async () => {
-  //   fetchMock.mockReject(new Error('fake error message'))
-  //   renderWithProviders(<SchemaCreatePage />)
-
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-
-  //   await waitFor(async () => {
-  //     expect(screen.getByText('fake error message')).toBeInTheDocument()
-  //   })
-  // })
-
   describe('on submit', () => {
+    const file = new File(['test'], 'testfile.txt', { type: 'text/plain' })
+    const formData = new FormData()
+    formData.append('file', file)
+
     it('errors', async () => {
       renderWithProviders(<SchemaCreatePage />)
       await userEvent.click(screen.getByTestId('submit'))
@@ -81,67 +70,34 @@ describe('Page: Upload page', () => {
         screen.getByText('Upload the data to generate the schema for')
       ).toBeInTheDocument()
     })
-    //   const file = new File(['test'], 'testfile.txt', { type: 'text/plain' })
-    //   it('success', async () => {
-    //     fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
-    //     renderWithProviders(<SchemaCreatePage />)
-    //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-    //     await fireEvent.change(screen.getByTestId('upload'), {
-    //       target: { files: [file] }
-    //     })
-    //     userEvent.selectOptions(
-    //       screen.getByTestId('select-dataset'),
-    //       mockDataSetsList['Pizza'][0].dataset
-    //     )
-    //     await userEvent.click(screen.getByTestId('submit'))
-    //     await waitFor(async () => {
-    //       expect(fetchMock).toHaveBeenLastCalledWith(
-    //         '/api/datasets/Pizza/bit_complicated',
-    //         expect.objectContaining({
-    //           body: new FormData(),
-    //           credentials: 'include',
-    //           method: 'POST'
-    //         })
-    //       )
-    //     })
-    //   })
-    //   it('upload status', async () => {
-    //     const mockSuccess: UploadDatasetResponse = {
-    //       details: {
-    //         dataset_version: 12314,
-    //         job_id: 'abc123',
-    //         original_filename: 'my_original_name.txt',
-    //         raw_filename: 'my_raw_name.txt',
-    //         status: 'winning'
-    //       }
-    //     }
-    //     fetchMock.mockResponses(
-    //       [JSON.stringify(mockDataSetsList), { status: 200 }],
-    //       [JSON.stringify(mockSuccess), { status: 200 }]
-    //     )
-    //     renderWithProviders(<SchemaCreatePage />)
-    //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-    //     await userEvent.click(screen.getByTestId('submit'))
-    //     await waitFor(async () => {
-    //       expect(screen.getByTestId('upload-status')).toBeInTheDocument()
-    //     })
-    //     const trackLink = screen.getByText('Track upload progress')
-    //     expect(screen.getByText('Raw file name: my_raw_name.txt')).toBeInTheDocument()
-    //     expect(screen.getByText('Status: winning')).toBeInTheDocument()
-    //     expect(screen.getByText('Status: winning')).toBeInTheDocument()
-    //     expect(screen.getByText('Version: 12314')).toBeInTheDocument()
-    //     expect(trackLink).toBeInTheDocument()
-    //     expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
-    //   })
-    //   it('api error', async () => {
-    //     fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })
-    //     renderWithProviders(<SchemaCreatePage />)
-    //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-    //     fetchMock.mockReject(new Error('fake error message'))
-    //     await userEvent.click(screen.getByTestId('submit'))
-    //     await waitFor(async () => {
-    //       expect(screen.getByText('fake error message')).toBeInTheDocument()
-    //     })
-    //   })
+
+    it('success', async () => {
+      fetchMock.mockResponseOnce(JSON.stringify(mockGenerate))
+      renderWithProviders(<SchemaCreatePage />)
+
+      userEvent.selectOptions(screen.getByTestId('field-level'), 'PUBLIC')
+      await userEvent.type(screen.getByTestId('field-domain'), 'my-domain')
+      await userEvent.type(screen.getByTestId('field-title'), 'my-title')
+      await fireEvent.change(screen.getByTestId('field-file'), {
+        target: { files: [file] }
+      })
+
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(fetchMock).toHaveBeenCalledWith(
+          '/api/schema/PUBLIC/my-domain/my-title/generate',
+          {
+            body: formData,
+            credentials: 'include',
+            method: 'POST'
+          }
+        )
+      })
+
+      await waitFor(async () => {
+        expect(screen.getByTestId('create-schema-component')).toBeInTheDocument()
+      })
+    })
   })
 })
