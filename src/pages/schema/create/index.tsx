@@ -65,6 +65,7 @@ function CreateSchema() {
                 <Typography variant="caption">Sensitivity Level</Typography>
                 <Select
                   {...field}
+                  defaultValue=""
                   data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
                   error={!!error}
                   helperText={error?.message}
