@@ -73,6 +73,17 @@ describe('Page: Subject Create', () => {
     }
   })
 
+  it('user prompts email field', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockUiData), { status: 200 })
+    renderWithProviders(<SubjectCreatePage />)
+
+    await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+    expect(screen.queryByTestId('field-email')).not.toBeInTheDocument()
+
+    userEvent.selectOptions(screen.getByTestId('field-type'), 'User')
+    expect(screen.getByTestId('field-email')).toBeInTheDocument()
+  })
+
   //   it('renders', async () => {
   //     fetchMock.mockResponseOnce(JSON.stringify(mockUiData), { status: 200 })
   //     renderWithProviders(<SubjectCreatePage />)
