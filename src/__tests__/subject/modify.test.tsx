@@ -38,7 +38,7 @@ describe('Page: Subject Modify', () => {
     jest.clearAllMocks()
   })
 
-  it.only('renders', async () => {
+  it('renders', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
     renderWithProviders(<SubjectModifyPage />)
 
@@ -58,6 +58,15 @@ describe('Page: Subject Modify', () => {
       expect(option).toBeInTheDocument()
       expect(option).toHaveValue(subject_id)
     }
+  })
+
+  it('error on fetch', async () => {
+    const message = 'it broke'
+    fetchMock.mockReject(new Error(message))
+    renderWithProviders(<SubjectModifyPage />)
+
+    await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+    expect(screen.getByText(message)).toBeInTheDocument()
   })
 
   // it('user prompts email field', async () => {
