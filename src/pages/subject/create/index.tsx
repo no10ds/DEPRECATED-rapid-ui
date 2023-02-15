@@ -134,10 +134,18 @@ function CreateUserPage() {
                   </Typography>
                   <Select
                     {...field}
-                    data={userType}
                     error={!!error}
                     helperText={error?.message}
-                  />
+                    native
+                    inputProps={{
+                      'data-testid': 'field-type'
+                    }}
+                  >
+                    <option value="">Please select</option>
+                    {userType.map((type) => (
+                      <option key={type}>{type}</option>
+                    ))}
+                  </Select>
                 </>
               )}
             />
@@ -158,6 +166,9 @@ function CreateUserPage() {
                       fullWidth
                       size="small"
                       type="email"
+                      inputProps={{
+                        'data-testid': 'field-email'
+                      }}
                       error={!!error ? !!error : watch('type') === 'User' && !field.value}
                       helperText={
                         watch('type') === 'User' && !field.value
@@ -187,6 +198,9 @@ function CreateUserPage() {
                     variant="outlined"
                     error={!!error}
                     helperText={error?.message}
+                    inputProps={{
+                      'data-testid': 'field-name'
+                    }}
                   />
                 </>
               )}
