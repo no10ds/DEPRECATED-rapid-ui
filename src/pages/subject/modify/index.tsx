@@ -56,7 +56,7 @@ function SubjectModifyPage() {
       action={
         <Button
           color="primary"
-          data-testid="next-button"
+          data-testid="submit-button"
           onClick={() => {
             const subject = subjectsListData.filter(
               (item) => item.subject_id === selectedSubjectId

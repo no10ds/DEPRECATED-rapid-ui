@@ -4,7 +4,7 @@ import {
   waitForElementToBeRemoved,
   within
 } from '@testing-library/react'
-// import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders } from '@/lib/test-utils'
 import SubjectModifyPage from '@/pages/subject/modify/index'
@@ -44,6 +44,7 @@ describe('Page: Subject Modify', () => {
 
     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
     expect(screen.getByTestId('field-user')).toBeInTheDocument()
+    expect(screen.getByTestId('submit-button')).toBeInTheDocument()
 
     expect(fetchMock).toHaveBeenCalled()
 
@@ -69,117 +70,26 @@ describe('Page: Subject Modify', () => {
     expect(screen.getByText(message)).toBeInTheDocument()
   })
 
-  // it('user prompts email field', async () => {
-  //   fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-  //   renderWithProviders(<SubjectModifyPage />)
+  it('submits', async () => {
+    const value = mockData[0].subject_name
 
-  //   await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-  //   expect(screen.queryByTestId('field-email')).not.toBeInTheDocument()
+    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+    renderWithProviders(<SubjectModifyPage />)
 
-  //   userEvent.selectOptions(screen.getByTestId('field-type'), 'User')
-  //   expect(screen.getByTestId('field-email')).toBeInTheDocument()
-  // })
+    await waitFor(async () => {
+      expect(
+        within(screen.getByTestId('field-user')).getAllByRole('option')
+      ).toHaveLength(mockData.length)
+    })
 
-  // describe('on submit', () => {
-  //   const mockData = {
-  //     client_name: 'James Bond',
-  //     client_secret: 'secret-code-word',
-  //     client_id: 'id-abc123',
-  //     permissions: ['DATA_ADMIN', 'READ_PRIVATE']
-  //   }
+    userEvent.selectOptions(screen.getByTestId('field-user'), value)
 
-  //   it('client  success', async () => {
-  //     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-  //     renderWithProviders(<SubjectModifyPage />)
-  //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+    fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+    await userEvent.click(screen.getByTestId('submit-button'))
 
-  //     userEvent.selectOptions(screen.getByTestId('field-type'), 'Client')
-  //     await userEvent.type(screen.getByTestId('field-name'), 'James Bond')
-  //     await userEvent.click(screen.getByText('Data'))
-  //     await userEvent.click(screen.getByText('PRIVATE'))
-  //     await userEvent.click(screen.getByTestId('submit'))
-
-  //     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-
-  //     await waitFor(async () => {
-  //       expect(fetchMock).toHaveBeenCalledWith(
-  //         '/api/client',
-  //         expect.objectContaining({
-  //           body: '{"permissions":["DATA_ADMIN","READ_PRIVATE"],"client_name":"James Bond"}'
-  //         })
-  //       )
-  //     })
-
-  //     await waitFor(async () => {
-  //       expect(pushSpy).toHaveBeenCalledWith({
-  //         pathname: '/subject/create/success/',
-  //         query: {
-  //           Client: 'James Bond',
-  //           Id: mockData.client_id,
-  //           Secret: mockData.client_secret
-  //         }
-  //       })
-  //     })
-  //   })
-
-  //   it(' user success', async () => {
-  //     const mockData = {
-  //       username: 'user-abc',
-  //       user_id: 'id-abc123',
-  //       email: 'test@example.com'
-  //     }
-
-  //     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-  //     renderWithProviders(<SubjectModifyPage />)
-  //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-
-  //     userEvent.selectOptions(screen.getByTestId('field-type'), 'User')
-  //     await userEvent.type(screen.getByTestId('field-name'), 'James Bond')
-  //     await userEvent.type(screen.getByTestId('field-email'), 'test@example.com')
-  //     await userEvent.click(screen.getByText('Data'))
-  //     await userEvent.click(screen.getByText('PRIVATE'))
-  //     await userEvent.click(screen.getByTestId('submit'))
-
-  //     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-
-  //     await waitFor(async () => {
-  //       expect(fetchMock).toHaveBeenCalledWith(
-  //         '/api/user',
-  //         expect.objectContaining({
-  //           body: '{"permissions":["DATA_ADMIN","READ_PRIVATE"],"username":"James Bond","email":"test@example.com"}'
-  //         })
-  //       )
-  //     })
-
-  //     await waitFor(async () => {
-  //       expect(pushSpy).toHaveBeenCalledWith({
-  //         pathname: '/subject/create/success/',
-  //         query: {
-  //           User: mockData.username,
-  //           Id: mockData.user_id,
-  //           Email: mockData.email
-  //         }
-  //       })
-  //     })
-  //   })
-
-  //   it('server error', async () => {
-  //     const error = 'server error message'
-  //     fetchMock.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
-  //     renderWithProviders(<SubjectModifyPage />)
-  //     await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
-
-  //     userEvent.selectOptions(screen.getByTestId('field-type'), 'Client')
-  //     await userEvent.type(screen.getByTestId('field-name'), 'James Bond')
-  //     await userEvent.click(screen.getByText('Data'))
-  //     await userEvent.click(screen.getByText('PRIVATE'))
-  //     await userEvent.click(screen.getByTestId('submit'))
-
-  //     fetchMock.mockReject(new Error(error))
-
-  //     await waitFor(async () => {
-  //       expect(screen.getByText(error)).toBeInTheDocument()
-  //     })
-  //   })
-  // })
+    expect(pushSpy).toHaveBeenCalledWith({
+      pathname: '/subject/modify/id_client_0',
+      query: { name: value }
+    })
+  })
 })
