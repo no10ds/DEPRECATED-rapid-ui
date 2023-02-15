@@ -106,7 +106,12 @@ function CreateUserPage() {
       >
         <Card
           action={
-            <Button color="primary" type="submit" loading={isLoading}>
+            <Button
+              color="primary"
+              type="submit"
+              loading={isLoading}
+              data-testid="submit"
+            >
               Create subject
             </Button>
           }
