@@ -56,6 +56,7 @@ function SubjectModifyPage() {
       action={
         <Button
           color="primary"
+          data-testid="next-button"
           onClick={() => {
             const subject = subjectsListData.filter(
               (item) => item.subject_id === selectedSubjectId
@@ -86,6 +87,7 @@ function SubjectModifyPage() {
           <Select
             label="Select a Client App or User"
             onChange={(event) => setSelectedSubjectId(event.target.value as string)}
+            inputProps={{ 'data-testid': 'field-user' }}
             native
           >
             <optgroup label="Client Apps">
