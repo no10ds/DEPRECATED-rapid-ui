@@ -37,7 +37,7 @@ function DownloadData() {
       )
     }
     setVersions(version)
-    setVersionSelected(version ? 1 : 0)
+    setVersionSelected(version ? Array(version).length : 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataset])
 
@@ -103,9 +103,9 @@ function DownloadData() {
             >
               {Array(versions)
                 .fill(0)
-                .map((_, index) => (
-                  <option value={index + 1} key={index}>
-                    {index + 1}
+                .map((_, index, array) => (
+                  <option value={array.length - index} key={index}>
+                    {array.length - index}
                   </option>
                 ))}
             </Select>

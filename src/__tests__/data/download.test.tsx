@@ -83,7 +83,7 @@ describe('Page: Download page', () => {
 
     await waitFor(async () => {
       expect(pushSpy).toHaveBeenCalledWith(
-        `/data/download/Pizza/bit_complicated?version=1`
+        `/data/download/Pizza/bit_complicated?version=3`
       )
     })
   })
