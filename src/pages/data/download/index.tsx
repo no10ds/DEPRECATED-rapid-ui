@@ -20,7 +20,7 @@ function DownloadData() {
   } = useQuery(['datasetsList'], getDatasetsUi)
 
   useEffect(() => {
-    if (datasetsList) {
+    if (datasetsList && Object.keys(datasetsList).length > 0) {
       const firstKey = Object.keys(datasetsList)[0]
       setDataset(`${firstKey}/${datasetsList[firstKey][0].dataset}`)
     }
@@ -47,6 +47,20 @@ function DownloadData() {
 
   if (datasetsError) {
     return <ErrorCard error={datasetsError as Error} />
+  }
+
+  if (Object.keys(datasetsList).length === 0) {
+    return (
+      <Card data-testid="no-data-helper">
+        <Typography variant="body1" gutterBottom>
+          You currently do not have any data to download. Get started by creating a schema
+          and uploading a dataset that you want to store in rAPId.
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          All datasets will then become available to be downloaded from here.
+        </Typography>
+      </Card>
+    )
   }
 
   return (

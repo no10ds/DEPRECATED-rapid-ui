@@ -87,4 +87,13 @@ describe('Page: Download page', () => {
       )
     })
   })
+
+  it('should display helper text when there is no data', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({}), { status: 200 })
+    renderWithProviders(<DownloadPage />)
+    await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+    await waitFor(async () => {
+      expect(screen.getByTestId('no-data-helper')).toBeInTheDocument()
+    })
+  })
 })
