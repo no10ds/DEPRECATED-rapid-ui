@@ -27,7 +27,7 @@ function GetSearch() {
 
   if (!data.length) {
     return (
-      <Card>
+      <Card data-testid="empty-search-content">
         <Typography variant="h2" gutterBottom>
           No Results Found
         </Typography>
