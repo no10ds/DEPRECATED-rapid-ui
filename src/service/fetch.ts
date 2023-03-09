@@ -61,7 +61,7 @@ export const getDatasetsUi = async ({
 }): Promise<{
   [key: string]: { dataset: string; version: string }[]
 }> => {
-  const [_, action] = queryKey
+  const [, action] = queryKey
   const res = await api(`/api/datasets_ui/${action}`, {
     method: 'GET'
   })
