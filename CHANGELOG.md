@@ -1,3 +1,13 @@
+# Changelog
+
+## v5.0.2 - _2023-03-09_
+
+See [v5.0.2] changes
+
+### Fixed
+
+- Fetch available datasets separately for both Read and Write access
+
 ## v5.0.1 - _2023-01-02_
 
 See [v5.0.1] changes
