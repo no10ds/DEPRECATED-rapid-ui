@@ -56,10 +56,13 @@ export const getSubjectsListUi = async (): Promise<
   return res.json()
 }
 
-export const getDatasetsUi = async (): Promise<{
+export const getDatasetsUi = async ({
+  queryKey
+}): Promise<{
   [key: string]: { dataset: string; version: string }[]
 }> => {
-  const res = await api(`/api/datasets_ui`, {
+  const [_, action] = queryKey
+  const res = await api(`/api/datasets_ui/${action}`, {
     method: 'GET'
   })
   return res.json()

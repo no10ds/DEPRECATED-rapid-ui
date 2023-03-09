@@ -18,7 +18,7 @@ function UserModifyPage() {
     isLoading: isDatasetsListLoading,
     data: datasetsList,
     error: datasetsError
-  } = useQuery(['datasetsList'], getDatasetsUi)
+  } = useQuery(['datasetsList', 'WRITE'], getDatasetsUi)
 
   const { isLoading, mutate, error } = useMutation<
     UploadDatasetResponse,
