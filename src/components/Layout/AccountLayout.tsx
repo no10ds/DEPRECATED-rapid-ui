@@ -56,8 +56,8 @@ const filterSidebarList = (methods: MethodsResponse) => {
       if (methods.can_upload) baseMethods.push(...dataUploadMethod)
       if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
       baseMethods.push(...taskManagementMethods)
-      if (methods.can_download) baseMethods.push(...catalogManagementMethods)
     }
+    if (methods.can_search_catalog) baseMethods.push(...catalogManagementMethods)
   }
 
   return baseMethods

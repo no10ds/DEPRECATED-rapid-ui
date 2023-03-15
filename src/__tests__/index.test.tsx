@@ -21,6 +21,7 @@ describe('Page: Index page', () => {
       can_upload: false,
       can_download: false,
       can_create_schema: false,
+      can_search_catalog: false,
       message: 'some error message'
     }
 
