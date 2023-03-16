@@ -69,6 +69,10 @@ export type UploadDatasetResponse = {
   details: UploadDatasetResponseDetails
 }
 
+export type DeleteDatasetResponse = {
+  details: string
+}
+
 export type DatasetInfoResponse = {
   metadata: {
     domain: string

@@ -135,6 +135,13 @@ export const uploadDataset = async ({ path, data }: { path: string; data: FormDa
   return res.json()
 }
 
+export const deleteDataset = async ({ path }: { path: string }) => {
+  const res = await api(`/api/datasets/${path}`, {
+    method: 'DELETE'
+  })
+  return res.json()
+}
+
 export const getDatasetInfo = async ({ queryKey }): Promise<DatasetInfoResponse> => {
   const [, domain, dataset, version] = queryKey
   const res = await api(`/api/datasets/${domain}/${dataset}/info?version=${version}`, {

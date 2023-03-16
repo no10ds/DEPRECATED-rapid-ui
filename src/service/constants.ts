@@ -28,6 +28,14 @@ export const dataUploadMethod = [
   }
 ]
 
+export const dataDeleteMethod = [
+  {
+    text: 'Delete data',
+    href: '/data/delete',
+    icon: 'Delete'
+  }
+]
+
 export const schemaManagementMethods = [
   { text: 'Schema Management' },
   {
