@@ -128,6 +128,7 @@ export type MethodsResponse = {
   can_upload?: boolean
   can_download?: boolean
   can_create_schema: boolean
+  can_search_catalog: boolean
 }
 
 export type AuthResponse = {
