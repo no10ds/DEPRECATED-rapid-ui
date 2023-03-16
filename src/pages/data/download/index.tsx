@@ -17,7 +17,7 @@ function DownloadData() {
     isLoading: isDatasetsListLoading,
     data: datasetsList,
     error: datasetsError
-  } = useQuery(['datasetsList'], getDatasetsUi)
+  } = useQuery(['datasetsList', 'READ'], getDatasetsUi)
 
   useEffect(() => {
     if (datasetsList && Object.keys(datasetsList).length > 0) {
