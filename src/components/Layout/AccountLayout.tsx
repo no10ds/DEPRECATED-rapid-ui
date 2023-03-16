@@ -6,6 +6,7 @@ import { useQueries } from '@tanstack/react-query'
 import { MethodsResponse } from '@/service/types'
 import {
   catalogManagementMethods,
+  dataDeleteMethod,
   dataDownloadMethod,
   dataUploadMethod,
   schemaManagementMethods,
@@ -53,7 +54,10 @@ const filterSidebarList = (methods: MethodsResponse) => {
     if (methods.can_upload || methods.can_download) {
       baseMethods.push({ text: 'Data Management' })
       if (methods.can_download) baseMethods.push(...dataDownloadMethod)
-      if (methods.can_upload) baseMethods.push(...dataUploadMethod)
+      if (methods.can_upload) {
+        baseMethods.push(...dataUploadMethod)
+        baseMethods.push(...dataDeleteMethod)
+      }
       if (methods.can_create_schema) baseMethods.push(...schemaManagementMethods)
       baseMethods.push(...taskManagementMethods)
       if (methods.can_download) baseMethods.push(...catalogManagementMethods)
