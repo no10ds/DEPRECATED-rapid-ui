@@ -109,6 +109,7 @@ function UserModifyPage() {
           <Alert
             title={`File accepted: ${uploadSuccessDetails.original_filename}`}
             data-testid="upload-status"
+            severity="info"
           >
             <Typography variant="body2">
               Raw file name: {uploadSuccessDetails.raw_filename}
