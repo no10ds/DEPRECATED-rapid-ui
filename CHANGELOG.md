@@ -1,5 +1,20 @@
 # Changelog
 
+## v6.0.0 - _2023-03-17_
+
+See [v6.0.0] changes
+
+### Added
+- New UI endpoint for deleting an entire dataset.
+
+### Changed
+- When the API does not include the internal data catalog we do not show the catalog option on the sidebar.
+- When downloading data with multiple versions we now default to the most recent version instead of the first version.
+- When uploading data we change the upload complete alert from a success to an info. This nudges the user more to release that the data is still processing.
+
+### Fixed
+- Handles case when no data is present within rAPId. Before the UI would crash.
+
 ## v5.0.2 - _2023-03-09_
 
 See [v5.0.2] changes
@@ -14,7 +29,7 @@ See [v5.0.1] changes
 
 ### Fixed
 
-Removed the need to have API_URL environment variable. Fixes issue with this sometimes being undefined.
+- Removed the need to have API_URL environment variable. Fixes issue with this sometimes being undefined.
 
 ## v5.0.0 - _2023-01-24_
 
@@ -23,5 +38,7 @@ See [v5.0.0] changes
 ### Added
 - Initial release of new rAPId UI
 
-[v5.0.1]: https://github.com/no10ds/rapid-ui/compare/<v5.0.0>...HEAD
+[v6.0.0]: https://github.com/no10ds/rapid-ui/compare/v5.0.2...v6.0.0
+[v5.0.2]: https://github.com/no10ds/rapid-ui/comapre/v5.0.1...v5.0.2
+[v5.0.1]: https://github.com/no10ds/rapid-ui/compare/v5.0.0...v5.0.1
 [v5.0.0]: https://github.com/no10ds/rapid-ui/compare/<previous_version>...v5.0.0
