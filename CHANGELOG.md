@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.0.1 - _2023-03-21_
+
+See [v6.0.1] changes
+
+### Fixed
+
+- The delete data option is now only displayed to users with the DATA_ADMIN permission.
+
 ## v6.0.0 - _2023-03-17_
 
 See [v6.0.0] changes
