@@ -3,7 +3,7 @@ name: rAPId Integration Tests
 on:
   push:
     branches:
-      - "**"
+      - "feature/en-69/rapid-ui-integration-tests"
 
   workflow_dispatch:
 
