@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
+    "@playwright/test": "^1.31.2",
     "@storybook/addon-a11y": "^6.5.14",
     "@storybook/addon-actions": "^6.5.14",
     "@storybook/addon-essentials": "^6.5.14",
@@ -60,6 +61,7 @@
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
     "jest-fetch-mock": "^3.0.3",
+    "playwright": "^1.28.1",
     "prettier": "^2.8.1",
     "pretty-format": "^29.3.1",
     "storybook-addon-designs": "^6.3.1"

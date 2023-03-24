@@ -18,7 +18,8 @@ const customJestConfig = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/coverage',
-    '<rootDir>/dist'
+    '<rootDir>/dist',
+    '<rootDir>/ui-test'
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
