@@ -12,7 +12,8 @@ jobs:
   run-ui-test:
     runs-on: self-hosted
     env:
-      GH_TOKEN: ${{ github.token }}
+      RAPID_UI_PASSWORD: ${{ secrets.RAPID_UI_PASSWORD }}
+      RAPID_UI_USERNAME: ${{ secrets.RAPID_UI_USERNAME }}
 
     steps:
       - uses: actions/checkout@v3
@@ -21,12 +22,12 @@ jobs:
         with:
           node-version: 19
 
-      - name: Log commit SHA
-        run: echo $GITHUB_SHA
-
-      - name: Populate .env with additional vars
-        run: |
-          cp ./.github/.github.env .env
+#      - name: Log commit SHA
+#        run: echo $GITHUB_SHA
+#
+#      - name: Populate .env with additional vars
+#        run: |
+#          cp ./.github/.github.env .env
 
       - name: Install packages
         run: make npm-setup
