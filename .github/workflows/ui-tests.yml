@@ -38,7 +38,7 @@ jobs:
 #      - name: Install playwright browsers
 #        run: npm install -D @playwright/test
 
-      - name: start rapid-ui
+      - name: run playwright tests
         run: npx playwright test ./ui-test/ui-test.spec.ts
 
 #     - name: make install
