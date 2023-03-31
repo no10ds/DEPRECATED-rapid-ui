@@ -25,7 +25,7 @@
       { "args": "all", "argsIgnorePattern": "^_" }
     ]
   },
-  "ignorePatterns": ["node_modules", "build", "public"],
+  "ignorePatterns": ["node_modules", "build", "public", "ui-test"],
   "overrides": [
     {
       // only run testling library linting on test files not entire codebase
