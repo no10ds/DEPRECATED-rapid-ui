@@ -39,7 +39,7 @@ jobs:
 #        run: npm install -D @playwright/test
 
       - name: run playwright tests
-        run: npx playwright test ./ui-test/ui-test.spec.ts
+        run: npx playwright test ./ui-test/ui-test-full.spec.ts
 
 #     - name: make install
 #        run: apt update && apt install -y make
