@@ -3,7 +3,7 @@ name: rAPId Integration Tests
 on:
   push:
     branches:
-      - "feature/en-69/rapid-ui-integration-tests"
+      - "**"
 
   workflow_dispatch:
 
@@ -22,24 +22,11 @@ jobs:
         with:
           node-version: 19
 
-#      - name: Log commit SHA
-#        run: echo $GITHUB_SHA
-#
-#      - name: Populate .env with additional vars
-#        run: |
-#          cp ./.github/.github.env .env
-
       - name: Install packages
         run: make npm-setup
 
       - name: Install playwright browsers
         run: npx playwright install-deps && npx playwright install
 
-#      - name: Install playwright browsers
-#        run: npm install -D @playwright/test
-
       - name: run playwright tests
         run: npx playwright test ./ui-test/ui-test-full.spec.ts
-
-#     - name: make install
-#        run: apt update && apt install -y make
