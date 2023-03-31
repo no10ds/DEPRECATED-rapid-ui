@@ -139,7 +139,7 @@ test('test', async ({ page }) => {
   const schemaCreatedElement = await page.waitForSelector('.MuiAlertTitle-root', { text: 'Schema Created' });
 
   // Assert that the text of the element is 'Schema Created'
-  expect(await schemaCreatedElement.innerText()).toEqual('Schema Created');
+  expect(await schemaCreatedElement.innerText()).toEqual('No Schema Created');
 
   // Click div[role="button"]:has-text("Delete data")
   await page.locator('div[role="button"]:has-text("Delete data")').click();
