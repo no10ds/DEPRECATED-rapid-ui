@@ -8,16 +8,24 @@ import {
   Alert,
   CreateSchema as CreateSchemaComponent
 } from '@/components'
+import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import { generateSchema, schemaGenerateSchema } from '@/service'
+import { getLayers } from '@/service/fetch'
 import { GenerateSchemaResponse, SchemaGenerate } from '@/service/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Typography } from '@mui/material'
+import { LinearProgress, Typography } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+import { useQuery } from '@tanstack/react-query'
 
 function CreateSchema() {
   const [file, setFile] = useState<File | undefined>()
+
+  const { isLoading: isLayersLoading, data: layersData, error: layersError } = useQuery(
+    ['layers'],
+    getLayers,
+  )
 
   const { control, handleSubmit } = useForm<SchemaGenerate>({
     resolver: zodResolver(schemaGenerateSchema)
@@ -35,6 +43,15 @@ function CreateSchema() {
   if (schemaData) {
     return <CreateSchemaComponent schemaData={schemaData} />
   }
+
+  if (isLayersLoading) {
+    return <LinearProgress />
+  }
+
+  if (layersError) {
+    return <ErrorCard error={layersError as Error} />
+  } 
+
 
   return (
     <form
@@ -75,6 +92,33 @@ function CreateSchema() {
                     Please select
                   </option>
                   {['PUBLIC', 'PRIVATE', 'PROTECTED'].map((value) => (
+                    <option key={value}>{value}</option>
+                  ))}
+                </Select>
+              </>
+            )}
+          />
+        </Row>
+
+        <Row>
+          <Controller
+            name="layer"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Typography variant="caption">Dataset Layer</Typography>
+                <Select
+                  {...field}
+                  defaultValue={layersData.length === 1  ? layersData[0] : ""}
+                  native
+                  error={!!error}
+                  helperText={error?.message}
+                  inputProps={{ 'data-testid': 'field-level' }}
+                >
+                  <option value="" disabled>
+                    Please select
+                  </option>
+                  {layersData.map((value) => (
                     <option key={value}>{value}</option>
                   ))}
                 </Select>

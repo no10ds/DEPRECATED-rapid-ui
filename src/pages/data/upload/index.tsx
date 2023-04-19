@@ -1,15 +1,16 @@
-import { Card, Row, Button, Select, Alert, Link } from '@/components'
+import { Card, Row, Button, Alert, Link } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
+import DatasetSelector from '@/components/DatasetSelector/DatasetSelector'
 import { getDatasetsUi, uploadDataset } from '@/service'
-import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
-import { FormControl, Typography, LinearProgress } from '@mui/material'
+import { Dataset, UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
+import { Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import {useState } from 'react'
 
 function UserModifyPage() {
   const [file, setFile] = useState<File | undefined>()
-  const [dataset, setDataset] = useState<string>('')
+  const [dataset, setDataset] = useState<Dataset>(null)
   const [uploadSuccessDetails, setUploadSuccessDetails] = useState<
     UploadDatasetResponseDetails | undefined
   >()
@@ -34,13 +35,6 @@ function UserModifyPage() {
     }
   })
 
-  useEffect(() => {
-    if (datasetsList) {
-      const firstKey = Object.keys(datasetsList)[0]
-      setDataset(`${firstKey}/${datasetsList[firstKey][0].dataset}`)
-    }
-  }, [datasetsList])
-
   if (isDatasetsListLoading) {
     return <LinearProgress />
   }
@@ -55,7 +49,7 @@ function UserModifyPage() {
         event.preventDefault()
         const formData = new FormData()
         formData.append('file', file)
-        await mutate({ path: dataset, data: formData })
+        await mutate({ path: `${dataset.layer}/${dataset.domain}/${dataset.dataset}?version=${dataset.version}`, data: formData })
       }}
     >
       <Card
@@ -70,30 +64,7 @@ function UserModifyPage() {
           been uploaded for the data source and the data to upload matches this schema.
         </Typography>
 
-        <Typography variant="h2" gutterBottom>
-          Select subject
-        </Typography>
-
-        <Row>
-          <FormControl fullWidth size="small">
-            <Select
-              label="Select dataset"
-              onChange={(event) => setDataset(event.target.value as string)}
-              native
-              inputProps={{ 'data-testid': 'select-dataset' }}
-            >
-              {Object.keys(datasetsList).map((key) => (
-                <optgroup label={key} key={key}>
-                  {datasetsList[key].map((item) => (
-                    <option value={`${key}/${item.dataset}`} key={item.dataset}>
-                      {item.dataset}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </Select>
-          </FormControl>
-        </Row>
+        <DatasetSelector datasetsList={datasetsList} setParentDataset={setDataset}></DatasetSelector>
 
         <Row>
           <input

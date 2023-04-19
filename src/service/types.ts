@@ -152,3 +152,18 @@ export type MetadataItem = {
 }
 
 export type MetadataSearchResponse = MetadataItem[]
+
+export type Dataset = { 
+  layer: string
+  domain: string
+  dataset: string
+  version: number 
+}
+
+export type PermissionUiResponse = {
+  name: string
+  type: string
+  layer: string | undefined
+  sensitivity: string | undefined
+  domain: string | undefined 
+}

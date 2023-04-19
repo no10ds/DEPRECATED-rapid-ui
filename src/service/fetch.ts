@@ -2,6 +2,7 @@ import {
   ClientCreateBody,
   DataFormats,
   DatasetInfoResponse,
+  Dataset,
   AllJobsResponse,
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse,
@@ -12,7 +13,8 @@ import {
   MetadataSearchResponse,
   AuthResponse,
   GetLoginResponse,
-  MethodsResponse
+  MethodsResponse,
+  PermissionUiResponse
 } from './types'
 import { api } from '@/lib/data-utils'
 
@@ -36,10 +38,12 @@ export const getMethods = async (): Promise<MethodsResponse> => {
   return res.json()
 }
 
-// TODO Move these to the types file
-export const getPermissionsListUi = async (): Promise<{
-  [key: string]: { [key: string]: string }[]
-}> => {
+export const getLayers = async (): Promise<string[]> => {
+  const res = await api('/api/layers', { method: 'GET' })
+  return res.json()
+}
+
+export const getPermissionsListUi = async (): Promise<PermissionUiResponse[]> => {
   const res = await api(`/api/permissions_ui`, {
     method: 'GET'
   })
@@ -58,9 +62,7 @@ export const getSubjectsListUi = async (): Promise<
 
 export const getDatasetsUi = async ({
   queryKey
-}): Promise<{
-  [key: string]: { dataset: string; version: string }[]
-}> => {
+}): Promise<Dataset[]> => {
   const [, action] = queryKey
   const res = await api(`/api/datasets_ui/${action}`, {
     method: 'GET'
@@ -83,7 +85,7 @@ export const getJob = async ({ queryKey }): Promise<JobResponse> => {
   return res.json()
 }
 
-export const getSubjectPermissions = async ({ queryKey }): Promise<string[]> => {
+export const getSubjectPermissions = async ({ queryKey }): Promise<PermissionUiResponse[]> => {
   const [, subjectId] = queryKey
   const res = await api(`/api/permissions/${subjectId}`, {
     method: 'GET'
