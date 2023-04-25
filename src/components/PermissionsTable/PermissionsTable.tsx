@@ -30,7 +30,7 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
   })
 
   const generateUniquePermissionOptions = (attribute) => [...new Set(permissionsListData.map((permisison) => permisison[attribute]))].map((item) => (
-    attribute ? <option key={item}>{item}</option> : null
+    item ? <option key={item}>{item}</option> : null
   ))
 
   return (
