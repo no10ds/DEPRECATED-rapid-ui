@@ -3,21 +3,21 @@ import { z } from 'zod'
 export const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
 const UserTypeEnum = z.enum(['User', 'Client'])
 
-export const DataActionValues = ['READ', 'WRITE']
-export const AdminActionValues = ['DATA_ADMIN', 'USER_ADMIN']
+export const DataActionValues = ['READ', 'WRITE'] as const;
+export const AdminActionValues = ['DATA_ADMIN', 'USER_ADMIN'] as const;
 
 const DataActionEnum = z.enum(DataActionValues)
 const AdminActionEnum = z.enum(AdminActionValues)
 
 
-const DataPermission = z.object({
+export const DataPermission = z.object({
   type: DataActionEnum,
   layer: z.string(),
   sensitivity: z.string(),
   domain: z.string().optional(),
 })
 
-const AdminPermission = z.object({
+export const AdminPermission = z.object({
   type: AdminActionEnum,
 })
 
