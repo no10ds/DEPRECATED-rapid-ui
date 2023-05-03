@@ -14,7 +14,8 @@ import {
   AuthResponse,
   GetLoginResponse,
   MethodsResponse,
-  PermissionUiResponse
+  PermissionUiResponse,
+  SubjectPermission
 } from './types'
 import { api } from '@/lib/data-utils'
 
@@ -43,7 +44,7 @@ export const getLayers = async (): Promise<string[]> => {
   return res.json()
 }
 
-export const getPermissionsListUi = async (): Promise<PermissionUiResponse[]> => {
+export const getPermissionsListUi = async (): Promise<PermissionUiResponse> => {
   const res = await api(`/api/permissions_ui`, {
     method: 'GET'
   })
@@ -85,7 +86,7 @@ export const getJob = async ({ queryKey }): Promise<JobResponse> => {
   return res.json()
 }
 
-export const getSubjectPermissions = async ({ queryKey }): Promise<PermissionUiResponse[]> => {
+export const getSubjectPermissions = async ({ queryKey }): Promise<SubjectPermission[]> => {
   const [, subjectId] = queryKey
   const res = await api(`/api/permissions/${subjectId}`, {
     method: 'GET'
@@ -145,8 +146,8 @@ export const deleteDataset = async ({ path }: { path: string }) => {
 }
 
 export const getDatasetInfo = async ({ queryKey }): Promise<DatasetInfoResponse> => {
-  const [, domain, dataset, version] = queryKey
-  const res = await api(`/api/datasets/${domain}/${dataset}/info?version=${version}`, {
+  const [, layer, domain, dataset, version] = queryKey
+  const res = await api(`/api/datasets/${layer}/${domain}/${dataset}/info?version=${version}`, {
     method: 'GET'
   })
   return res.json()

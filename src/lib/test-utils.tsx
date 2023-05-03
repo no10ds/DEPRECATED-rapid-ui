@@ -2,6 +2,7 @@ import { render, renderHook, RenderOptions, waitFor } from '@testing-library/rea
 import { ThemeProvider } from '@/components'
 import { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Dataset, DeleteDatasetResponse } from '@/service/types'
 
 beforeAll(() => {
   Object.defineProperty(global, 'sessionStorage', { value: mockStorage })
@@ -72,21 +73,30 @@ export const bugfixForTimeout = async () =>
 export * from '@testing-library/react'
 export { renderWithProviders as render }
 
-export const mockDataSetsList: { [key: string]: { [key: string]: string }[] } = {
-  Pizza: [
-    {
-      dataset: 'bit_complicated',
-      version: '3'
-    },
-    {
-      dataset: 'again_complicated_high',
-      version: '3'
-    }
-  ],
-  Apples: [
-    {
-      dataset: 'juicy',
-      version: '2'
-    }
-  ]
+export const mockDataset: Dataset = {
+  layer: 'layer',
+  domain: 'domain',
+  dataset: 'dataset',
+  version: 1
 }
+
+export const mockDataSetsList: Dataset[] = [
+  {
+    layer: 'layer',
+    domain: 'Pizza',
+    dataset: 'bit_complicated',
+    version: 3
+  },
+  {
+    layer: 'layer',
+    domain: 'Pizza',
+    dataset: 'again_complicated_high',
+    version: 3
+  },
+  {
+    layer: 'layer',
+    domain: 'Apple',
+    dataset: 'juicy',
+    version: 2
+  }
+]

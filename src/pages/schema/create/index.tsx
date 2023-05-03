@@ -41,7 +41,7 @@ function CreateSchema() {
   })
 
   if (schemaData) {
-    return <CreateSchemaComponent schemaData={schemaData} />
+    return <CreateSchemaComponent schemaData={schemaData} layersData={layersData} />
   }
 
   if (isLayersLoading) {
@@ -50,7 +50,7 @@ function CreateSchema() {
 
   if (layersError) {
     return <ErrorCard error={layersError as Error} />
-  } 
+  }
 
 
   return (
@@ -58,7 +58,7 @@ function CreateSchema() {
       onSubmit={handleSubmit(async (data) => {
         const formData = new FormData()
         formData.append('file', file)
-        const path = `${data.sensitivity}/${data.domain}/${data.title}/generate`
+        const path = `${data.layer}/${data.sensitivity}/${data.domain}/${data.title}/generate`
         await mutate({ path, data: formData })
       })}
     >
@@ -91,6 +91,7 @@ function CreateSchema() {
                   <option value="" disabled>
                     Please select
                   </option>
+                  {/* TODO: Fix this */}
                   {['PUBLIC', 'PRIVATE', 'PROTECTED'].map((value) => (
                     <option key={value}>{value}</option>
                   ))}
@@ -99,17 +100,16 @@ function CreateSchema() {
             )}
           />
         </Row>
-
         <Row>
           <Controller
             name="layer"
             control={control}
+            defaultValue={layersData.length === 1 ? layersData[0] : ""}
             render={({ field, fieldState: { error } }) => (
               <>
                 <Typography variant="caption">Dataset Layer</Typography>
                 <Select
                   {...field}
-                  defaultValue={layersData.length === 1  ? layersData[0] : ""}
                   native
                   error={!!error}
                   helperText={error?.message}

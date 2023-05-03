@@ -100,6 +100,7 @@ export type DatasetInfoResponse = {
 
 export type GenerateSchemaResponse = {
   metadata: {
+    layer: string
     domain: string
     dataset: string
     sensitivity: string
@@ -153,17 +154,21 @@ export type MetadataItem = {
 
 export type MetadataSearchResponse = MetadataItem[]
 
-export type Dataset = { 
+export type Dataset = {
   layer: string
   domain: string
   dataset: string
-  version: number 
+  version: number
 }
 
-export type PermissionUiResponse = {
+export type SubjectPermission = {
   name: string
   type: string
   layer: string | undefined
   sensitivity: string | undefined
-  domain: string | undefined 
+  domain: string | undefined
+}
+
+export type PermissionUiResponse = {
+  [key: string]: string | { [key: string]: { [key: string]: string | { [key: string]: string } } }
 }

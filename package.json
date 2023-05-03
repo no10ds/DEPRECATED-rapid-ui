@@ -10,6 +10,7 @@
     "lint": "next lint",
     "test:watch": "DEBUG_PRINT_LIMIT=1000000 jest --watch",
     "test:all": "next lint && tsc --noemit && jest",
+    "test:debug": "jest --watch --runInBand --slient=false --collectCoverage --testTimeout=30000",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "@types/react-dom": "18.0.9",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
+    "lodash": "^4.17.21",
     "next": "13.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",

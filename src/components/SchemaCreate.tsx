@@ -20,7 +20,7 @@ import TextField from './TextField/TextField'
 
 const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
 
-function CreateSchema({ schemaData }: { schemaData: GenerateSchemaResponse }) {
+function CreateSchema({ schemaData, layersData }: { schemaData: GenerateSchemaResponse, layersData: string[] }) {
   const [newSchemaData, setNewSchemaData] = useState<GenerateSchemaResponse>(schemaData)
   const [keyValueTag, setKeyValueTag] = useState({ key: '', value: '' })
   const [valueTag, setValueTag] = useState('')
@@ -104,7 +104,30 @@ function CreateSchema({ schemaData }: { schemaData: GenerateSchemaResponse }) {
                 <Typography variant="caption">Sensitivity Level</Typography>
                 <Select
                   {...field}
+                  // TODO: Fix this
                   data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
+                  error={!!error}
+                  helperText={error?.message}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+              </>
+            )}
+          />
+        </Row>
+
+        <Row>
+          <Controller
+            name="layer"
+            control={control}
+            defaultValue={
+              newSchemaData.metadata.layer
+            }
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Typography variant="caption">Dataset Layer</Typography>
+                <Select
+                  {...field}
+                  data={layersData}
                   error={!!error}
                   helperText={error?.message}
                   onChange={(e) => field.onChange(e.target.value)}

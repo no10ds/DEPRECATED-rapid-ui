@@ -6,7 +6,7 @@ import {
   getSubjectPermissions,
   updateSubjectPermissions
 } from '@/service'
-import { fetchPermissionName } from '@/service/permissions'
+import { extractPermissionNames } from '@/service/permissions'
 import {
   UpdateSubjectPermissionsBody,
   UpdateSubjectPermissionsResponse
@@ -48,6 +48,7 @@ function SubjectModifyPage() {
     if (subjectPermissionsData) {
       append(subjectPermissionsData)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectPermissionsData])
 
   const { isLoading, mutate, error } = useMutation<
@@ -76,7 +77,7 @@ function SubjectModifyPage() {
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
-        const permissions = data.permissions.map((permission) => fetchPermissionName(permission, permissionsListData))
+        const permissions = data.permissions.map((permission) => extractPermissionNames(permission, permissionsListData))
         await mutate(
           { subject_id: subjectId as string, permissions })
       })}

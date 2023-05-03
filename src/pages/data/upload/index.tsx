@@ -6,11 +6,12 @@ import { getDatasetsUi, uploadDataset } from '@/service'
 import { Dataset, UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
 import { Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import {useState } from 'react'
+import { useState } from 'react'
 
-function UserModifyPage() {
+
+function UploadDataset({ datasetInput = null }: { datasetInput?: Dataset }) {
   const [file, setFile] = useState<File | undefined>()
-  const [dataset, setDataset] = useState<Dataset>(null)
+  const [dataset, setDataset] = useState<Dataset>(datasetInput)
   const [uploadSuccessDetails, setUploadSuccessDetails] = useState<
     UploadDatasetResponseDetails | undefined
   >()
@@ -106,6 +107,6 @@ function UserModifyPage() {
   )
 }
 
-export default UserModifyPage
+export default UploadDataset
 
-UserModifyPage.getLayout = (page) => <AccountLayout title="Upload">{page}</AccountLayout>
+UploadDataset.getLayout = (page) => <AccountLayout title="Upload">{page}</AccountLayout>

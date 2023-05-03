@@ -11,9 +11,9 @@ import { Dataset } from '@/service/types'
 
 
 
-function DownloadData() {
+function DownloadData({ datasetInput = null }: { datasetInput?: Dataset }) {
   const router = useRouter()
-  const [dataset, setDataset] = useState<Dataset>(null)
+  const [dataset, setDataset] = useState<Dataset>(datasetInput)
 
   const {
     isLoading: isDatasetsListLoading,

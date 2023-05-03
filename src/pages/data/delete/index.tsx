@@ -7,8 +7,8 @@ import { LinearProgress, Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-function DeleteDataset() {
-  const [dataset, setDataset] = useState<Dataset>(null)
+function DeleteDataset({ datasetInput = null }: { datasetInput?: Dataset }) {
+  const [dataset, setDataset] = useState<Dataset>(datasetInput)
   const [deleteDatasetSuccessDetails, setDeleteDatasetSuccessDetails] = useState<
     string | undefined
   >()
@@ -65,7 +65,7 @@ function DeleteDataset() {
 
         {deleteDatasetSuccessDetails ? (
           <Alert
-            title={`Dataset deleted: ${dataset}`}
+            title={`Dataset deleted: ${dataset.layer}/${dataset.domain}/${dataset.dataset}`}
             data-testid="delete-status"
           ></Alert>
         ) : null}

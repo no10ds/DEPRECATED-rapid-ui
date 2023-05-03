@@ -5,7 +5,7 @@ import { Typography, LinearProgress } from '@mui/material'
 import { Controller, useForm, useFieldArray } from 'react-hook-form'
 import { z } from 'zod'
 import { createClient, SubjectCreate } from '@/service'
-import { fetchPermissionName } from '@/service/permissions'
+import { extractPermissionNames } from '@/service/permissions'
 import { getPermissionsListUi } from '@/service/fetch'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -80,7 +80,7 @@ function CreateUserPage() {
     return (
       <form
         onSubmit={handleSubmit(async (data) => {
-          const permissions = data.permissions.map((permission) => fetchPermissionName(permission, permissionsListData))
+          const permissions = data.permissions.map((permission) => extractPermissionNames(permission, permissionsListData))
           if (data.type === 'User') {
             await mutate({
               path: 'user',

@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
-export const SensitivityEnum = z.enum(['PUBLIC', 'PRIVATE', 'PROTECTED'])
+
+const GlobalSensitivities = ['PUBLIC', 'PRIVATE'] as const;
+const ProtectedSensitivity = 'PROTECTED'
+
+
+export const SensitivityEnum = z.enum([...GlobalSensitivities, ProtectedSensitivity, 'ALL'])
 const UserTypeEnum = z.enum(['User', 'Client'])
 
 export const DataActionValues = ['READ', 'WRITE'] as const;
@@ -9,16 +14,20 @@ export const AdminActionValues = ['DATA_ADMIN', 'USER_ADMIN'] as const;
 const DataActionEnum = z.enum(DataActionValues)
 const AdminActionEnum = z.enum(AdminActionValues)
 
+export const ActionEnum = z.enum([...DataActionValues, ...AdminActionValues])
 
 export const DataPermission = z.object({
   type: DataActionEnum,
   layer: z.string(),
-  sensitivity: z.string(),
+  sensitivity: SensitivityEnum,
   domain: z.string().optional(),
 })
 
 export const AdminPermission = z.object({
   type: AdminActionEnum,
+  layer: z.literal(undefined),
+  sensitivity: z.literal(undefined),
+  domain: z.literal(undefined)
 })
 
 export const Permission = z.discriminatedUnion("type", [DataPermission, AdminPermission], {
@@ -36,6 +45,7 @@ export const SubjectCreate = z.object({
 
 export const schemaCreateSchema = z.object({
   sensitivity: SensitivityEnum,
+  layer: z.string(),
   domain: z.string(),
   title: z.string(),
   description: z.string().optional(),

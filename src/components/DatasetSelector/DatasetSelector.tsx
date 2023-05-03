@@ -1,62 +1,34 @@
 
 import { Row } from '@/components'
-import { FormControl, Typography } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import {
-  Select,
-  Autocomplete,
-  TextField,
-} from '@mui/material'
+import { Autocomplete, GroupHeader, GroupItems } from '../Autocomplete/Autocomplete'
+import FormControl from '../FormControl/FormControl'
 import { Dataset } from "@/service/types"
 
-import { styled, lighten, darken } from '@mui/system';
 
-const GroupHeader = styled('div')(({ theme }) => ({
-  position: 'sticky',
-  top: '-8px',
-  padding: '4px 10px',
-  color: theme.palette.primary.main,
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? lighten(theme.palette.primary.light, 0.85)
-      : darken(theme.palette.primary.main, 0.8),
-}));
+const DatasetSelector = ({ datasetsList, setParentDataset, enableVersionSelector = true }) => {
 
-const GroupItems = styled('ul')({
-  padding: 0,
-});
-
-
-function DatasetSelector({ datasetsList, setParentDataset, enableVersionSelector = true }) {
-
-  const [versions, setVersions] = useState(0)
+  const [maxVersion, setMaxVersion] = useState(0)
   const [filteredDatasetsList, setFilteredDatasetsList] = useState<Dataset[]>([])
   const [layerFilteredDatasetsList, setLayerFilteredDatasetsList] = useState<Dataset[]>([])
   const [layer, setLayer] = useState<string>('')
   const [domain, setDomain] = useState<string>('')
   const [dataset, setDataset] = useState<Dataset>(null)
+  const [version, setVersion] = useState<number>(1)
 
   useEffect(() => {
     if (datasetsList) {
+      let filteredList = datasetsList;
       if (layer) {
+        filteredList = filteredList.filter((dataset) => dataset.layer === layer);
+
         if (domain) {
-          setFilteredDatasetsList(
-            datasetsList.filter((dataset) => dataset.layer == layer && dataset.domain == domain)
-          )
+          filteredList = filteredList.filter((dataset) => dataset.domain === domain);
         }
-        else {
-          setFilteredDatasetsList(
-            datasetsList.filter((dataset) => dataset.layer == layer)
-          )
-        }
-        setLayerFilteredDatasetsList(
-          datasetsList.filter((dataset) => dataset.layer == layer)
-        )
       }
-      else {
-        setFilteredDatasetsList(datasetsList)
-        setLayerFilteredDatasetsList(datasetsList)
-      }
+      setFilteredDatasetsList(filteredList);
+      setLayerFilteredDatasetsList(filteredList);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layer, domain])
@@ -98,90 +70,94 @@ function DatasetSelector({ datasetsList, setParentDataset, enableVersionSelector
       setLayer(null)
       setDomain(null)
     }
-    setVersions(version)
+
+    setVersion(version)
+    setMaxVersion(version)
     setParentDataset(dataset)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataset])
 
+
+  useEffect(() => {
+    if (dataset) {
+      dataset.version = version
+      setParentDataset(dataset)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version])
+
   return (
     <>
       <Row>
-        <div>
-          <Typography variant="h2">Layer</Typography>
+        <Typography variant="caption">Layer</Typography>
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <Autocomplete
+            multiple={false}
+            options={[...new Set(datasetsList.map((dataset) => dataset.layer))]}
+            getOptionLabel={(option) => (option as string) || ""}
+            renderInput={(params) => <TextField {...params} size="small" />}
+            value={[...new Set(datasetsList.map((dataset) => dataset.layer))].length === 1 ? datasetsList[0].layer : layer || null}
+            onChange={(_, newValue) => {
+              handleLayerSelect(newValue);
+            }}
+            data-testid='select-layer'
+          />
+        </FormControl>
+        <Typography variant="caption">Domain</Typography>
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <Autocomplete
+            multiple={false}
+            options={[...new Set(layerFilteredDatasetsList.map((dataset) => `${dataset.layer}/${dataset.domain}`))]}
+            getOptionLabel={(option) => (option as string).split('/')[1] || ""}
+            renderInput={(params) => <TextField {...params} size="small" />}
+            value={layer && domain ? `${layer}/${domain}` : null}
+            onChange={(_, newValue) => {
+              handleDomainSelect(newValue);
+            }}
+            data-testid='select-domain'
+          />
+        </FormControl>
+        <Typography variant="caption">Dataset</Typography>
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <Autocomplete
+            multiple={false}
+            options={filteredDatasetsList}
+            groupBy={(dataset) => `${(dataset as Dataset).layer}-${(dataset as Dataset).domain}`}
+            getOptionLabel={(dataset) => (dataset as unknown as Dataset).dataset || ""}
+            renderInput={(params) => <TextField {...params} size="small" />}
+            renderGroup={(params) => (
+              <li key={params.key}>
+                <GroupHeader>{params.group}</GroupHeader>
+                <GroupItems>{params.children}</GroupItems>
+              </li>
+            )}
+            defaultValue={undefined}
+            value={dataset}
+            onChange={(_, newValue) => {
+              setDataset(newValue as unknown as Dataset);
+            }}
+            data-testid='select-dataset'
+          />
+        </FormControl>
+        {(enableVersionSelector && maxVersion != 0) && (
           <FormControl fullWidth sx={{ m: 1 }}>
+            <Typography variant="caption">Select version</Typography>
             <Autocomplete
               multiple={false}
-              options={[...new Set(datasetsList.map((dataset) => dataset.layer))]}
-              getOptionLabel={(option) => option || ""}
+              options={Array(maxVersion).fill(0).map((_, i) => i + 1)}
               renderInput={(params) => <TextField {...params} size="small" />}
-              value={[...new Set(datasetsList.map((dataset) => dataset.layer))].length === 1 ? datasetsList[0].layer : layer || null}
               onChange={(_, newValue) => {
-                handleLayerSelect(newValue);
+                setVersion(newValue as unknown as number);
               }}
+              value={version}
+              data-testid='select-version'
             />
           </FormControl>
-          <Typography variant="h2">Domain</Typography>
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <Autocomplete
-              multiple={false}
-              options={[...new Set(layerFilteredDatasetsList.map((dataset) => `${dataset.layer}/${dataset.domain}`))]}
-              getOptionLabel={(option) => option.split('/')[1] || ""}
-              renderInput={(params) => <TextField {...params} size="small" />}
-              value={layer && domain ? `${layer}/${domain}` : null}
-              onChange={(_, newValue) => {
-                handleDomainSelect(newValue);
-              }}
-            />
-          </FormControl>
-          <Typography variant="h2">Dataset</Typography>
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <Autocomplete
-              multiple={false}
-              options={filteredDatasetsList}
-              groupBy={(dataset) => `${dataset.layer}-${dataset.domain}`}
-              getOptionLabel={(dataset) => (dataset as unknown as Dataset).dataset || ""}
-              renderInput={(params) => <TextField {...params} size="small" />}
-              renderGroup={(params) => (
-                <li key={params.key}>
-                  <GroupHeader>{params.group}</GroupHeader>
-                  <GroupItems>{params.children}</GroupItems>
-                </li>
-              )}
-              defaultValue={undefined}
-              value={dataset}
-              onChange={(_, newValue) => {
-                setDataset(newValue as unknown as Dataset);
-              }}
-            />
-          </FormControl>
-        </div>
+        )}
       </Row>
-
-      {(enableVersionSelector && versions != 0) && (
-        <>
-          <Typography variant="h2">Select version</Typography>
-
-          <Row>
-            <Select
-              label="Select version"
-              onChange={(event) => dataset.version = event.target.value as number}
-              native
-              inputProps={{ 'data-testid': 'select-version' }}
-            >
-              {Array(versions)
-                .fill(0)
-                .map((_, index, array) => (
-                  <option value={array.length - index} key={index}>
-                    {array.length - index}
-                  </option>
-                ))}
-            </Select>
-          </Row>
-        </>
-      )}
     </>
   )
 }
 
 
-export default DatasetSelector
+export default DatasetSelector;

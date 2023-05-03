@@ -3,14 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Typography } from '@mui/material'
 import { Controller, useForm, FieldValues } from 'react-hook-form'
 import { z } from 'zod'
-import { Permission } from '@/service'
+import { Permission, ActionEnum, SensitivityEnum } from '@/service'
+import { isDataPermission } from '@/service/permissions'
 import { PermissionUiResponse } from '@/service/types'
-
-const dataActions = ['READ', 'WRITE']
-
-type PermissionType = z.infer<typeof Permission>
-
-
+import { useEffect, useState } from 'react'
+import { cloneDeep } from 'lodash'
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -21,17 +18,98 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissionsListData: PermissionUiResponse[], fieldArrayReturn: FieldValues }) {
+
+type ActionType = z.infer<typeof ActionEnum>
+type PermissionType = z.infer<typeof Permission>
+type SensitivityType = z.infer<typeof SensitivityEnum>
+
+
+function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissionsListData: PermissionUiResponse, fieldArrayReturn: FieldValues }) {
+
+  const [filteredPermissionsListData, setFilteredPermissionsListData] = useState({})
+  const [permissionsAtMax, setPermissionsAtMax] = useState<boolean>(false)
+
+  const removePermissionAsAnOption = (permission: PermissionType, permissionsList: PermissionUiResponse) => {
+    const { type, layer, sensitivity, domain } = permission;
+    const typeList = permissionsList[type];
+    const layerList = typeList?.[layer];
+    const sensitivityList = layerList?.[sensitivity];
+
+    switch (true) {
+      // Scenario for protected permission
+      case Boolean(domain):
+        // Remove the domain
+        if (domain in sensitivityList) {
+          delete sensitivityList[domain];
+        }
+
+        // Remove the sensitivity if there are no domains left
+        if (!Object.keys(sensitivityList)?.length) {
+          delete layerList[sensitivity];
+
+          // Remove the layer if there are no sensitivities left
+          if (!Object.keys(layerList)?.length) {
+            delete typeList[layer];
+          }
+        }
+        break;
+      case Boolean(sensitivity):
+        // Remove the sensitivity
+        if (sensitivity in layerList) {
+          delete layerList[sensitivity];
+        }
+
+        // Remove the layer if there are no sensitivities left
+        if (!Object.keys(layerList)?.length || sensitivity === "ALL") {
+          delete typeList[layer];
+
+          // Remove the type if there are no layers left
+          if (!Object.keys(typeList)?.length || layer === "ALL") {
+            delete permissionsList[type];
+          }
+        }
+        break;
+
+      // Scenario for admin permissions 
+      default:
+        delete permissionsList[type];
+        break;
+    }
+
+    return permissionsList;
+  };
+
 
   const { fields, append, remove } = fieldArrayReturn
 
-  const { control: controlPermission, trigger: triggerPermission, watch: watchPermission, reset: resetPermission } = useForm<PermissionType>({
+  const { control, trigger, watch, reset, setError, setValue } = useForm<PermissionType>({
     resolver: zodResolver(Permission)
   })
 
-  const generateUniquePermissionOptions = (attribute) => [...new Set(permissionsListData.map((permisison) => permisison[attribute]))].map((item) => (
-    item ? <option key={item}>{item}</option> : null
-  ))
+  // Remove any of the selected permissions from being an option
+  useEffect(() => {
+    let amendedPermissions = cloneDeep(permissionsListData)
+    fields.forEach((permission) => {
+      amendedPermissions = removePermissionAsAnOption(permission, amendedPermissions)
+    })
+    setFilteredPermissionsListData(amendedPermissions)
+
+  }, [fields, permissionsListData]);
+
+  // Set Permissions at max
+  useEffect(() => {
+    if (Object.keys(filteredPermissionsListData).length === 0) {
+      setPermissionsAtMax(true)
+    }
+    else {
+      setPermissionsAtMax(false)
+    }
+  }, [filteredPermissionsListData])
+
+
+  const generateOptions = (items) => items.map((item) => {
+    return <option key={item} value={item}>{item}</option>
+  })
 
   return (
     <TableContainer>
@@ -74,21 +152,27 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             </TableCell>
           </TableRow>)
           )}
-          <TableRow>
+          {!permissionsAtMax && <TableRow>
             <TableCell>
               <IconButton
                 color="primary"
                 onClick={async () => {
-                  const result = await triggerPermission(undefined, { shouldFocus: true });
+                  const result = await trigger(undefined, { shouldFocus: true });
                   if (result) {
-                    const permissionToAdd = watchPermission()
-                    append(permissionToAdd)
-                    resetPermission({
-                      type: undefined,
-                      layer: undefined,
-                      sensitivity: undefined,
-                      domain: undefined,
-                    })
+                    const permissionToAdd = watch()
+                    // Triggers an error if the domain is not set for protected sensitivity
+                    if (isDataPermission(permissionToAdd) && permissionToAdd.sensitivity === "PROTECTED" && permissionToAdd.domain === undefined) {
+                      setError("domain", { type: "custom", message: "Required" });
+                    }
+                    else {
+                      append(permissionToAdd)
+                      reset({
+                        type: undefined,
+                        layer: undefined,
+                        sensitivity: undefined,
+                        domain: undefined,
+                      })
+                    }
                   }
                 }}
               >
@@ -98,7 +182,7 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             <TableCell>
               <Controller
                 name={'type'}
-                control={controlPermission}
+                control={control}
                 render={({ field, fieldState: { error } }) => (
                   <Select
                     {...field}
@@ -107,11 +191,13 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
                     helperText={error?.message}
                     native
                     inputProps={{
-                      'data-testid': `field-type`
+                      'data-testid': 'field-type'
                     }}
+                    // Reset all other values when this is changed
+                    onChange={(event) => { reset(); setValue('type', event.target.value as ActionType) }}
                   >
                     <option value={''}>Action</option>
-                    {generateUniquePermissionOptions('type')}
+                    {generateOptions(Object.keys(filteredPermissionsListData))}
                   </Select>
                 )}
               />
@@ -119,21 +205,21 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             <TableCell>
               <Controller
                 name={'layer'}
-                control={controlPermission}
+                control={control}
                 render={({ field, fieldState: { error } }) => (
-                  dataActions.includes(watchPermission(`type`)) &&
+                  isDataPermission(watch()) &&
                   <Select
                     {...field}
                     error={!!error}
-                    value={field.value ? field.value : ''}
+                    value={field.value && isDataPermission(watch()) ? field.value : ''}
                     helperText={error?.message}
                     native
                     inputProps={{
-                      'data-testid': `layer`
+                      'data-testid': 'layer'
                     }}
                   >
-                    <option value={''}>Layer</option>
-                    {generateUniquePermissionOptions('layer')}
+                    <option key={''} value={''}>Layer</option>
+                    {generateOptions(Object.keys(filteredPermissionsListData[watch('type')]))}
                   </Select>
                 )}
               />
@@ -141,21 +227,23 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             <TableCell>
               <Controller
                 name={'sensitivity'}
-                control={controlPermission}
+                control={control}
                 render={({ field, fieldState: { error } }) => (
-                  dataActions.includes(watchPermission(`type`)) &&
+                  isDataPermission(watch()) && watch('layer') &&
                   <Select
                     {...field}
-                    value={field.value ? field.value : ''}
+                    value={field.value && isDataPermission(watch()) ? field.value : ''}
                     error={!!error}
                     helperText={error?.message}
                     native
                     inputProps={{
                       'data-testid': 'sensitivity'
                     }}
+                    // Reset domain if this is changed
+                    onChange={(event) => { setValue('domain', undefined); setValue('sensitivity', event.target.value as SensitivityType) }}
                   >
                     <option value={''}>Sensitivity</option>
-                    {generateUniquePermissionOptions('sensitivity')}
+                    {generateOptions(Object.keys(filteredPermissionsListData[watch('type')][watch('layer')]))}
                   </Select>
                 )
                 }
@@ -164,12 +252,12 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             <TableCell>
               <Controller
                 name={'domain'}
-                control={controlPermission}
+                control={control}
                 render={({ field, fieldState: { error } }) => (
-                  watchPermission('sensitivity') === 'PROTECTED' &&
+                  isDataPermission(watch()) && watch('sensitivity') === 'PROTECTED' &&
                   <Select
                     {...field}
-                    value={field.value ? field.value : ''}
+                    value={field.value && isDataPermission(watch()) ? field.value : ''}
                     error={!!error}
                     helperText={error?.message}
                     native
@@ -178,15 +266,15 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
                     }}
                   >
                     <option value={''}>Domain</option>
-                    {generateUniquePermissionOptions('domain')}
+                    {isDataPermission(watch()) && generateOptions(Object.keys(filteredPermissionsListData[watch('type')][watch('layer')][watch('sensitivity')]))}
                   </Select>)
                 }
               />
             </TableCell>
-          </TableRow>
+          </TableRow>}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   )
 }
 
