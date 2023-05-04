@@ -6,7 +6,7 @@ on:
       - "**"
 
   workflow_dispatch:
-    
+
   pull_request:
     types:
       - opened
@@ -33,4 +33,4 @@ jobs:
         run: npx playwright install-deps && npx playwright install
 
       - name: run playwright tests
-        run: npx playwright test ./ui-test/ui-test-full.spec.ts
+        run: npx playwright test ./ui-test/ui-test.spec.ts
