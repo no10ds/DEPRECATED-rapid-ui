@@ -156,8 +156,8 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
             <TableCell>
               <IconButton
                 color="primary"
-                onClick={async () => {
-                  const result = await trigger(undefined, { shouldFocus: true });
+                onClick={() => {
+                  const result = trigger(undefined, { shouldFocus: true });
                   if (result) {
                     const permissionToAdd = watch()
                     // Triggers an error if the domain is not set for protected sensitivity
@@ -191,7 +191,7 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
                     helperText={error?.message}
                     native
                     inputProps={{
-                      'data-testid': 'field-type'
+                      'data-testid': 'select-type'
                     }}
                     // Reset all other values when this is changed
                     onChange={(event) => { reset(); setValue('type', event.target.value as ActionType) }}
@@ -215,7 +215,7 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
                     helperText={error?.message}
                     native
                     inputProps={{
-                      'data-testid': 'layer'
+                      'data-testid': 'select-layer'
                     }}
                   >
                     <option key={''} value={''}>Layer</option>
@@ -237,7 +237,7 @@ function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissio
                     helperText={error?.message}
                     native
                     inputProps={{
-                      'data-testid': 'sensitivity'
+                      'data-testid': 'select-sensitivity'
                     }}
                     // Reset domain if this is changed
                     onChange={(event) => { setValue('domain', undefined); setValue('sensitivity', event.target.value as SensitivityType) }}

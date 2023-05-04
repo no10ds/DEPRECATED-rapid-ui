@@ -113,7 +113,7 @@ function CreateSchema() {
                   native
                   error={!!error}
                   helperText={error?.message}
-                  inputProps={{ 'data-testid': 'field-level' }}
+                  inputProps={{ 'data-testid': 'field-layer' }}
                 >
                   <option value="" disabled>
                     Please select
