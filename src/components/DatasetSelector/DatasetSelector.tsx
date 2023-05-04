@@ -86,6 +86,9 @@ const DatasetSelector = ({ datasetsList, setParentDataset, enableVersionSelector
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version])
 
+  const getUniqueLayers = () => [...new Set(datasetsList.map((dataset) => dataset.layer))]
+  const getUniqueDomains = () => [...new Set(layerFilteredDatasetsList.map((dataset) => `${dataset.layer}/${dataset.domain}`))]
+
   return (
     <>
       <Row>
@@ -93,10 +96,10 @@ const DatasetSelector = ({ datasetsList, setParentDataset, enableVersionSelector
         <FormControl fullWidth sx={{ m: 1 }}>
           <Autocomplete
             multiple={false}
-            options={[...new Set(datasetsList.map((dataset) => dataset.layer))]}
+            options={getUniqueLayers()}
             getOptionLabel={(option) => (option as string) || ""}
             renderInput={(params) => <TextField {...params} size="small" />}
-            value={[...new Set(datasetsList.map((dataset) => dataset.layer))].length === 1 ? datasetsList[0].layer : layer || null}
+            value={getUniqueLayers().length === 1 ? datasetsList[0].layer : layer || null}
             onChange={(_, newValue) => {
               handleLayerSelect(newValue);
             }}
@@ -107,7 +110,7 @@ const DatasetSelector = ({ datasetsList, setParentDataset, enableVersionSelector
         <FormControl fullWidth sx={{ m: 1 }}>
           <Autocomplete
             multiple={false}
-            options={[...new Set(layerFilteredDatasetsList.map((dataset) => `${dataset.layer}/${dataset.domain}`))]}
+            options={getUniqueDomains()}
             getOptionLabel={(option) => (option as string).split('/')[1] || ""}
             renderInput={(params) => <TextField {...params} size="small" />}
             value={layer && domain ? `${layer}/${domain}` : null}

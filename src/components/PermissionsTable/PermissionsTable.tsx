@@ -24,7 +24,7 @@ type PermissionType = z.infer<typeof Permission>
 type SensitivityType = z.infer<typeof SensitivityEnum>
 
 
-function PermissionsTable({ permissionsListData, fieldArrayReturn }: { permissionsListData: PermissionUiResponse, fieldArrayReturn: FieldValues }) {
+const PermissionsTable = ({ permissionsListData, fieldArrayReturn }: { permissionsListData: PermissionUiResponse, fieldArrayReturn: FieldValues }) => {
 
   const [filteredPermissionsListData, setFilteredPermissionsListData] = useState({})
   const [permissionsAtMax, setPermissionsAtMax] = useState<boolean>(false)
