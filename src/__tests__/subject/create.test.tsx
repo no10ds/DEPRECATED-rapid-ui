@@ -3,8 +3,6 @@ import userEvent from '@testing-library/user-event'
 import fetchMock from 'jest-fetch-mock'
 import { renderWithProviders, mockPermissionUiResponse } from '@/lib/test-utils'
 import SubjectCreatePage from '@/pages/subject/create/index'
-import { PermissionUiResponse } from '@/service/types'
-import { resolve } from 'path'
 
 
 const pushSpy = jest.fn()
