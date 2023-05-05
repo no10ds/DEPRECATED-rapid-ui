@@ -1,6 +1,7 @@
-import { Card, Row, Button, Select, Alert, Link } from '@/components'
+import { Card, Row, Button, Select, Alert } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
+import UploadProgress from '@/components/UploadProgress/UploadProgress'
 import { getDatasetsUi, uploadDataset } from '@/service'
 import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
 import { FormControl, Typography, LinearProgress } from '@mui/material'
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react'
 
 function UserModifyPage() {
   const [file, setFile] = useState<File | undefined>()
+  const [disable, setDisable] = useState<boolean>(false)
   const [dataset, setDataset] = useState<string>('')
   const [uploadSuccessDetails, setUploadSuccessDetails] = useState<
     UploadDatasetResponseDetails | undefined
@@ -31,6 +33,7 @@ function UserModifyPage() {
     },
     onSuccess: (data) => {
       setUploadSuccessDetails(data.details)
+      setDisable(true)
     }
   })
 
@@ -59,7 +62,7 @@ function UserModifyPage() {
       }}
     >
       <Card
-        action={
+        action={!disable &&
           <Button color="primary" type="submit" loading={isLoading} data-testid="submit">
             Upload dataset
           </Button>
@@ -71,7 +74,7 @@ function UserModifyPage() {
         </Typography>
 
         <Typography variant="h2" gutterBottom>
-          Select subject
+          Select dataset
         </Typography>
 
         <Row>
@@ -80,6 +83,7 @@ function UserModifyPage() {
               label="Select dataset"
               onChange={(event) => setDataset(event.target.value as string)}
               native
+              disabled={disable}
               inputProps={{ 'data-testid': 'select-dataset' }}
             >
               {Object.keys(datasetsList).map((key) => (
@@ -96,33 +100,20 @@ function UserModifyPage() {
         </Row>
 
         <Row>
-          <input
-            name="file"
-            id="file"
-            type="file"
-            data-testid="upload"
-            onChange={(event) => setFile(event.target.files[0])}
-          />
+          {!disable &&
+            <input
+              name="file"
+              id="file"
+              type="file"
+              data-testid="upload"
+              onChange={(event) => setFile(event.target.files[0])}
+              // This key changing resets the file so that after an upload event it is removed
+              key={`file-upload-${disable.toString()}`}
+            />}
         </Row>
 
         {uploadSuccessDetails ? (
-          <Alert
-            title={`File accepted: ${uploadSuccessDetails.original_filename}`}
-            data-testid="upload-status"
-            severity="info"
-          >
-            <Typography variant="body2">
-              Raw file name: {uploadSuccessDetails.raw_filename}
-            </Typography>
-            <Typography variant="body2">Status: {uploadSuccessDetails.status}</Typography>
-            <Typography variant="body2">
-              Version: {uploadSuccessDetails.dataset_version}
-            </Typography>
-
-            <Link href={`/tasks/${uploadSuccessDetails.job_id}`}>
-              Track upload progress
-            </Link>
-          </Alert>
+          <UploadProgress uploadSuccessDetails={uploadSuccessDetails} setDisableUpload={setDisable} />
         ) : null}
 
         {error && (
