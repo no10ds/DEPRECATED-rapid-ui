@@ -117,10 +117,11 @@ describe('Page: Upload page', () => {
         expect(screen.getByTestId('upload-status')).toBeInTheDocument()
       })
 
-      const trackLink = screen.getByText('See progress details')
+      await waitFor(async () => {
+        const trackLink = screen.getByText('See error details')
+        expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
+      })
 
-      expect(trackLink).toBeInTheDocument()
-      expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
       await waitFor(async () => {
         expect(screen.getByText('Status: Data upload error')).toBeInTheDocument()
       })
@@ -151,10 +152,11 @@ describe('Page: Upload page', () => {
         expect(screen.getByTestId('upload-status')).toBeInTheDocument()
       })
 
-      const trackLink = screen.getByText('See progress details')
+      await waitFor(async () => {
+        const trackLink = screen.getByText('See upload details')
+        expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
+      })
 
-      expect(trackLink).toBeInTheDocument()
-      expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
       await waitFor(async () => {
         expect(screen.getByText('Status: Data uploaded successfully')).toBeInTheDocument()
       })

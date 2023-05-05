@@ -14,15 +14,18 @@ enum UploadStatus {
 const statusConverter = {
     [UploadStatus.Failed]: {
         severity: "error",
-        message: "Data upload error"
+        message: "Data upload error",
+        link: "See error details"
     },
     [UploadStatus.Success]: {
         severity: "success",
-        message: "Data uploaded successfully"
+        message: "Data uploaded successfully",
+        link: "See upload details"
     },
     [UploadStatus.InProgress]: {
         severity: "info",
-        message: "Data processing"
+        message: "Data processing",
+        link: "See progress details"
     },
 }
 
@@ -65,7 +68,7 @@ const UploadProgress = ({ uploadSuccessDetails, setDisableUpload }: { uploadSucc
             }
             <Row>
                 <Link sx={{ pt: 5 }} href={`/tasks/${uploadSuccessDetails.job_id}`}>
-                    See progress details
+                    {statusConverter[status].link}
                 </Link>
             </Row>
         </Alert >
