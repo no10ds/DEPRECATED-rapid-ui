@@ -9,7 +9,7 @@ import {
   CreateSchema as CreateSchemaComponent
 } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
-import { generateSchema, schemaGenerateSchema } from '@/service'
+import { generateSchema, schemaGenerateSchema, GlobalSensitivities, ProtectedSensitivity } from '@/service'
 import { getLayers } from '@/service/fetch'
 import { GenerateSchemaResponse, SchemaGenerate } from '@/service/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -91,8 +91,7 @@ function CreateSchema() {
                   <option value="" disabled>
                     Please select
                   </option>
-                  {/* TODO: Fix this */}
-                  {['PUBLIC', 'PRIVATE', 'PROTECTED'].map((value) => (
+                  {[...GlobalSensitivities, ProtectedSensitivity].map((value) => (
                     <option key={value}>{value}</option>
                   ))}
                 </Select>

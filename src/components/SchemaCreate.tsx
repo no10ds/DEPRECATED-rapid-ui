@@ -1,4 +1,4 @@
-import { createSchema, schemaCreateSchema } from '@/service'
+import { createSchema, schemaCreateSchema, GlobalSensitivities, ProtectedSensitivity } from '@/service'
 import {
   CreateSchemaResponse,
   GenerateSchemaResponse,
@@ -104,8 +104,7 @@ function CreateSchema({ schemaData, layersData }: { schemaData: GenerateSchemaRe
                 <Typography variant="caption">Sensitivity Level</Typography>
                 <Select
                   {...field}
-                  // TODO: Fix this
-                  data={['PUBLIC', 'PRIVATE', 'PROTECTED']}
+                  data={[...GlobalSensitivities, ProtectedSensitivity]}
                   error={!!error}
                   helperText={error?.message}
                   onChange={(e) => field.onChange(e.target.value)}

@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 
-const GlobalSensitivities = ['PUBLIC', 'PRIVATE'] as const;
-const ProtectedSensitivity = 'PROTECTED'
+export const GlobalSensitivities = ['PUBLIC', 'PRIVATE'] as const;
+export const ProtectedSensitivity = 'PROTECTED'
 
 
 export const SensitivityEnum = z.enum([...GlobalSensitivities, ProtectedSensitivity, 'ALL'])
