@@ -1,7 +1,5 @@
-import getConfig from 'next/config'
 import { createUrl } from './url-utils'
 import { defaultError } from '@/lang'
-const { publicRuntimeConfig } = getConfig()
 
 export type ParamsType = Record<string, string | string[] | number>
 
@@ -10,9 +8,12 @@ export const api = async (
   init: RequestInit = {},
   params?: ParamsType
 ): Promise<Response> => {
-  const url = createUrl(`${publicRuntimeConfig.apiUrl}${path}`, params)
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
+  const baseUrl = API_URL ? `${API_URL}${path}` : path
+  const url = createUrl(`${baseUrl}`, params)
   let detailMessage
   const res: Response = await fetch(url, {
+    credentials: 'include',
     ...init
   })
   if (res.ok) return res

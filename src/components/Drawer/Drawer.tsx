@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps } from 'react'
 import { Logo } from '@/components/Icon'
 import { Icon } from '@/components/Icon/types'
 import * as Icons from '@/components/Icon'
@@ -41,7 +41,7 @@ const MenuBar = styled(MuiDrawer)`
 
 export default function Drawer({ list, ...props }: Props) {
   const router = useRouter()
-  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const { asPath } = router
 
   return (
     <MenuBar
@@ -51,13 +51,13 @@ export default function Drawer({ list, ...props }: Props) {
       }}
       {...props}
     >
-      <Link href="/account/">
+      <Link href="/">
         <Toolbar variant="dense">
           <Logo className="logo" />
         </Toolbar>
       </Link>
       <Divider />
-      {list.map(({ text, divider, icon, href }, index) => {
+      {list.map(({ text, divider, icon, href }) => {
         const Icon = Icons[icon]
         return (
           <List key={text}>
@@ -67,12 +67,15 @@ export default function Drawer({ list, ...props }: Props) {
               href={href || undefined}
               onClick={(e) => {
                 e.preventDefault()
-                href && setSelectedIndex(index)
                 href && router.push(href)
               }}
               sx={{ paddingTop: '1px', paddingBottom: '1px' }}
             >
-              <ListItemButton selected={selectedIndex === index ? true : false}>
+              <ListItemButton
+                selected={asPath.includes(href)}
+                disabled={!icon}
+                disableRipple
+              >
                 {icon && (
                   <ListItemIcon sx={{ fontSize: 14, minWidth: 30 }}>
                     {<Icon />}
@@ -84,8 +87,8 @@ export default function Drawer({ list, ...props }: Props) {
                       variant="body2"
                       sx={
                         icon
-                          ? { color: '#000', fontSize: 14, fontWeight: 500 }
-                          : { fontSize: 14 }
+                          ? { fontSize: 14, fontWeight: 500 }
+                          : { fontSize: 14, color: '#000' }
                       }
                     >
                       {text}

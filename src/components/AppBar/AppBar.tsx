@@ -10,6 +10,8 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MenuItem from '@mui/material/MenuItem'
 import { ComponentProps } from 'react'
+import Link from '../Link'
+import { useRouter } from 'next/router'
 
 type Props = { title?: string } & ComponentProps<typeof MuiAppBar>
 
@@ -19,6 +21,7 @@ const MenuBar = styled(MuiAppBar)`
 `
 
 export default function AppBar({ title, ...props }: Props) {
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,6 +30,7 @@ export default function AppBar({ title, ...props }: Props) {
 
   const handleClose = () => {
     setAnchorEl(null)
+    router.replace(`/api/oauth2/logout`)
   }
 
   return (
@@ -35,6 +39,20 @@ export default function AppBar({ title, ...props }: Props) {
         <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
           {title}
         </Typography>
+        <Link
+          color="rgb(255, 255, 255)"
+          style={{ textDecoration: 'none', marginRight: '2rem' }}
+          href="/"
+        >
+          Home
+        </Link>
+        <Link
+          color="rgb(255, 255, 255)"
+          style={{ textDecoration: 'none', marginRight: '2rem' }}
+          href={`/api/docs`}
+        >
+          Docs
+        </Link>
 
         <div>
           <IconButton

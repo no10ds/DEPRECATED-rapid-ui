@@ -1,41 +1,35 @@
-name: Tests CI
-on: [push, pull_request]
+name: rAPId UI Tests
+
+on:
+  push:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
+
+  deploy:
+    runs-on: self-hosted
+    env:
+      GH_TOKEN: ${{ github.token }}
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Test using Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run test:all
+          node-version: 19
 
-      - name: Tests ✅
-        if: ${{ success() }}
-        run: |
-          curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --data '{
-            "context": "tests",
-            "state": "success",
-            "description": "Tests passed",
-            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'
+      - name: Log commit SHA
+        run: echo $GITHUB_SHA
 
-      - name: Tests 🚨
-        if: ${{ failure() }}
+      - name: Populate .env with additional vars
         run: |
-          curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --data '{
-            "context": "tests",
-            "state": "failure",
-            "description": "Tests failed",
-            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'
+          cp ./.github/.github.env .env
+        
+      - name: Install packages
+        run: make npm-setup
+
+      - name: Run tests
+        run: make test

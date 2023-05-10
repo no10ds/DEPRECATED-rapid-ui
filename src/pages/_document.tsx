@@ -21,8 +21,8 @@ export default class MyDocument extends Document<DocumentProps> {
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="icon" href="/img/favicon.ico?v=0" sizes="any" />
-          <link rel="icon" href="/img/favicon.svg?v=0" type="image/svg+xml" />
           <meta charSet="UTF-8" />
+          <script src="/__ENV.js" async />
 
           {this.props.emotionStyleTags}
         </Head>
