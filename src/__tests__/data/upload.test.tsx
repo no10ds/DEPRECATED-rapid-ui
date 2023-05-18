@@ -92,7 +92,7 @@ describe('Page: Upload page', () => {
       })
     })
 
-    it('upload status', async () => {
+    it('upload status failure', async () => {
       const mockSuccess: UploadDatasetResponse = {
         details: {
           dataset_version: 12314,
@@ -105,7 +105,8 @@ describe('Page: Upload page', () => {
 
       fetchMock.mockResponses(
         [JSON.stringify(mockDataSetsList), { status: 200 }],
-        [JSON.stringify(mockSuccess), { status: 200 }]
+        [JSON.stringify(mockSuccess), { status: 200 }],
+        [JSON.stringify({ status: "FAILED" }), { status: 200 }]
       )
       renderWithProviders(<UploadPage />)
       await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
@@ -116,15 +117,85 @@ describe('Page: Upload page', () => {
         expect(screen.getByTestId('upload-status')).toBeInTheDocument()
       })
 
-      const trackLink = screen.getByText('Track upload progress')
+      await waitFor(async () => {
+        const trackLink = screen.getByText('See error details')
+        expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
+      })
 
-      expect(screen.getByText('Raw file name: my_raw_name.txt')).toBeInTheDocument()
-      expect(screen.getByText('Status: winning')).toBeInTheDocument()
-      expect(screen.getByText('Status: winning')).toBeInTheDocument()
-      expect(screen.getByText('Version: 12314')).toBeInTheDocument()
+      await waitFor(async () => {
+        expect(screen.getByText('Status: Data upload error')).toBeInTheDocument()
+      })
+    })
+
+    it('upload status success', async () => {
+      const mockSuccess: UploadDatasetResponse = {
+        details: {
+          dataset_version: 12314,
+          job_id: 'abc123',
+          original_filename: 'my_original_name.txt',
+          raw_filename: 'my_raw_name.txt',
+          status: 'winning'
+        }
+      }
+
+      fetchMock.mockResponses(
+        [JSON.stringify(mockDataSetsList), { status: 200 }],
+        [JSON.stringify(mockSuccess), { status: 200 }],
+        [JSON.stringify({ status: "SUCCESS" }), { status: 200 }]
+      )
+      renderWithProviders(<UploadPage />)
+      await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(screen.getByTestId('upload-status')).toBeInTheDocument()
+      })
+
+      await waitFor(async () => {
+        const trackLink = screen.getByText('See upload details')
+        expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
+      })
+
+      await waitFor(async () => {
+        expect(screen.getByText('Status: Data uploaded successfully')).toBeInTheDocument()
+      })
+    })
+
+    it('upload status in progress', async () => {
+      const mockSuccess: UploadDatasetResponse = {
+        details: {
+          dataset_version: 12314,
+          job_id: 'abc123',
+          original_filename: 'my_original_name.txt',
+          raw_filename: 'my_raw_name.txt',
+          status: 'winning'
+        }
+      }
+
+      fetchMock.mockResponses(
+        [JSON.stringify(mockDataSetsList), { status: 200 }],
+        [JSON.stringify(mockSuccess), { status: 200 }],
+        [JSON.stringify({ status: "IN PROGRESS" }), { status: 200 }]
+      )
+      renderWithProviders(<UploadPage />)
+      await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
+
+      await userEvent.click(screen.getByTestId('submit'))
+
+      await waitFor(async () => {
+        expect(screen.getByTestId('upload-status')).toBeInTheDocument()
+      })
+
+      const trackLink = screen.getByText('See progress details')
+
       expect(trackLink).toBeInTheDocument()
       expect(trackLink).toHaveAttribute('href', '/tasks/abc123')
+      await waitFor(async () => {
+        expect(screen.getByText('Status: Data processing')).toBeInTheDocument()
+      })
     })
+
 
     it('api error', async () => {
       fetchMock.mockResponseOnce(JSON.stringify(mockDataSetsList), { status: 200 })

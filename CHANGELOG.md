@@ -8,6 +8,14 @@ See [v6.0.1] changes
 
 - increase release to match rapid-api.
 
+## v6.2.0 - _2023-03-21_
+
+See [v6.2.0] changes
+
+### Changed
+
+- The upload data page now tracks the upload progress
+
 ## v6.0.1 - _2023-03-21_
 
 See [v6.0.1] changes
@@ -51,9 +59,11 @@ See [v5.0.1] changes
 
 See [v5.0.0] changes
 
-### Added
+### Added 
 - Initial release of new rAPId UI
 
+[v6.2.0]: https://github.com/no10ds/rapid-ui/compare/v6.0.1...v6.2.0
+[v6.0.1]: https://github.com/no10ds/rapid-ui/compare/v6.0.0...v6.0.1
 [v6.0.0]: https://github.com/no10ds/rapid-ui/compare/v5.0.2...v6.0.0
 [v5.0.2]: https://github.com/no10ds/rapid-ui/comapre/v5.0.1...v5.0.2
 [v5.0.1]: https://github.com/no10ds/rapid-ui/compare/v5.0.0...v5.0.1
