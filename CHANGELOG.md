@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.2.1 - _2023-05-18_
+
+See [v6.0.1] changes
+
+### Fixed
+
+- increase release to match rapid-api.
+
 ## v6.0.1 - _2023-03-21_
 
 See [v6.0.1] changes
