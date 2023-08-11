@@ -1,15 +1,19 @@
 import { Card, Row, Button, Select, Alert, Link } from '@/components'
 import ErrorCard from '@/components/ErrorCard/ErrorCard'
 import AccountLayout from '@/components/Layout/AccountLayout'
+import UploadProgress from '@/components/UploadProgress/UploadProgress'
+import DatasetSelector from '@/components/DatasetSelector/DatasetSelector'
 import { getDatasetsUi, uploadDataset } from '@/service'
-import { UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
-import { FormControl, Typography, LinearProgress } from '@mui/material'
+import { Dataset, UploadDatasetResponse, UploadDatasetResponseDetails } from '@/service/types'
+import { Typography, LinearProgress } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-function UserModifyPage() {
+
+function UploadDataset({ datasetInput = null }: { datasetInput?: Dataset }) {
   const [file, setFile] = useState<File | undefined>()
-  const [dataset, setDataset] = useState<string>('')
+  const [dataset, setDataset] = useState<Dataset>(datasetInput)
+  const [disable, setDisable] = useState<boolean>(false)
   const [uploadSuccessDetails, setUploadSuccessDetails] = useState<
     UploadDatasetResponseDetails | undefined
   >()
@@ -31,15 +35,9 @@ function UserModifyPage() {
     },
     onSuccess: (data) => {
       setUploadSuccessDetails(data.details)
+      setDisable(true)
     }
   })
-
-  useEffect(() => {
-    if (datasetsList) {
-      const firstKey = Object.keys(datasetsList)[0]
-      setDataset(`${firstKey}/${datasetsList[firstKey][0].dataset}`)
-    }
-  }, [datasetsList])
 
   if (isDatasetsListLoading) {
     return <LinearProgress />
@@ -55,11 +53,11 @@ function UserModifyPage() {
         event.preventDefault()
         const formData = new FormData()
         formData.append('file', file)
-        await mutate({ path: dataset, data: formData })
+        await mutate({ path: `${dataset.layer}/${dataset.domain}/${dataset.dataset}?version=${dataset.version}`, data: formData })
       }}
     >
       <Card
-        action={
+        action={!disable &&
           <Button color="primary" type="submit" loading={isLoading} data-testid="submit">
             Upload dataset
           </Button>
@@ -70,59 +68,23 @@ function UserModifyPage() {
           been uploaded for the data source and the data to upload matches this schema.
         </Typography>
 
-        <Typography variant="h2" gutterBottom>
-          Select subject
-        </Typography>
+        <DatasetSelector datasetsList={datasetsList} setParentDataset={setDataset}></DatasetSelector>
 
         <Row>
-          <FormControl fullWidth size="small">
-            <Select
-              label="Select dataset"
-              onChange={(event) => setDataset(event.target.value as string)}
-              native
-              inputProps={{ 'data-testid': 'select-dataset' }}
-            >
-              {Object.keys(datasetsList).map((key) => (
-                <optgroup label={key} key={key}>
-                  {datasetsList[key].map((item) => (
-                    <option value={`${key}/${item.dataset}`} key={item.dataset}>
-                      {item.dataset}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </Select>
-          </FormControl>
-        </Row>
-
-        <Row>
-          <input
-            name="file"
-            id="file"
-            type="file"
-            data-testid="upload"
-            onChange={(event) => setFile(event.target.files[0])}
-          />
+          {!disable &&
+            <input
+              name="file"
+              id="file"
+              type="file"
+              data-testid="upload"
+              onChange={(event) => setFile(event.target.files[0])}
+              // This key changing resets the file so that after an upload event it is removed
+              key={`file-upload-${disable.toString()}`}
+            />}
         </Row>
 
         {uploadSuccessDetails ? (
-          <Alert
-            title={`File accepted: ${uploadSuccessDetails.original_filename}`}
-            data-testid="upload-status"
-            severity="info"
-          >
-            <Typography variant="body2">
-              Raw file name: {uploadSuccessDetails.raw_filename}
-            </Typography>
-            <Typography variant="body2">Status: {uploadSuccessDetails.status}</Typography>
-            <Typography variant="body2">
-              Version: {uploadSuccessDetails.dataset_version}
-            </Typography>
-
-            <Link href={`/tasks/${uploadSuccessDetails.job_id}`}>
-              Track upload progress
-            </Link>
-          </Alert>
+          <UploadProgress uploadSuccessDetails={uploadSuccessDetails} setDisableUpload={setDisable} />
         ) : null}
 
         {error && (
@@ -135,6 +97,6 @@ function UserModifyPage() {
   )
 }
 
-export default UserModifyPage
+export default UploadDataset
 
-UserModifyPage.getLayout = (page) => <AccountLayout title="Upload">{page}</AccountLayout>
+UploadDataset.getLayout = (page) => <AccountLayout title="Upload">{page}</AccountLayout>
