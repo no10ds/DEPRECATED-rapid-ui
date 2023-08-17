@@ -18,7 +18,23 @@ import Select from './Select/Select'
 import SimpleTable from './SimpleTable/SimpleTable'
 import TextField from './TextField/TextField'
 
-const dataTypes = ['Int64', 'Float64', 'object', 'date', 'boolean']
+
+const dataTypes = [
+  "bigint",
+  "boolean",
+  "char",
+  "date",
+  "decimal",
+  "double",
+  "float",
+  "integer",
+  "smallint",
+  "string",
+  "timestamp",
+  "tinyint",
+  "varchar"
+]
+
 
 function CreateSchema({ schemaData, layersData }: { schemaData: GenerateSchemaResponse, layersData: string[] }) {
   const [newSchemaData, setNewSchemaData] = useState<GenerateSchemaResponse>(schemaData)

@@ -133,7 +133,7 @@ describe('Page: Upload page', () => {
         [JSON.stringify(mockSuccess), { status: 200 }],
         [JSON.stringify({ status: "SUCCESS" }), { status: 200 }]
       )
-      renderWithProviders(<UploadPage />)
+      renderWithProviders(<UploadPage datasetInput={mockDataset} />)
       await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
 
       await userEvent.click(screen.getByTestId('submit'))
@@ -168,7 +168,7 @@ describe('Page: Upload page', () => {
         [JSON.stringify(mockSuccess), { status: 200 }],
         [JSON.stringify({ status: "IN PROGRESS" }), { status: 200 }]
       )
-      renderWithProviders(<UploadPage />)
+      renderWithProviders(<UploadPage datasetInput={mockDataset} />)
       await waitForElementToBeRemoved(() => screen.queryByRole('progressbar'))
 
       await userEvent.click(screen.getByTestId('submit'))

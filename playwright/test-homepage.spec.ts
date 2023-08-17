@@ -1,18 +1,9 @@
 import { test, expect } from '@playwright/test';
-const rapidUiUser = process.env.RAPID_UI_USERNAME;
-const rapidUiUserPw = process.env.RAPID_UI_PASSWORD;
+
+const domain = process.env.DOMAIN
 
 test('test', async ({ page }) => {
-  await page.goto('https://preprod.getrapid.link/');
-  await page.goto('https://preprod.getrapid.link/login');
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).fill(`${rapidUiUser}`);
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill(`${rapidUiUserPw}`);
-  await page.getByRole('button', { name: 'submit' }).click();
+  await page.goto(domain);
   await page.getByRole('button', { name: 'Create User' }).click();
   await page.getByRole('button', { name: 'Modify User' }).click();
   await page.getByRole('button', { name: 'Download data' }).click();

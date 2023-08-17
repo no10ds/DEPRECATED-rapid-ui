@@ -15,9 +15,6 @@ jobs:
 
   run-ui-test:
     runs-on: self-hosted
-    env:
-      RAPID_UI_PASSWORD: ${{ secrets.RAPID_UI_PASSWORD }}
-      RAPID_UI_USERNAME: ${{ secrets.RAPID_UI_USERNAME }}
 
     steps:
       - uses: actions/checkout@v3
@@ -33,4 +30,8 @@ jobs:
         run: npx playwright install-deps && npx playwright install
 
       - name: run playwright tests
-        run: npx playwright test ./ui-test/ui-test-full.spec.ts
+        run: npx playwright test playwright
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}

@@ -93,7 +93,7 @@ function UploadDataset({ datasetInput = null }: { datasetInput?: Dataset }) {
           </Alert>
         )}
       </Card>
-    </form>
+    </form >
   )
 }
 

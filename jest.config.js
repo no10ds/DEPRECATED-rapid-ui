@@ -19,7 +19,7 @@ const customJestConfig = {
     '<rootDir>/node_modules/',
     '<rootDir>/coverage',
     '<rootDir>/dist',
-    '<rootDir>/ui-test'
+    '<rootDir>/playwright'
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
