@@ -27,7 +27,7 @@ const dataTypes = [
   "decimal",
   "double",
   "float",
-  "integer",
+  "int",
   "smallint",
   "string",
   "timestamp",
